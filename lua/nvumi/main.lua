@@ -15,7 +15,7 @@ local function run_numi_on_buffer()
           if data and #data > 0 then
             local virt_lines = {}
             for _, txt in ipairs(vim.split(table.concat(data, " "), "\n")) do
-              table.insert(virt_lines, { { " " .. txt, "Comment" } })
+              table.insert(virt_lines, { { "  " .. txt, "Comment" } })
             end
             vim.schedule(function()
               vim.api.nvim_buf_set_extmark(buf, ns, i - 1, 0, { virt_lines = virt_lines })
@@ -27,6 +27,13 @@ local function run_numi_on_buffer()
   end
 end
 
+local function reset_buffer()
+  local buf = vim.api.nvim_get_current_buf()
+  local ns = vim.api.nvim_create_namespace("nvumi_inline")
+  vim.api.nvim_buf_set_lines(buf, 0, -1, false, {})
+  vim.api.nvim_buf_clear_namespace(buf, ns, 0, -1)
+end
+
 function M.open()
   require("snacks.scratch").open({
     name = "Nvumi",
@@ -34,7 +41,8 @@ function M.open()
     win_by_ft = {
       nvumi = {
         keys = {
-          ["source"] = { "<CR>", run_numi_on_buffer, mode = { "n", "x" }, desc = "Run numi" },
+          ["source"] = { "<CR>", run_numi_on_buffer, mode = { "n", "x" }, desc = "Run Numi" },
+          ["reset"] = { "R", reset_buffer, mode = "n", desc = "Reset buffer" },
         },
       },
     },
