@@ -24,14 +24,11 @@
 
 ## Usage
 
-1. **Open the nvumi scratch buffer:**
-   Run the command `:Nvumi` to open a scratch buffer ready for calculations
+1. Run the command `:Nvumi` to open a scratch buffer ready for calculations
 
-2. **Enter Your Calculation:**
-   In the scratch buffer, type your natural language expression (e.g., `20 inches in cm`) in insert mode.
+2. Type your natural language expression(s) (e.g., `20 inches in cm`) in insert mode
 
-3. **Evaluate:**
-   Press `<CR>` (Enter) and the buffer will attempt to evaluate all non-empty lines
+3. Press `<CR>` (Enter) in normal mode and the buffer will attempt to evaluate all non-empty lines at once
 
 ## Configuration
 
