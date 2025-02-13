@@ -1,44 +1,43 @@
 local M = {}
 
-local function run_numi_line()
+local function run_numi_on_buffer()
   local buf = vim.api.nvim_get_current_buf()
-  local cursor = vim.api.nvim_win_get_cursor(0)
-  local line_nr = cursor[1] - 1
-  local line = vim.api.nvim_buf_get_lines(buf, line_nr, line_nr + 1, false)[1] or ""
-  if line == "" then
-    return
+  local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+  local ns = vim.api.nvim_create_namespace("nvumi_inline")
+
+  vim.api.nvim_buf_clear_namespace(buf, ns, 0, -1)
+
+  for line_nr, line in ipairs(lines) do
+    if line:match("%S") then
+      vim.fn.jobstart({ "numi-cli", line }, {
+        stdout_buffered = true,
+        on_stdout = function(_, data)
+          if data and #data > 0 then
+            vim.schedule(function()
+              vim.api.nvim_buf_set_extmark(buf, ns, line_nr - 1, 0, {
+                virt_text = { { " = " .. table.concat(data, " "), "Comment" } },
+                virt_text_pos = "eol",
+              })
+            end)
+          end
+        end,
+      })
+    end
   end
-
-  vim.fn.jobstart({ "numi-cli", line }, {
-    stdout_buffered = true,
-    on_stdout = function(_, data)
-      if data and #data > 0 then
-        vim.schedule(function()
-          local ns = vim.api.nvim_create_namespace("nvumi_inline")
-
-          vim.api.nvim_buf_clear_namespace(buf, ns, line_nr, line_nr + 1)
-
-          vim.api.nvim_buf_set_extmark(buf, ns, line_nr, 0, {
-            virt_text = { { " = " .. table.concat(data, " "), "Comment" } },
-            virt_text_pos = "eol",
-          })
-        end)
-      end
-    end,
-  })
 end
 
 function M.open()
   local opts = {
     name = "Nvumi",
-    ft = "nvumi", -- custom ft to avoid conflicts
+    ft = "nvumi",
     win_by_ft = {
       nvumi = {
         keys = {
           ["source"] = {
             "<CR>",
-            function(self)
-              run_numi_line()
+            function()
+              run_numi_on_buffer()
+              vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<CR>", true, false, true), "n", false)
             end,
             mode = { "n", "x" },
           },
