@@ -4,8 +4,6 @@
 
 ![Screenshot 2025-02-13 at 16 26 04](https://github.com/user-attachments/assets/db676c0f-e191-43ad-8c14-909e3ce7302d)
 
-
-
 ## Installation
 
 ### Using Lazy.nvim
@@ -14,7 +12,9 @@
 {
   "josephburgess/nvumi",
   dependencies = { "folke/snacks.nvim" },
-  opts = {}
+  opts = {
+    virtual_text = "inline" -- or "newline"
+  }
 }
 ```
 
@@ -26,12 +26,12 @@
 2. **Enter Your Calculation:**
    In the scratch buffer, type your natural language expression (e.g., `20 inches in cm`) in insert mode.
 
-3. **Evaluate the Expression:**
-   Press `<CR>` (Enter) on the line you wish to evaluate, the answer will be displayed in virtual text.
+3. **Evaluate:**
+   Press `<CR>` (Enter) and the buffer will attempt to evaluate all non-empty lines
 
 ## Configuration
 
-TBC
+Currently you can configure where you want the virtual text to be displayed, `inline` or `newline`
 
 ## Requirements
 
@@ -61,7 +61,7 @@ MIT License. See [LICENSE](LICENSE) for details.
 
 ## Acknowledgements
 
+- **[Snacks.nvim](https://github.com/folke/snacks.nvim):**
+  Folke needs no introduction given his super-human contributions to the community. The `lua` code runner built into the Scratch buffer inspired this idea in the first place.
 - **[numi](https://github.com/nikolaeu/numi):**
   Thanks for providing an amazing natural language calculator.
-- **[Snacks.nvim](https://github.com/folke/snacks.nvim):**
-  Folke needs no introduction given his super-human contributions to the community over the years. The lua code runner built into the Scratch buffer inspired this idea in the first place.
