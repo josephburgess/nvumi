@@ -1,7 +1,7 @@
 local M = {}
 
 M.options = {
-  -- options_tbc = "default",
+  virtual_text = "newline", -- or "inline"
 }
 
 function M.setup(user_opts)
