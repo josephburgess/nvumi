@@ -8,12 +8,6 @@
 
 ## Installation
 
-You will need numi-cli installed:
-
-```
-curl -sSL https://s.numi.app/cli | sh
-```
-
 ### Using Lazy.nvim
 
 ```lua
@@ -27,7 +21,7 @@ curl -sSL https://s.numi.app/cli | sh
 ## Usage
 
 1. **Open the nvumi scratch buffer:**
-   Run the command `:NVumi` to open a scratch buffer ready for calculations
+   Run the command `:Nvumi` to open a scratch buffer ready for calculations
 
 2. **Enter Your Calculation:**
    In the scratch buffer, type your natural language expression (e.g., `20 inches in cm`) in insert mode.
@@ -38,14 +32,6 @@ curl -sSL https://s.numi.app/cli | sh
 ## Configuration
 
 TBC
-
-## How It Works
-
-nvumi leverages the `numi-cli` tool to evaluate your natural language expressions. When you press `<CR>` in a scratch buffer:
-
-1. nvumi reads the current line of text.
-2. It calls `numi-cli` with the expression.
-3. The result is then displayed inline as virtual text at the end of the evaluated line.
 
 ## Requirements
 
