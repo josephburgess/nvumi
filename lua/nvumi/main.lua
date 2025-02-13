@@ -13,10 +13,14 @@ local function run_numi_on_buffer()
         stdout_buffered = true,
         on_stdout = function(_, data)
           if data and #data > 0 then
+            local result = table.concat(data, " ")
+            local virt_lines = {}
+            for _, txt in ipairs(vim.split(result, "\n")) do
+              table.insert(virt_lines, { { " " .. txt, "Comment" } })
+            end
             vim.schedule(function()
               vim.api.nvim_buf_set_extmark(buf, ns, line_nr - 1, 0, {
-                virt_text = { { " = " .. table.concat(data, " "), "Comment" } },
-                virt_text_pos = "eol",
+                virt_lines = virt_lines,
               })
             end)
           end
@@ -37,7 +41,6 @@ function M.open()
             "<CR>",
             function()
               run_numi_on_buffer()
-              vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<CR>", true, false, true), "n", false)
             end,
             mode = { "n", "x" },
           },
