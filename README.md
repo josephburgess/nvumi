@@ -67,7 +67,7 @@ Currently you can configure where you want the virtual text to be displayed, `in
   ```
 
 - **[folke/snacks.nvim](https://github.com/folke/snacks.nvim):**
-  This plugin is used to create and manage persistent scratch buffers.
+  Used to create the scratch buffer
 
 ## Contributing
 
