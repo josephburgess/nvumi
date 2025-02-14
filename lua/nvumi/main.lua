@@ -20,6 +20,15 @@ local function render_newline(buf, line_index, result)
   api.nvim_buf_set_extmark(buf, ns, line_index, 0, { virt_lines = virt_lines })
 end
 
+local function render_result(buf, line_index, data, config)
+  local result = table.concat(data, " ")
+  if config.virtual_text == "inline" then
+    render_inline(buf, line_index, result)
+  else
+    render_newline(buf, line_index, result)
+  end
+end
+
 local function run_numi_on_buffer()
   local config = require("nvumi.config").options
   local buf = api.nvim_get_current_buf()
@@ -27,23 +36,23 @@ local function run_numi_on_buffer()
   api.nvim_buf_clear_namespace(buf, ns, 0, -1)
 
   for i, line in ipairs(lines) do
-    if line:match("%S") then
-      fn.jobstart({ "numi-cli", line }, {
-        stdout_buffered = true,
-        on_stdout = function(_, data)
-          if data and #data > 0 then
-            schedule(function()
-              local result = table.concat(data, " ")
-              if config.virtual_text == "inline" then
-                render_inline(buf, i - 1, result)
-              else
-                render_newline(buf, i - 1, result)
-              end
-            end)
-          end
-        end,
-      })
+    if not line:match("%S") then
+      goto continue
     end
+
+    fn.jobstart({ "numi-cli", line }, {
+      stdout_buffered = true,
+      on_stdout = function(_, data)
+        if not data or #data == 0 then
+          return
+        end
+        schedule(function()
+          render_result(buf, i - 1, data, config)
+        end)
+      end,
+    })
+
+    ::continue::
   end
 end
 
