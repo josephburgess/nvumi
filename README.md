@@ -28,6 +28,8 @@
 
 3. Press `<CR>` (Enter) in normal mode and the buffer will attempt to evaluate all non-empty lines at once
 
+4. Running the command `:help nvumi` opens the manual
+
 ## Configuration
 
 Currently you can configure where you want the virtual text to be displayed, `inline` or `newline`:
