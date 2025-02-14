@@ -1,0 +1,69 @@
+*nvumi*:  Natural language calculations in Neovim
+===============================================
+
+nvumi integrates the [numi-cli](https://github.com/nikolaeu/numi) natural language
+calculator with [snacks.nvim](https://github.com/folke/snacks.nvim). It provides a
+scratch buffer where you can type natural language expressions and see the evaluated
+results either inline or on a new line.
+
+USAGE
+-----
+
+    `:Nvumi
+
+    This command opens a scratch buffer where you can enter your
+    calculations. In the scratch buffer:
+
+      - Press <CR> (Enter) in normal mode to evaluate all non-empty lines.
+      - Press <R> in normal mode to reset the buffer (clear all content).
+
+CONFIGURATION
+-------------
+
+nvumi currently has one configuration option which determines where the calculated
+results are displayed:
+
+    `virtual_text = "inline"`  -- Display results at the end of the current line.
+    `virtual_text = "newline"` -- Display results on a new line below each expression.
+
+This is set during the plugin setup. For example, using Lazy.nvim:
+
+>lua
+    {
+        "josephburgess/nvumi",
+        dependencies = { "folke/snacks.nvim" },
+        opts = {
+            virtual_text = "inline" -- or "newline"
+        }
+    }
+<
+
+REQUIREMENTS
+------------
+
+- **numi-cli:** A natural language calculator.
+  Install via: >bash
+      curl -sSL https://s.numi.app/cli | sh
+<
+  or with Homebrew: >bash
+      brew install nikolaeu/numi/numi-cli
+<
+
+- **snacks.nvim:** Used to create the scratch buffer.
+
+EXAMPLES
+--------
+
+Type natural language expressions such as:
+
+    20 inches in cm
+    50 times 2
+    25 GBP to EUR
+    today + 8 weeks
+
+and press <CR> to see the evaluated result. If configured as "inline", the result
+will be appended to the line; if "newline", it will appear on a separate line.
+
+See the numi-cli documentation for more about the expressions which are possible to evaluate.
+
+vim:tw=78:ts=8:noet:ft=help:norl:
