@@ -70,4 +70,9 @@ function M.setup()
   })
 end
 
+M._test = {
+  run_numi_on_buffer = run_numi_on_buffer,
+  reset_buffer = reset_buffer,
+}
+
 return M
