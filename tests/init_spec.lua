@@ -1,10 +1,7 @@
 local nvumi = require("nvumi")
 
 describe("nvumi", function()
-  before_each(function()
-    -- Reset the commands before each test.
-    -- (In a real test environment you might need to clear or sandbox commands.)
-  end)
+  before_each(function() end)
 
   it("should register the Nvumi user command", function()
     nvumi.setup()
