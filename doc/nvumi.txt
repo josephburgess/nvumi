@@ -15,7 +15,7 @@ USAGE
     calculations. In the scratch buffer:
 
       - Press <CR> (Enter) in normal mode to evaluate all non-empty lines.
-      - Press "R" in normal mode to reset the buffer (clear all content).
+      - Press <R> in normal mode to reset the buffer (clear all content).
 
 CONFIGURATION
 -------------
@@ -23,8 +23,8 @@ CONFIGURATION
 nvumi currently has one configuration option which determines where the calculated
 results are displayed:
 
-    virtual_text = "inline"  -- Display results at the end of the current line.
-    virtual_text = "newline" -- Display results on a new line below each expression.
+    `virtual_text = "inline"`  -- Display results at the end of the current line.
+    `virtual_text = "newline"` -- Display results on a new line below each expression.
 
 This is set during the plugin setup. For example, using Lazy.nvim:
 
