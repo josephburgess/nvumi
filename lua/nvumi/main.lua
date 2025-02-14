@@ -1,31 +1,36 @@
 local M = {}
 
+local api = vim.api
+local fn = vim.fn
+local schedule = vim.schedule
+local ns = api.nvim_create_namespace("nvumi_inline")
+
 local function run_numi_on_buffer()
   local config = require("nvumi.config").options
-  local buf = vim.api.nvim_get_current_buf()
-  local ns = vim.api.nvim_create_namespace("nvumi_inline")
-  local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+  local buf = api.nvim_get_current_buf()
+  local lines = api.nvim_buf_get_lines(buf, 0, -1, false)
 
-  vim.api.nvim_buf_clear_namespace(buf, ns, 0, -1)
+  api.nvim_buf_clear_namespace(buf, ns, 0, -1)
 
   for i, line in ipairs(lines) do
     if line:match("%S") then
-      vim.fn.jobstart({ "numi-cli", line }, {
+      fn.jobstart({ "numi-cli", line }, {
         stdout_buffered = true,
         on_stdout = function(_, data)
           if data and #data > 0 then
-            vim.schedule(function()
+            schedule(function()
+              local result = table.concat(data, " ")
               if config.virtual_text == "inline" then
-                vim.api.nvim_buf_set_extmark(buf, ns, i - 1, 0, {
-                  virt_text = { { " = " .. table.concat(data, " "), "Comment" } },
+                api.nvim_buf_set_extmark(buf, ns, i - 1, 0, {
+                  virt_text = { { " = " .. result, "Comment" } },
                   virt_text_pos = "eol",
                 })
               else
                 local virt_lines = {}
-                for _, txt in ipairs(vim.split(table.concat(data, " "), "\n")) do
+                for _, txt in ipairs(vim.split(result, "\n")) do
                   table.insert(virt_lines, { { " " .. txt, "Comment" } })
                 end
-                vim.api.nvim_buf_set_extmark(buf, ns, i - 1, 0, { virt_lines = virt_lines })
+                api.nvim_buf_set_extmark(buf, ns, i - 1, 0, { virt_lines = virt_lines })
               end
             end)
           end
@@ -36,10 +41,9 @@ local function run_numi_on_buffer()
 end
 
 local function reset_buffer()
-  local buf = vim.api.nvim_get_current_buf()
-  local ns = vim.api.nvim_create_namespace("nvumi_inline")
-  vim.api.nvim_buf_set_lines(buf, 0, -1, false, {})
-  vim.api.nvim_buf_clear_namespace(buf, ns, 0, -1)
+  local buf = api.nvim_get_current_buf()
+  api.nvim_buf_set_lines(buf, 0, -1, false, {})
+  api.nvim_buf_clear_namespace(buf, ns, 0, -1)
 end
 
 function M.open()
@@ -59,15 +63,10 @@ function M.open()
 end
 
 function M.setup()
-  vim.api.nvim_create_user_command("Nvumi", function()
+  api.nvim_create_user_command("Nvumi", function()
     M.open()
   end, {})
-
-  require("nvim-web-devicons").set_icon({
-    nvumi = {
-      icon = "",
-    },
-  })
+  require("nvim-web-devicons").set_icon({ nvumi = { icon = "" } })
 end
 
 M._test = {
