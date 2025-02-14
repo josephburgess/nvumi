@@ -1,4 +1,4 @@
-*nvumi*  Natural language calculations in Neovim
+*nvumi*:  Natural language calculations in Neovim
 ===============================================
 
 nvumi integrates the [numi-cli](https://github.com/nikolaeu/numi) natural language
@@ -9,7 +9,7 @@ results either inline or on a new line.
 USAGE
 -----
 
-    :Nvumi
+    `:Nvumi
 
     This command opens a scratch buffer where you can enter your
     calculations. In the scratch buffer:
@@ -28,24 +28,26 @@ results are displayed:
 
 This is set during the plugin setup. For example, using Lazy.nvim:
 
-```lua
-{
-  "josephburgess/nvumi",
-  dependencies = { "folke/snacks.nvim" },
-  opts = {
-    virtual_text = "inline" -- or "newline"
-  }
-}
-```
+>lua
+    {
+        "josephburgess/nvumi",
+        dependencies = { "folke/snacks.nvim" },
+        opts = {
+            virtual_text = "inline" -- or "newline"
+        }
+    }
+<
 
 REQUIREMENTS
 ------------
 
 - **numi-cli:** A natural language calculator.
-  Install via:
+  Install via: >bash
       curl -sSL https://s.numi.app/cli | sh
-  or with Homebrew:
+<
+  or with Homebrew: >bash
       brew install nikolaeu/numi/numi-cli
+<
 
 - **snacks.nvim:** Used to create the scratch buffer.
 
@@ -64,3 +66,4 @@ will be appended to the line; if "newline", it will appear on a separate line.
 
 See the numi-cli documentation for more about the expressions which are possible to evaluate.
 
+vim:tw=78:ts=8:noet:ft=help:norl:
