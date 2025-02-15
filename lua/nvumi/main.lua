@@ -5,6 +5,8 @@ local fn = vim.fn
 local schedule = vim.schedule
 local ns = api.nvim_create_namespace("nvumi_inline")
 
+local variables = require("nvumi.variables")
+
 local function render_inline(buf, line_index, result)
   api.nvim_buf_set_extmark(buf, ns, line_index, 0, {
     virt_text = { { " = " .. result, "Comment" } },
@@ -27,6 +29,29 @@ local function render_result(buf, line_index, data, config)
   end
 end
 
+local function process_line(line, buf, line_index, config)
+  local var, expr = line:match("^%s*([%a_][%w_]*)%s*=%s*(.+)$")
+  if var and expr then
+    local substituted_expr = variables.substitute_variables(expr)
+    fn.jobstart({ "numi-cli", substituted_expr }, {
+      stdout_buffered = true,
+      on_stdout = function(_, data)
+        if not data or #data == 0 then
+          return
+        end
+        local result = table.concat(data, " ")
+        variables.set_variable(var, result)
+        schedule(function()
+          render_result(buf, line_index, { result }, config)
+        end)
+      end,
+    })
+    return nil
+  else
+    return variables.substitute_variables(line)
+  end
+end
+
 local function run_numi_on_buffer()
   local config = require("nvumi.config").options
   local buf = api.nvim_get_current_buf()
@@ -38,17 +63,20 @@ local function run_numi_on_buffer()
       goto continue
     end
 
-    fn.jobstart({ "numi-cli", line }, {
-      stdout_buffered = true,
-      on_stdout = function(_, data)
-        if not data or #data == 0 then
-          return
-        end
-        schedule(function()
-          render_result(buf, i - 1, data, config)
-        end)
-      end,
-    })
+    local processed_line = process_line(orig_line, buf, i - 1, config)
+    if processed_line then
+      fn.jobstart({ "numi-cli", processed_line }, {
+        stdout_buffered = true,
+        on_stdout = function(_, data)
+          if not data or #data == 0 then
+            return
+          end
+          schedule(function()
+            render_result(buf, i - 1, data, config)
+          end)
+        end,
+      })
+    end
 
     ::continue::
   end
@@ -58,6 +86,7 @@ local function reset_buffer()
   local buf = api.nvim_get_current_buf()
   api.nvim_buf_set_lines(buf, 0, -1, false, {})
   api.nvim_buf_clear_namespace(buf, ns, 0, -1)
+  variables.clear_variables()
 end
 
 function M.open()
