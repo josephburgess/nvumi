@@ -15,7 +15,11 @@
   "josephburgess/nvumi",
   dependencies = { "folke/snacks.nvim" },
   opts = {
-    virtual_text = "inline" -- or "newline"
+    virtual_text = "newline", -- or "inline"
+    keys = {
+      run = "<CR>", -- run calculations
+      reset = "<C-r>", -- reset buffer
+    },
   }
 }
 ```
