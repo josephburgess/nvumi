@@ -13,11 +13,9 @@ local function render_inline(buf, line_index, result)
 end
 
 local function render_newline(buf, line_index, result)
-  local virt_lines = {}
-  for _, txt in ipairs(vim.split(result, "\n")) do
-    table.insert(virt_lines, { { " " .. txt, "Comment" } })
-  end
-  api.nvim_buf_set_extmark(buf, ns, line_index, 0, { virt_lines = virt_lines })
+  api.nvim_buf_set_extmark(buf, ns, line_index, 0, {
+    virt_lines = { { { " " .. result, "Comment" } } },
+  })
 end
 
 local function render_result(buf, line_index, data, config)
