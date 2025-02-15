@@ -36,7 +36,7 @@ local function run_numi_on_buffer()
   api.nvim_buf_clear_namespace(buf, ns, 0, -1)
 
   for i, line in ipairs(lines) do
-    if not line:match("%S") then
+    if not line:match("%S") or line:match("^%s*%-%-") then
       goto continue
     end
 

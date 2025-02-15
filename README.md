@@ -30,7 +30,7 @@
 
 2. Type your natural language expression(s) (e.g., `20 inches in cm`) in insert mode
 
-3. Press `<CR>` (Enter) in normal mode and the buffer will attempt to evaluate all non-empty lines at once
+3. Press `<CR>` (Enter) in normal mode and the buffer will attempt to evaluate all non-empty, non-commented lines at once
 
 4. Running the command `:help nvumi` opens the manual
 
