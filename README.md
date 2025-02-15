@@ -74,6 +74,18 @@ Currently you can configure where you want the virtual text to be displayed, `in
 
 This is my first attempt at a Neovim plugin, so contributions are more than welcome! If you encounter issues or have ideas for improvements, please open an issue or submit a pull request on GitHub.
 
+## Planned Features & Roadmap
+
+A few things I'm thinking about adding as I continue trying to expand my knowledge of `lua` and plugin development:
+
+- [ ] Assigning answers to variables
+- [ ] Auto-evaluate expressions as you type
+- [ ] Yankable answers!
+- [ ] Ability to call numi/evaluate expressions anywhere (not just in the scratch buffer)
+- [ ] Fine-tuning dates, times, and unit formatting
+- [ ] Custom prefixes/suffixes for results (e.g., `=, →` etc).
+- [ ] Additional conversions not currently possible with numi (possibly live prices for currency etc)
+
 ## License
 
 MIT License. See [LICENSE](LICENSE) for details.
