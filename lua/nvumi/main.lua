@@ -63,7 +63,7 @@ local function run_numi_on_buffer()
       goto continue
     end
 
-    local processed_line = process_line(orig_line, buf, i - 1, config)
+    local processed_line = process_line(line, buf, i - 1, config)
     if processed_line then
       fn.jobstart({ "numi-cli", processed_line }, {
         stdout_buffered = true,
