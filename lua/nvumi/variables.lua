@@ -10,11 +10,19 @@ function M.get_variable(name)
   return M.variables[name]
 end
 
-function M.substitute_variables(expression)
-  for var, value in pairs(M.variables) do
-    expression = expression:gsub("%f[%a]" .. var .. "%f[%A]", value)
-  end
-  return expression
+function M.substitute_variables(expr)
+  return expr:gsub("(%a[%w_]*)", function(var)
+    local value = M.get_variable(var)
+    if value then
+      return "(" .. value .. ")"
+    else
+      return var
+    end
+  end)
+end
+
+function M.clear_variables()
+  M.variables = {}
 end
 
 -- function M.list_variables()
@@ -25,9 +33,5 @@ end
 --   print(table.concat(output, "\n"))
 -- end
 --
--- function M.clear_variables()
---   M.variables = {}
---   print("Nvumi: Cleared all stored variables.")
--- end
 
 return M
