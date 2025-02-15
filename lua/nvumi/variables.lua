@@ -25,13 +25,4 @@ function M.clear_variables()
   M.variables = {}
 end
 
--- function M.list_variables()
---   local output = {}
---   for k, v in pairs(M.variables) do
---     table.insert(output, k .. " = " .. v)
---   end
---   print(table.concat(output, "\n"))
--- end
---
-
 return M
