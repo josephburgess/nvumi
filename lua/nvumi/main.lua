@@ -63,6 +63,7 @@ local function reset_buffer()
 end
 
 function M.open()
+  local config = require("nvumi.config").options
   require("snacks.scratch").open({
     name = "Nvumi",
     ft = "nvumi",
@@ -70,8 +71,8 @@ function M.open()
     win_by_ft = {
       nvumi = {
         keys = {
-          ["source"] = { "<CR>", run_numi_on_buffer, mode = { "n", "x" }, desc = "Run Numi" },
-          ["reset"] = { "R", reset_buffer, mode = "n", desc = "Reset buffer" },
+          ["source"] = { config.keys.run, run_numi_on_buffer, mode = { "n", "x" }, desc = "Run Numi" },
+          ["reset"] = { config.keys.reset, reset_buffer, mode = "n", desc = "Reset buffer" },
         },
       },
     },

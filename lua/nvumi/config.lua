@@ -2,6 +2,10 @@ local M = {}
 
 M.options = {
   virtual_text = "newline", -- or "inline"
+  keys = {
+    run = "<CR>", -- run calculations
+    reset = "<C-r>", -- reset buffer
+  },
 }
 
 function M.setup(user_opts)

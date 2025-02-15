@@ -29,13 +29,17 @@ results are displayed:
 This is set during the plugin setup. For example, using Lazy.nvim:
 
 >lua
-    {
-        "josephburgess/nvumi",
-        dependencies = { "folke/snacks.nvim" },
-        opts = {
-            virtual_text = "inline" -- or "newline"
-        }
-    }
+  {
+    "josephburgess/nvumi",
+    dependencies = { "folke/snacks.nvim" },
+      opts = {
+	virtual_text = "inline", -- or "newline"
+	keys = {
+	  run = "<CR>", -- run calculations
+	  reset = "<C-r>", -- reset buffer
+	}
+      }
+  }
 <
 
 REQUIREMENTS
