@@ -4,7 +4,7 @@ M.options = {
   virtual_text = "newline", -- or "inline"
   keys = {
     run = "<CR>", -- run calculations
-    reset = "<C-r>", -- reset buffer
+    reset = "R", -- reset buffer
   },
 }
 
