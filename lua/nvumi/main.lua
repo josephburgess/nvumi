@@ -84,6 +84,13 @@ function M.setup()
     M.open()
   end, {})
   require("nvim-web-devicons").set_icon({ nvumi = { icon = "" } })
+
+  vim.api.nvim_create_autocmd("FileType", {
+    pattern = "nvumi",
+    callback = function()
+      vim.bo.commentstring = "-- %s"
+    end,
+  })
 end
 
 M._test = {
