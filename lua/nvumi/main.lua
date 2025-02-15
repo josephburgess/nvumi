@@ -71,8 +71,8 @@ function M.open()
     win_by_ft = {
       nvumi = {
         keys = {
-          ["source"] = { config.keybinds.run, run_numi_on_buffer, mode = { "n", "x" }, desc = "Run Numi" },
-          ["reset"] = { config.keybinds.reset, reset_buffer, mode = "n", desc = "Reset buffer" },
+          ["source"] = { config.keys.run, run_numi_on_buffer, mode = { "n", "x" }, desc = "Run Numi" },
+          ["reset"] = { config.keys.reset, reset_buffer, mode = "n", desc = "Reset buffer" },
         },
       },
     },

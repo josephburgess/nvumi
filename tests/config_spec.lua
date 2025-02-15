@@ -4,7 +4,7 @@ describe("nvumi.config", function()
   before_each(function()
     config.options = {
       virtual_text = "newline",
-      keybinds = {
+      keys = {
         run = "<CR>",
         reset = "<C-r>",
       },
@@ -20,14 +20,14 @@ describe("nvumi.config", function()
     assert.are.same("inline", config.options.virtual_text)
   end)
 
-  it("should have default keybinds", function()
-    assert.are.same("<CR>", config.options.keybinds.run)
-    assert.are.same("<C-r>", config.options.keybinds.reset)
+  it("should have default keys", function()
+    assert.are.same("<CR>", config.options.keys.run)
+    assert.are.same("<C-r>", config.options.keys.reset)
   end)
 
-  it("should override keybinds when setup is called", function()
-    config.setup({ keybinds = { run = "<Enter>", reset = "R" } })
-    assert.are.same("<Enter>", config.options.keybinds.run)
-    assert.are.same("R", config.options.keybinds.reset)
+  it("should override keys when setup is called", function()
+    config.setup({ keys = { run = "<Enter>", reset = "R" } })
+    assert.are.same("<Enter>", config.options.keys.run)
+    assert.are.same("R", config.options.keys.reset)
   end)
 end)
