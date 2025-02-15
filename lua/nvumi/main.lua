@@ -20,16 +20,29 @@ local function render_newline(buf, line_index, result)
   })
 end
 
-local function render_result(buf, line_index, data, config)
+local function render_result(buf, line_index, data, config, callback)
   local result = table.concat(data, " ")
   if config.virtual_text == "inline" then
     render_inline(buf, line_index, result)
   else
     render_newline(buf, line_index, result)
   end
+  if callback then
+    callback()
+  end
 end
 
-local function process_line(line, buf, line_index, config)
+local function process_line_queue(lines, buf, config, index)
+  if index > #lines then
+    return
+  end
+
+  local line = lines[index]
+  if not line:match("%S") or line:match("^%s*%-%-") then
+    process_line_queue(lines, buf, config, index + 1)
+    return
+  end
+
   local var, expr = line:match("^%s*([%a_][%w_]*)%s*=%s*(.+)$")
   if var and expr then
     local substituted_expr = variables.substitute_variables(expr)
@@ -37,18 +50,34 @@ local function process_line(line, buf, line_index, config)
       stdout_buffered = true,
       on_stdout = function(_, data)
         if not data or #data == 0 then
+          process_line_queue(lines, buf, config, index + 1)
           return
         end
         local result = table.concat(data, " ")
         variables.set_variable(var, result)
         schedule(function()
-          render_result(buf, line_index, { result }, config)
+          render_result(buf, index - 1, { result }, config, function()
+            process_line_queue(lines, buf, config, index + 1)
+          end)
         end)
       end,
     })
-    return nil
   else
-    return variables.substitute_variables(line)
+    local processed_line = variables.substitute_variables(line)
+    fn.jobstart({ "numi-cli", processed_line }, {
+      stdout_buffered = true,
+      on_stdout = function(_, data)
+        if not data or #data == 0 then
+          process_line_queue(lines, buf, config, index + 1)
+          return
+        end
+        schedule(function()
+          render_result(buf, index - 1, data, config, function()
+            process_line_queue(lines, buf, config, index + 1)
+          end)
+        end)
+      end,
+    })
   end
 end
 
@@ -57,29 +86,7 @@ local function run_numi_on_buffer()
   local buf = api.nvim_get_current_buf()
   local lines = api.nvim_buf_get_lines(buf, 0, -1, false)
   api.nvim_buf_clear_namespace(buf, ns, 0, -1)
-
-  for i, line in ipairs(lines) do
-    if not line:match("%S") or line:match("^%s*%-%-") then
-      goto continue
-    end
-
-    local processed_line = process_line(line, buf, i - 1, config)
-    if processed_line then
-      fn.jobstart({ "numi-cli", processed_line }, {
-        stdout_buffered = true,
-        on_stdout = function(_, data)
-          if not data or #data == 0 then
-            return
-          end
-          schedule(function()
-            render_result(buf, i - 1, data, config)
-          end)
-        end,
-      })
-    end
-
-    ::continue::
-  end
+  process_line_queue(lines, buf, config, 1)
 end
 
 local function reset_buffer()
