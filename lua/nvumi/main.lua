@@ -89,6 +89,11 @@ function M.setup()
     pattern = "nvumi",
     callback = function()
       vim.bo.commentstring = "-- %s"
+      vim.cmd("set syntax=nvumi")
+      vim.cmd([[
+      syntax clear Comment
+      syntax match Comment /^\s*--.*/
+    ]])
     end,
   })
 end
