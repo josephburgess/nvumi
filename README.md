@@ -78,30 +78,13 @@ This is my first attempt at a Neovim plugin, so contributions are more than welc
 
 A few things I'm thinking about adding as I continue trying to expand my knowledge of `lua` and plugin development:
 
-### Variables & References
-
-- [ ] Support for assigning answers to variables
-
-### Live Updates While Typing
-
+- [ ] Assigning answers to variables
 - [ ] Auto-evaluate expressions as you type
-
-### Yankable Answers
-
-- [ ] Allow users to copy results easily.
-
-### In-Line Evaluation
-
-- [ ] Call numi to evaluate expressions directly in other buffers
-
-### Custom Output Formatting
-
-- [ ] Allow for fine-tuning how dates, times, and unit conversions are displayed.
+- [ ] Yankable answers!
+- [ ] Ability to call numi/evaluate expressions anywhere (not just in the scratch buffer)
+- [ ] Fine-tuning dates, times, and unit formatting
 - [ ] Custom prefixes/suffixes for results (e.g., `=, →` etc).
-
-### External Conversions & APIs
-
-- [ ] Fetch live conversion data from external APIs for things that the numi-cli hasn't got built in yet or for up to date conversions on currencies etc
+- [ ] Additional conversions not currently possible with numi (possibly live prices for currency etc)
 
 ## License
 
