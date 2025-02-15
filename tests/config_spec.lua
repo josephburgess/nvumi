@@ -6,7 +6,7 @@ describe("nvumi.config", function()
       virtual_text = "newline",
       keys = {
         run = "<CR>",
-        reset = "<C-r>",
+        reset = "R",
       },
     }
   end)
@@ -22,12 +22,12 @@ describe("nvumi.config", function()
 
   it("should have default keys", function()
     assert.are.same("<CR>", config.options.keys.run)
-    assert.are.same("<C-r>", config.options.keys.reset)
+    assert.are.same("R", config.options.keys.reset)
   end)
 
   it("should override keys when setup is called", function()
-    config.setup({ keys = { run = "<Enter>", reset = "R" } })
+    config.setup({ keys = { run = "<Enter>", reset = "<C-r>" } })
     assert.are.same("<Enter>", config.options.keys.run)
-    assert.are.same("R", config.options.keys.reset)
+    assert.are.same("<C-r>", config.options.keys.reset)
   end)
 end)

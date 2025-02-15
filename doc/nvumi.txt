@@ -36,7 +36,7 @@ This is set during the plugin setup. For example, using Lazy.nvim:
 	virtual_text = "inline", -- or "newline"
 	keys = {
 	  run = "<CR>", -- run calculations
-	  reset = "<C-r>", -- reset buffer
+	  reset = "R", -- reset buffer
 	}
       }
   }
