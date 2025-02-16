@@ -1,0 +1,19 @@
+name: Busted
+
+on: [pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y neovim luarocks
+          luarocks install busted
+
+      - name: Run Tests
+        run: nvim --headless -u tests/minit.lua -c 'lua require("busted.runner")()' -c 'q'

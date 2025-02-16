@@ -1,0 +1,19 @@
+name: Luacheck
+
+on: [pull_request]
+
+jobs:
+  luacheck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install Luacheck
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y luarocks
+          luarocks install luacheck
+
+      - name: Run Luacheck
+        run: luacheck lua/ tests/
