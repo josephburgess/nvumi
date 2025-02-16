@@ -47,16 +47,27 @@ jobs:
     if: ${{ needs.config.outputs.has_tests == 'true' }}
     steps:
       - uses: actions/checkout@v4
+
       - name: Install Neovim
         uses: folke/github/neovim@main
+
       - name: Install Dependencies
         run: sudo apt-get update && sudo apt-get install -y luarocks
-      - name: Install Busted
-        run: luarocks install busted
+
+      - name: Set Up LuaRocks Path
+        run: |
+          echo "$(luarocks path --bin)" >> $GITHUB_PATH
+          echo "LUA_PATH='$(luarocks path --lr-path)'" >> $GITHUB_ENV
+          echo "LUA_CPATH='$(luarocks path --lr-cpath)'" >> $GITHUB_ENV
+
+      - name: Install Busted Locally
+        run: luarocks install --local busted
+
       - name: Cache Test Results
         uses: actions/cache@v4
         with:
           path: .tests
           key: ${{ runner.os }}-tests-${{ hashFiles('tests/minit.lua') }}
+
       - name: Run Tests in Neovim
         run: ./scripts/test
