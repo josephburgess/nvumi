@@ -53,6 +53,6 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .tests
-          key: ${{ runner.os }}-tests-${{ hashFiles('tests/minit.lua', 'scripts/test') }}
+          key: ${{ runner.os }}-tests-${{ hashFiles('tests/minit.lua', 'scripts/test.sh') }}
       - name: Run Tests
         run: ./scripts/test
