@@ -135,6 +135,6 @@ MIT License. See [LICENSE](LICENSE) for details.
 ## Acknowledgements
 
 - **[Snacks.nvim](https://github.com/folke/snacks.nvim):**
-  Folke needs no introduction given his super-human contributions to the community. The `lua` code runner built into the Scratch buffer inspired this idea in the first place.
+  Thanks @folke for the incredible plugin. The `lua` code runner built into the Scratch buffer inspired this idea in the first place. Thanks also also for your super-human contributions to the community in general! 
 - **[numi](https://github.com/nikolaeu/numi):**
   Thanks for providing an amazing natural language calculator.
