@@ -18,24 +18,17 @@ local function process_line(line, index, buf, opts, next_callback)
   end
 
   local var, expr = line:match("^%s*([%a_][%w_]*)%s*=%s*(.+)$")
-  --- if line is a var assignment, populate existing variables in the exp, run numi, set the new variable,
-  if var and expr then
+
+  if var and expr then -- is a variable assignment
     local substituted_expr = state.substitute_variables(expr)
     runner.run_numi(substituted_expr, function(data)
-      if not data or #data == 0 then
-        return next_callback()
-      end
       local result = table.concat(data, " ")
       state.set_variable(var, result)
       renderer.render_result(buf, index - 1, { result }, opts, next_callback)
     end)
-  --- else just substitute any var values, evaluate the expression and render answer
   else
     local substituted_line = state.substitute_variables(line)
     runner.run_numi(substituted_line, function(data)
-      if not data or #data == 0 then
-        return next_callback()
-      end
       renderer.render_result(buf, index - 1, data, opts, next_callback)
     end)
   end

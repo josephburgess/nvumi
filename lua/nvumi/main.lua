@@ -1,4 +1,3 @@
-local api = vim.api
 local config = require("nvumi.config")
 local processor = require("nvumi.processor")
 local state = require("nvumi.state")
@@ -26,7 +25,7 @@ end
 
 ---@return nil
 function M.setup()
-  api.nvim_create_user_command("Nvumi", function()
+  vim.api.nvim_create_user_command("Nvumi", function()
     M.open()
   end, {})
 
