@@ -1,5 +1,8 @@
 name: CI
-Thank you folke -
+
+# Thank you folke and apologies for pinching some of these but
+# your CI for neovim plugins is impeccably set up and re-usable
+
 on:
   pull_request:
 
