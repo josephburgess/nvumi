@@ -17,6 +17,30 @@ USAGE
       - Press <CR> (Enter) in normal mode to evaluate all non-empty lines.
       - Press <R> in normal mode to reset the buffer (clear all content).
 
+
+VARIABLE ASSIGNMENT
+-------------------
+
+nvumi now supports assigning evaluated expressions to variables. This lets you reuse previously computed values in your calculations.
+
+- To assign a variable, write a line in the form:
+
+      variable_name = expression
+
+  For example, typing:
+
+      x = 2+2
+
+  will evaluate `2+2` and store the result in `x`.
+
+- To use the stored value, simply reference the variable in another expression:
+
+      x * 3
+
+  nvumi will substitute `x` with its stored result before evaluation.
+
+- All variables are maintained for the current scratch session and are cleared when you use the `<reset>` command.
+
 CONFIGURATION
 -------------
 

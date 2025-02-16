@@ -34,6 +34,48 @@
 
 4. Running the command `:help nvumi` opens the manual
 
+## Variable Assignment
+
+nvumi now supports variable assignment, allowing you to store specific numbers, or evaluated results and reuse them in later calculations.
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/ea3c06ed-2555-45b3-85bb-89e4834f9d97" alt="Variable Assignment Screenshot" width="800" />
+</p>
+
+**How It Works:**
+
+- **Assigning a Variable:**
+  In your scratch buffer, type an assignment in the format:
+
+  ```text
+  variable_name = expression
+  ```
+
+  You can assign a variable either to a numerical value or to an evaluated expression, for example:
+
+  ```text
+  x = 20 inches in cm
+  y = 5000
+  ```
+
+  In the first example, nvumi evaluates the expression (`20 inches in cm`) and stores its result in the variable `x`.
+  In the second, `y` simply holds the number `5000` without any further evaluation.
+
+- **Using Variables in Expressions:**
+  Once assigned, you can reference variables in other calculations:
+
+  ```text
+  x * y
+  x + 5
+  y meters in kilometers
+  ```
+
+  nvumi will substitute the variable with its stored value before evaluation.
+
+- **Resetting Variables:**
+  Using the `<reset>` command clears both the buffer and all stored variables.
+
+💡 _Tip:_ Variable names must start with a letter or underscore, followed by letters, numbers, or underscores.
+
 ## Configuration
 
 Currently you can configure where you want the virtual text to be displayed, `inline` or `newline`:
@@ -78,7 +120,7 @@ This is my first attempt at a Neovim plugin, so contributions are more than welc
 
 A few things I'm thinking about adding as I continue trying to expand my knowledge of `lua` and plugin development:
 
-- [ ] Assigning answers to variables
+- [x] Assigning answers to variables
 - [ ] Auto-evaluate expressions as you type
 - [ ] Yankable answers!
 - [ ] Ability to call numi/evaluate expressions anywhere (not just in the scratch buffer)

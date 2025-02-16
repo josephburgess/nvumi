@@ -1,3 +1,4 @@
+local assert = require("luassert")
 local config = require("nvumi.config")
 
 describe("nvumi.config", function()
