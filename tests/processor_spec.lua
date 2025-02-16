@@ -1,22 +1,20 @@
 local api = vim.api
+local assert = require("luassert")
 local config = require("nvumi.config")
 local processor = require("nvumi.processor")
 local variables = require("nvumi.variables")
 
 describe("nvumi.processor", function()
-  local original_jobstart
+  local old_jstart
   local test_buf
 
   before_each(function()
     variables.clear_variables()
-    config.setup({
-      virtual_text = "inline",
-      keys = { run = "<CR>", reset = "R" },
-    })
+    config.setup({ virtual_text = "inline", keys = { run = "<CR>", reset = "R" } })
     test_buf = api.nvim_create_buf(false, true)
     api.nvim_set_current_buf(test_buf)
+    old_jstart = vim.fn.jobstart
 
-    original_jobstart = vim.fn.jobstart
     vim.fn.jobstart = function(args, opts)
       if args[2] then
         if args[2] == "3+3" then
@@ -30,7 +28,7 @@ describe("nvumi.processor", function()
   end)
 
   after_each(function()
-    vim.fn.jobstart = original_jobstart
+    vim.fn.jobstart = old_jstart
     if api.nvim_buf_is_valid(test_buf) then
       api.nvim_buf_delete(test_buf, { force = true })
     end

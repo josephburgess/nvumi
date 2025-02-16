@@ -1,9 +1,12 @@
+local assert = require("luassert")
 local runner = require("nvumi.runner")
 
 describe("nvumi.runner", function()
   it("run_numi should invoke the callback with simulated output", function()
-    local original_jobstart = vim.fn.jobstart
+    local old_jstart = vim.fn.jobstart
     local callback_called = false
+
+    ---@diagnostic disable-next-line: duplicate-set-field
     vim.fn.jobstart = function(args, opts)
       if opts and opts.on_stdout then
         opts.on_stdout(0, { "runner result" }, "runner result")
@@ -19,6 +22,6 @@ describe("nvumi.runner", function()
     vim.wait(50, function()
       return callback_called
     end)
-    vim.fn.jobstart = original_jobstart
+    vim.fn.jobstart = old_jstart
   end)
 end)

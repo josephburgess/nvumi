@@ -1,3 +1,4 @@
+local assert = require("luassert")
 local api = vim.api
 local renderer = require("nvumi.renderer")
 

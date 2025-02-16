@@ -1,3 +1,4 @@
+local assert = require("luassert")
 local variables = require("nvumi.variables")
 
 describe("nvumi.variables", function()

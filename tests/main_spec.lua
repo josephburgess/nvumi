@@ -1,5 +1,4 @@
-local api = vim.api
-local config = require("nvumi.config")
+local assert = require("luassert")
 local main = require("nvumi.main")
 
 describe("nvumi.main", function()
