@@ -2,6 +2,7 @@
 ---@class NvumiKeys
 ---@field run string
 ---@field reset string
+---@field yank string
 
 -- opts
 ---@class NvumiOptions
@@ -15,6 +16,7 @@ local default_options = {
   keys = {
     run = "<CR>", -- run calculations
     reset = "R", -- reset buffer
+    yank = "<C-y>", -- yank last output
   },
 }
 

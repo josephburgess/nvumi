@@ -1,6 +1,7 @@
 local api = vim.api
 local config = require("nvumi.config")
 local processor = require("nvumi.processor")
+local renderer = require("nvumi.renderer")
 local M = {}
 
 ---@return nil
@@ -16,6 +17,7 @@ function M.open()
         keys = {
           ["source"] = { opts.keys.run, processor.run_on_buffer, mode = { "n", "x" }, desc = "Run Numi" },
           ["reset"] = { opts.keys.reset, processor.reset_buffer, mode = "n", desc = "Reset buffer" },
+          ["yank"] = { opts.keys.yank, renderer.yank_last_output, mode = "n", desc = "Yank last answer" },
         },
       },
     },
