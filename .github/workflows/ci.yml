@@ -41,33 +41,18 @@ jobs:
           fi
 
   tests:
-    name: Run Tests
     runs-on: ubuntu-latest
     needs: config
-    if: ${{ needs.config.outputs.has_tests == 'true' }}
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-
-      - name: Install Neovim
-        uses: folke/github/neovim@main
-
-      - name: Install Dependencies
-        run: sudo apt-get update && sudo apt-get install -y luarocks
-
-      - name: Set Up LuaRocks Path
-        run: |
-          echo "$(luarocks path --bin)" >> $GITHUB_PATH
-          echo "LUA_PATH='$(luarocks path --lr-path)'" >> $GITHUB_ENV
-          echo "LUA_CPATH='$(luarocks path --lr-cpath)'" >> $GITHUB_ENV
-
-      - name: Install Busted Locally
-        run: luarocks install --local busted
-
-      - name: Cache Test Results
+      - uses: folke/github/neovim@main
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y libreadline-dev
+      - name: Test Cache
         uses: actions/cache@v4
         with:
           path: .tests
-          key: ${{ runner.os }}-tests-${{ hashFiles('tests/minit.lua') }}
-
-      - name: Run Tests in Neovim
+          key: ${{ runner.os }}-tests-${{ hashFiles('tests/minit.lua', 'scripts/test') }}
+      - name: Run Tests
         run: ./scripts/test
