@@ -22,4 +22,47 @@ describe("nvumi.state", function()
     state.clear_state()
     assert.is_nil(state.get_variable("temp"))
   end)
+
+  describe("state - output and yanking", function()
+    local original_notify
+
+    before_each(function()
+      original_notify = vim.notify
+      vim.notify = function(msg, level)
+        _G._TEST_YANK_NOTIFY_MESSAGE = msg
+        _G._TEST_YANK_NOTIFY_LEVEL = level
+      end
+    end)
+
+    after_each(function()
+      vim.notify = original_notify
+      _G._TEST_YANK_NOTIFY_MESSAGE = nil
+      _G._TEST_YANK_NOTIFY_LEVEL = nil
+    end)
+
+    it("store update and give last output", function()
+      state.store_output(1, "Answer")
+      assert.are.same("Answer", state.get_last_output())
+      assert.are.same("Answer", state.outputs[1])
+    end)
+
+    it("yanks last output to clipboard", function()
+      state.store_output(2, "Result")
+      state.yank_last_output()
+
+      local clipboard = vim.fn.getreg("+")
+      assert.are.same("Result", clipboard)
+
+      assert.are.same("Yanked: Result", _G._TEST_YANK_NOTIFY_MESSAGE)
+      assert.are.same(vim.log.levels.INFO, _G._TEST_YANK_NOTIFY_LEVEL)
+    end)
+
+    it("notify error when nothing to yank", function()
+      state.clear_state()
+      state.yank_last_output()
+
+      assert.are.same("No output available to yank", _G._TEST_YANK_NOTIFY_MESSAGE)
+      assert.are.same(vim.log.levels.ERROR, _G._TEST_YANK_NOTIFY_LEVEL)
+    end)
+  end)
 end)

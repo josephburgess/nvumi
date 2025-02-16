@@ -49,10 +49,10 @@ end
 function M.yank_last_output()
   local last = M.get_last_output()
   if last then
-    vim.fn.setreg("+", last) -- Yank to system clipboard
-    api.nvim_echo({ { "Yanked: " .. last, "None" } }, false, {})
+    vim.fn.setreg("+", last)
+    vim.notify("Yanked: " .. last, vim.log.levels.INFO)
   else
-    api.nvim_echo({ { "No output available to yank", "ErrorMsg" } }, false, {})
+    vim.notify("No output available to yank", vim.log.levels.ERROR)
   end
 end
 return M

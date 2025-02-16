@@ -16,7 +16,7 @@ local default_options = {
   keys = {
     run = "<CR>", -- run calculations
     reset = "R", -- reset buffer
-    yank = "<C-y>", -- yank last output
+    yank = "<leader>y", -- yank last output
   },
 }
 
