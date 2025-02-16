@@ -14,7 +14,6 @@ describe("nvumi.variables", function()
   it("substitute_variables should replace variable names with their values", function()
     variables.set_variable("var", "100")
     local result = variables.substitute_variables("2*var+1")
-    -- Expected: "2*(100)+1"
     assert.are.same("2*(100)+1", result)
   end)
 

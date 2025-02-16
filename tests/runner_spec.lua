@@ -10,6 +10,7 @@ describe("nvumi.runner", function()
     vim.fn.jobstart = function(args, opts)
       if opts and opts.on_stdout then
         opts.on_stdout(0, { "runner result" }, "runner result")
+        callback_called = true
       end
       return 1
     end
@@ -19,9 +20,10 @@ describe("nvumi.runner", function()
       assert.are.same({ "runner result" }, data)
     end)
 
-    vim.wait(50, function()
+    local success = vim.wait(500, function()
       return callback_called
-    end)
+    end, 10)
+    assert.is_true(success, "callback not called")
     vim.fn.jobstart = old_jstart
   end)
 end)
