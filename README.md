@@ -37,6 +37,9 @@
 ## Variable Assignment
 
 nvumi now supports variable assignment, allowing you to store specific numbers, or evaluated results and reuse them in later calculations.
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/ea3c06ed-2555-45b3-85bb-89e4834f9d97" alt="Variable Assignment Screenshot" width="800" />
+</p>
 
 **How It Works:**
 
@@ -117,7 +120,7 @@ This is my first attempt at a Neovim plugin, so contributions are more than welc
 
 A few things I'm thinking about adding as I continue trying to expand my knowledge of `lua` and plugin development:
 
-- [ ] Assigning answers to variables
+- [x] Assigning answers to variables
 - [ ] Auto-evaluate expressions as you type
 - [ ] Yankable answers!
 - [ ] Ability to call numi/evaluate expressions anywhere (not just in the scratch buffer)
