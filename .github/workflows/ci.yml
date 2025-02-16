@@ -1,22 +1,14 @@
-name: CI
-
+name: Lint & Test
 # Thank you folke and apologies for pinching some of these but
 # your CI for neovim plugins is impeccably set up and re-usable
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
 
 jobs:
-  config:
-    name: Repo Config
-    runs-on: ubuntu-latest
-    outputs:
-      has_tests: ${{ steps.tests.outputs.has_tests }}
-    steps:
-      - uses: actions/checkout@v4
-      - id: tests
-        run: echo "has_tests=${{ hashFiles('tests/minit.lua') != '' }}" >> "$GITHUB_OUTPUT"
-
   stylua:
     name: Stylua Formatting
     runs-on: ubuntu-latest
