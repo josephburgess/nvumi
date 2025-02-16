@@ -3,8 +3,10 @@ local config = require("nvumi.config")
 local processor = require("nvumi.processor")
 local M = {}
 
+---@return nil
 function M.open()
   local opts = config.options
+  ---@diagnostic disable-next-line: missing-fields
   require("snacks.scratch").open({
     name = "Nvumi",
     ft = "nvumi",
@@ -20,6 +22,7 @@ function M.open()
   })
 end
 
+---@return nil
 function M.setup()
   api.nvim_create_user_command("Nvumi", function()
     M.open()
