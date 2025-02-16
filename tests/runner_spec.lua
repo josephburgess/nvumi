@@ -7,7 +7,7 @@ describe("nvumi.runner", function()
     local callback_called = false
 
     ---@diagnostic disable-next-line: duplicate-set-field
-    vim.fn.jobstart = function(args, opts)
+    vim.fn.jobstart = function(_, opts)
       if opts and opts.on_stdout then
         opts.on_stdout(0, { "runner result" }, "runner result")
         callback_called = true
