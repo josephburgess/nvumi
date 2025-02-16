@@ -1,0 +1,25 @@
+local assert = require("luassert")
+local state = require("nvumi.state")
+
+describe("nvumi.state", function()
+  before_each(function()
+    state.clear_state()
+  end)
+
+  it("should set and get a variable", function()
+    state.set_variable("a", "42")
+    assert.are.same("42", state.get_variable("a"))
+  end)
+
+  it("substitute_variables should replace variable names with their values", function()
+    state.set_variable("var", "100")
+    local result = state.substitute_variables("2*var+1")
+    assert.are.same("2*(100)+1", result)
+  end)
+
+  it("clear_state should remove all state", function()
+    state.set_variable("temp", "xyz")
+    state.clear_state()
+    assert.is_nil(state.get_variable("temp"))
+  end)
+end)

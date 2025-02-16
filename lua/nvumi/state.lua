@@ -1,3 +1,4 @@
+local api = vim.api
 local M = {}
 
 ---@type table<string, string>
@@ -5,8 +6,6 @@ M.variables = {} -- store for key/val pairs of variables
 
 ---@type table<string, string>
 M.outputs = {} -- store for key/val pairs of answers
-
---- VARIABLES ---
 
 ---@param name string
 ---@param value string
@@ -32,8 +31,6 @@ end
 
 --- OUTPUTS ---
 
----@param line_index number   index of evaluated line
----@param output string       result string
 function M.store_output(line_index, output)
   M.outputs[line_index] = output
   M.last_output = output
@@ -49,4 +46,13 @@ function M.clear_state()
   M.last_output = nil
 end
 
+function M.yank_last_output()
+  local last = M.get_last_output()
+  if last then
+    vim.fn.setreg("+", last) -- Yank to system clipboard
+    api.nvim_echo({ { "Yanked: " .. last, "None" } }, false, {})
+  else
+    api.nvim_echo({ { "No output available to yank", "ErrorMsg" } }, false, {})
+  end
+end
 return M
