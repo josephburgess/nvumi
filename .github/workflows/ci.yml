@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  config:
+    name: Repo Config
+    runs-on: ubuntu-latest
+    outputs:
+      has_tests: ${{ steps.tests.outputs.has_tests }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: tests
+        run: echo "has_tests=${{ hashFiles('tests/minit.lua') != '' }}" >> "$GITHUB_OUTPUT"
+
+  stylua:
+    name: Stylua Formatting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: JohnnyMorganz/stylua-action@v4
+        with:
+          version: latest
+          args: --check lua
+
+  debug:
+    name: Check for Debug Statements
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check Debug
+        run: |
+          if /bin/grep --line-number -r -P '^(?!\s*--).*\bdd\(' --color=always lua; then
+            echo "Debug messages found"
+            exit 1
+          else
+            echo "No debug messages found"
+          fi
+
+  tests:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    needs: config
+    if: ${{ needs.config.outputs.has_tests == 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Neovim
+        uses: folke/github/neovim@main
+      - name: Install Dependencies
+        run: sudo apt-get update && sudo apt-get install -y luarocks
+      - name: Install Busted
+        run: luarocks install busted
+      - name: Cache Test Results
+        uses: actions/cache@v4
+        with:
+          path: .tests
+          key: ${{ runner.os }}-tests-${{ hashFiles('tests/minit.lua') }}
+      - name: Run Tests in Neovim
+        run: ./scripts/test
