@@ -1,5 +1,5 @@
 name: CI
-
+Thank you folke -
 on:
   pull_request:
 
@@ -24,6 +24,14 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           version: latest
           args: --check lua
+
+  luacheck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Luacheck linter
+        uses: lunarmodules/luacheck@v1
 
   debug:
     name: Check for Debug Statements
