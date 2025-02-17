@@ -7,7 +7,7 @@ local M = {}
 ---@param result string       answer string
 function M.render_inline(ctx, line_index, result)
   vim.api.nvim_buf_set_extmark(ctx.buf, ns, line_index, 0, {
-    virt_text = { { ctx.config.prefix .. result, "Comment" } },
+    virt_text = { { ctx.opts.prefix .. result, "Comment" } },
     virt_text_pos = "eol",
   })
 end
@@ -23,10 +23,9 @@ end
 
 ---@param ctx table           context
 ---@param line_index number   line index (0idx)
----@param data string[]       array of strings representing result
+---@param result string       evaluation result
 ---@param callback? fun()     callback to run once finished rendering (if there's still more lines to process)
-function M.render_result(ctx, line_index, data, callback)
-  local result = table.concat(data, " ")
+function M.render_result(ctx, line_index, result, callback)
   state.store_output(line_index, result)
 
   if ctx.opts.virtual_text == "inline" then
