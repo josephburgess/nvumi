@@ -8,6 +8,7 @@
 
 ---@class nvumi.Options
 ---@field virtual_text string
+---@field prefix string
 ---@field keys nvumi.Keys
 
 local M = {}
@@ -15,6 +16,7 @@ local M = {}
 ---@type nvumi.Options
 local defaults = {
   virtual_text = "newline",
+  prefix = "= ",
   keys = {
     run = "<CR>",
     reset = "R",

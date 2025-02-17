@@ -5,12 +5,11 @@ local state = require("nvumi.state")
 
 local M = {}
 
----@param line string          line content
----@param index number         line number
----@param buf number           buffer number
----@param opts table           user config
----@param next_callback fun()  next function to call when done
-local function process_line(line, index, buf, opts, next_callback)
+---@param ctx table             context
+---@param line string           line content
+---@param index number          line number
+---@param next_callback fun()   next function to call when done
+local function process_line(ctx, line, index, next_callback)
   --- if empty or comment, bail
   if not line:match("%S") or line:match("^%s*%-%-") then
     return next_callback()
@@ -23,36 +22,38 @@ local function process_line(line, index, buf, opts, next_callback)
     runner.run_numi(substituted_expr, function(data)
       local result = table.concat(data, " ")
       state.set_variable(var, result)
-      renderer.render_result(buf, index - 1, { result }, opts, next_callback)
+      renderer.render_result(ctx, index - 1, { result })
     end)
   else
     local substituted_line = state.substitute_variables(line)
     runner.run_numi(substituted_line, function(data)
-      renderer.render_result(buf, index - 1, data, opts, next_callback)
+      renderer.render_result(ctx, index - 1, data, next_callback)
     end)
   end
 end
 
----@param lines string[]   lines from the buffer
----@param buf number       buffer number
----@param opts table       user config
----@param index number     line index
-local function process_lines(lines, buf, opts, index)
+---@param ctx table         context
+---@param lines string[]    lines from the buffer
+---@param index number      line index
+local function process_lines(ctx, lines, index)
   if index > #lines then
     return
   end
-  process_line(lines[index], index, buf, opts, function()
-    process_lines(lines, buf, opts, index + 1)
+  process_line(ctx, lines[index], index, function()
+    process_lines(ctx, lines, index + 1)
   end)
 end
 
 ---@return nil
 function M.run_on_buffer()
-  local buf = vim.api.nvim_get_current_buf()
-  local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
-  local ns = vim.api.nvim_create_namespace("nvumi_inline")
-  vim.api.nvim_buf_clear_namespace(buf, ns, 0, -1)
-  process_lines(lines, buf, config.options, 1)
+  local ctx = {
+    buf = vim.api.nvim_get_current_buf(),
+    ns = vim.api.nvim_create_namespace("nvumi_inline"),
+    opts = config.options,
+  }
+  local lines = vim.api.nvim_buf_get_lines(ctx.buf, 0, -1, false)
+  vim.api.nvim_buf_clear_namespace(ctx.buf, ctx.ns, 0, -1)
+  process_lines(ctx, lines, 1)
 end
 
 ---@return nil
