@@ -1,27 +1,30 @@
--- keybinds
----@class NvumiKeys
+---@class nvumi
+---@field meta table
+
+---@class nvumi.Keys
 ---@field run string
 ---@field reset string
+---@field yank string
 
--- opts
----@class NvumiOptions
+---@class nvumi.Options
 ---@field virtual_text string
----@field keys NvumiKeys
+---@field keys nvumi.Keys
 
 local M = {}
 
-local default_options = {
-  virtual_text = "newline", -- or "inline"
+---@type nvumi.Options
+local defaults = {
+  virtual_text = "newline",
   keys = {
-    run = "<CR>", -- run calculations
-    reset = "R", -- reset buffer
+    run = "<CR>",
+    reset = "R",
+    yank = "<leader>y",
   },
 }
 
----@type NvumiOptions
-M.options = default_options
+M.options = defaults
 
----@param user_opts? NvumiOptions
+---@param user_opts? nvumi.Options
 function M.setup(user_opts)
   M.options = vim.tbl_extend("force", M.options, user_opts or {})
 end
