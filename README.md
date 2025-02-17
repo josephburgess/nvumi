@@ -19,6 +19,7 @@
     keys = {
       run = "<CR>", -- run calculations
       reset = "R", -- reset buffer
+      yank = "<leader>y", -- yank last output
     },
   }
 }
@@ -37,6 +38,7 @@
 ## Variable Assignment
 
 nvumi now supports variable assignment, allowing you to store specific numbers, or evaluated results and reuse them in later calculations.
+
 <p align="center">
   <img src="https://github.com/user-attachments/assets/ea3c06ed-2555-45b3-85bb-89e4834f9d97" alt="Variable Assignment Screenshot" width="800" />
 </p>
@@ -75,6 +77,12 @@ nvumi now supports variable assignment, allowing you to store specific numbers, 
   Using the `<reset>` command clears both the buffer and all stored variables.
 
 💡 _Tip:_ Variable names must start with a letter or underscore, followed by letters, numbers, or underscores.
+
+### **Yank output**
+
+More features! You can yank the last evaluated result to your system clipboard using:
+
+- Default keybind: **`<leader>y`**
 
 ## Configuration
 
@@ -135,6 +143,6 @@ MIT License. See [LICENSE](LICENSE) for details.
 ## Acknowledgements
 
 - **[Snacks.nvim](https://github.com/folke/snacks.nvim):**
-  Thanks @folke for the incredible plugin. The `lua` code runner built into the Scratch buffer inspired this idea in the first place. Thanks also also for your super-human contributions to the community in general! 
+  Thanks @folke for the incredible plugin. The `lua` code runner built into the Scratch buffer inspired this idea in the first place. Thanks also also for your super-human contributions to the community in general!
 - **[numi](https://github.com/nikolaeu/numi):**
   Thanks for providing an amazing natural language calculator.

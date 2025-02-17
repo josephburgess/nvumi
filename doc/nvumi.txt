@@ -41,14 +41,26 @@ nvumi now supports assigning evaluated expressions to variables. This lets you r
 
 - All variables are maintained for the current scratch session and are cleared when you use the `<reset>` command.
 
+YANKING RESULTS
+---------------
+
+nvumi allows you to copy the last evaluated result to the system clipboard.
+
+- Press `<leader>y` in normal mode to yank the last output.
+
 CONFIGURATION
 -------------
 
-nvumi currently has one configuration option which determines where the calculated
-results are displayed:
+nvumi currently supports the following configuration options:
 
     `virtual_text = "inline"`  -- Display results at the end of the current line.
     `virtual_text = "newline"` -- Display results on a new line below each expression.
+
+Keybinds:
+
+    `keys.run`   -- Runs the calculations. Default: `<CR>`
+    `keys.reset` -- Resets (clears) the buffer. Default: `R`
+    `keys.yank`  -- Yanks the last evaluated result to the clipboard. Default: `<leader>y`
 
 This is set during the plugin setup. For example, using Lazy.nvim:
 
@@ -61,6 +73,7 @@ This is set during the plugin setup. For example, using Lazy.nvim:
 	keys = {
 	  run = "<CR>", -- run calculations
 	  reset = "R", -- reset buffer
+	  yank = "<leader>y", -- yank last output
 	}
       }
   }
