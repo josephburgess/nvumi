@@ -47,14 +47,26 @@ describe("nvumi.state", function()
     end)
 
     it("yanks last output to clipboard", function()
+      local original_getreg = vim.fn.getreg
+      local original_setreg = vim.fn.setreg
+
+      local mock_clipboard = ""
+      vim.fn.getreg = function(_)
+        return mock_clipboard
+      end
+      vim.fn.setreg = function(_, value)
+        mock_clipboard = value
+      end
+
       state.store_output(2, "Result")
       state.yank_last_output()
 
-      local clipboard = vim.fn.getreg("+")
-      assert.are.same("Result", clipboard)
-
+      assert.are.same("Result", mock_clipboard)
       assert.are.same("Yanked: Result", _G._TEST_YANK_NOTIFY_MESSAGE)
       assert.are.same(vim.log.levels.INFO, _G._TEST_YANK_NOTIFY_LEVEL)
+
+      vim.fn.getreg = original_getreg
+      vim.fn.setreg = original_setreg
     end)
 
     it("notify error when nothing to yank", function()
