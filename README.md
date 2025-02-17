@@ -129,8 +129,9 @@ This is my first attempt at a Neovim plugin, so contributions are more than welc
 A few things I'm thinking about adding as I continue trying to expand my knowledge of `lua` and plugin development:
 
 - [x] Assigning answers to variables
+- [x] Yankable answers!
+  - [ ] Make all evaluations yankable (currently only last output is yankable)
 - [ ] Auto-evaluate expressions as you type
-- [ ] Yankable answers!
 - [ ] Ability to call numi/evaluate expressions anywhere (not just in the scratch buffer)
 - [ ] Fine-tuning dates, times, and unit formatting
 - [ ] Custom prefixes/suffixes for results (e.g., `=, →` etc).
