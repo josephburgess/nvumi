@@ -3,7 +3,7 @@
 **nvumi** is a Neovim plugin that integrates the [numi](https://github.com/nikolaeu/numi) natural language calculator with [Snacks.nvim's](https://github.com/folke/snacks.nvim/blob/main/docs/scratch.md) scratch buffer. It lets you type out natural language expressions and see the results inline.
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/d330a0f8-ccb5-44f3-b1b9-a2775dda72e5" alt="Gif" />
+  <img src="https://github.com/user-attachments/assets/5c139292-72a6-4c1b-801f-a91a56c026de" alt="Gif" />
 </p>
 
 ## Installation
@@ -129,8 +129,9 @@ This is my first attempt at a Neovim plugin, so contributions are more than welc
 A few things I'm thinking about adding as I continue trying to expand my knowledge of `lua` and plugin development:
 
 - [x] Assigning answers to variables
+- [x] Yankable answers!
+  - [ ] Make all evaluations yankable (currently only last output is yankable)
 - [ ] Auto-evaluate expressions as you type
-- [ ] Yankable answers!
 - [ ] Ability to call numi/evaluate expressions anywhere (not just in the scratch buffer)
 - [ ] Fine-tuning dates, times, and unit formatting
 - [ ] Custom prefixes/suffixes for results (e.g., `=, →` etc).
