@@ -1,6 +1,7 @@
 local config = require("nvumi.config")
 local processor = require("nvumi.processor")
 local state = require("nvumi.state")
+local debounce = require("nvumi.debounce").debounce
 local M = {}
 
 ---@return nil
@@ -40,6 +41,21 @@ function M.setup()
         syntax clear Comment
         syntax match Comment /^\s*--.*/
       ]])
+    end,
+  })
+
+  vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
+    pattern = "*.nvumi",
+    callback = function()
+      processor.run_on_buffer()
+    end,
+  })
+
+  local debounced_eval = debounce(300, require("nvumi.processor").run_on_line)
+  vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
+    pattern = "*.nvumi",
+    callback = function()
+      debounced_eval()
     end,
   })
 end
