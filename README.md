@@ -18,7 +18,7 @@
     virtual_text = "newline", -- or "inline"
     prefix = "= ", -- prefix shown before the virtual text output
     keys = {
-      run = "<CR>", -- run calculations
+      run = "<CR>", -- run/refresh calculations
       reset = "R", -- reset buffer
       yank = "<leader>y", -- yank last output
     },
@@ -32,9 +32,11 @@
 
 2. Type your natural language expression(s) (e.g., `20 inches in cm`) in insert mode
 
-3. Press `<CR>` (Enter) in normal mode and the buffer will attempt to evaluate all non-empty, non-commented lines at once
+3. The answer(s) to your expressions will render in the buffer.
 
-4. Pressing `<leader>y` will yank the latest evaluation to the clipboard
+4. Press `<CR>` (Enter) in normal mode and the buffer will re-run all calculations/refresh. Useful if using lots of variables/complicated logic to have a clean slate.
+
+5. Pressing `<leader>y` will yank the latest evaluation to the clipboard
 
 ## Variable Assignment
 
@@ -131,9 +133,9 @@ A few things I'm thinking about adding as I continue trying to expand my knowled
 
 - [x] Assigning answers to variables
 - [x] Custom prefixes/suffixes for results (e.g., `=` `→` 🚀 etc).
+- [x] Auto-evaluate expressions as you type without need to press `<CR>`
 - [x] Yankable answers!
   - [ ] Stretch: make possible for all evaluations (currently only last output is yankable)
-- [ ] Auto-evaluate expressions as you type without need to press `<CR>`
 - [ ] Ability to call numi/evaluate expressions on a line in _any_ buffer on demand
 - [ ] Fine-tuning dates, times, and unit formatting
 - [ ] Additional conversions not currently possible with numi (possibly live prices for currency etc)

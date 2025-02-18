@@ -14,8 +14,10 @@ USAGE
     This command opens a scratch buffer where you can enter your
     calculations. In the scratch buffer:
 
-      - Press <CR> (Enter) in normal mode to evaluate all non-empty lines.
-      - Press <R> in normal mode to reset the buffer (clear all content).
+      - Expressions are automatically evaluated as you type.
+      - Press `<CR>` (Enter) in normal mode to re-evaluate/refresh all non-empty lines.
+      - Press `<R>` in normal mode to reset the buffer (clear all content).
+      - Press `<leader>y` in normal mode to reset the buffer (clear all content).
 
 
 VARIABLE ASSIGNMENT
@@ -41,12 +43,6 @@ nvumi now supports assigning evaluated expressions to variables. This lets you r
 
 - All variables are maintained for the current scratch session and are cleared when you use the `<reset>` command.
 
-YANKING RESULTS
----------------
-
-nvumi allows you to copy the last evaluated result to the system clipboard.
-
-- Press `<leader>y` in normal mode to yank the last output.
 
 CONFIGURATION
 -------------
@@ -72,7 +68,7 @@ This is set during the plugin setup. For example, using Lazy.nvim:
 	virtual_text = "inline", -- or "newline"
 	prefix = "= ", -- prefix shown before the virtual text output
 	keys = {
-	  run = "<CR>", -- run calculations
+	  run = "<CR>", -- run all calculations
 	  reset = "R", -- reset buffer
 	  yank = "<leader>y", -- yank last output
 	}
@@ -102,9 +98,6 @@ Type natural language expressions such as:
     50 times 2
     25 GBP to EUR
     today + 8 weeks
-
-and press <CR> to see the evaluated result. If configured as "inline", the result
-will be appended to the line; if "newline", it will appear on a separate line.
 
 See the numi-cli documentation for more about the expressions which are possible to evaluate.
 
