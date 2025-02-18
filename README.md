@@ -16,6 +16,7 @@
   dependencies = { "folke/snacks.nvim" },
   opts = {
     virtual_text = "newline", -- or "inline"
+    prefix = "= ", -- prefix shown before the virtual text output
     keys = {
       run = "<CR>", -- run calculations
       reset = "R", -- reset buffer
@@ -32,8 +33,6 @@
 2. Type your natural language expression(s) (e.g., `20 inches in cm`) in insert mode
 
 3. Press `<CR>` (Enter) in normal mode and the buffer will attempt to evaluate all non-empty, non-commented lines at once
-
-4. Running the command `:help nvumi` opens the manual
 
 ## Variable Assignment
 

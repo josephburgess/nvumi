@@ -15,8 +15,8 @@ function M.open()
       nvumi = {
         keys = {
           ["source"] = { opts.keys.run, processor.run_on_buffer, mode = { "n", "x" }, desc = "Run Numi" },
-          ["reset"] = { opts.keys.reset, processor.reset_buffer, mode = "n", desc = "Reset buffer" },
-          ["yank"] = { opts.keys.yank, state.yank_last_output, mode = "n", desc = "Yank last answer" },
+          ["reset"] = { opts.keys.reset, processor.reset_buffer, mode = "n", desc = "Reset Buffer" },
+          ["yank"] = { opts.keys.yank, state.yank_last_output, mode = "n", desc = "Yank Last" },
         },
       },
     },
