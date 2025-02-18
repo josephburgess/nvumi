@@ -18,7 +18,7 @@ local function process_line(ctx, line, index, next_callback)
   local var, expr = line:match("^%s*([%a_][%w_]*)%s*=%s*(.+)$")
   local prepared_line = state.substitute_variables(var and expr or line)
   runner.run_numi(prepared_line, function(data)
-    local result = table.concat(data, " ")
+    local result = data[1]
 
     if var then -- is a variable assignment
       state.set_variable(var, result)
