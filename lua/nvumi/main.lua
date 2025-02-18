@@ -45,7 +45,7 @@ function M.setup()
   })
 
   -- re-eval when leaving insert mode
-  local debounced_rob = debounce(1000, actions.run_on_buffer)
+  local debounced_rob = debounce(500, actions.run_on_buffer)
   vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
     pattern = "*.nvumi",
     callback = function()
@@ -54,7 +54,7 @@ function M.setup()
   })
 
   -- live evaluations while typing
-  local debounced_rol = debounce(500, actions.run_on_line)
+  local debounced_rol = debounce(300, actions.run_on_line)
   vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
     pattern = "*.nvumi",
     callback = function()
