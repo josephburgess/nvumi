@@ -53,8 +53,8 @@ CONFIGURATION
 
 nvumi currently supports the following configuration options:
 
-    `virtual_text = "inline"`  -- Display results at the end of the current line.
-    `virtual_text = "newline"` -- Display results on a new line below each expression.
+    `virtual_text = "inline" | "newline"`  -- Where to display the results.
+    `prefix = "= "` -- Choose the prefix shown before the virtual text
 
 Keybinds:
 
@@ -70,6 +70,7 @@ This is set during the plugin setup. For example, using Lazy.nvim:
     dependencies = { "folke/snacks.nvim" },
       opts = {
 	virtual_text = "inline", -- or "newline"
+	prefix = "= ", -- prefix shown before the virtual text output
 	keys = {
 	  run = "<CR>", -- run calculations
 	  reset = "R", -- reset buffer
