@@ -34,6 +34,8 @@
 
 3. Press `<CR>` (Enter) in normal mode and the buffer will attempt to evaluate all non-empty, non-commented lines at once
 
+4. Pressing <leader>y will yank the latest evaluation to the clipboard
+
 ## Variable Assignment
 
 nvumi now supports variable assignment, allowing you to store specific numbers, or evaluated results and reuse them in later calculations.
@@ -83,7 +85,7 @@ More features! You can yank the last evaluated result to your system clipboard u
 
 - Default keybind: **`<leader>y`**
 
-## Configuration
+## Virtual Text Locations
 
 Currently you can configure where you want the virtual text to be displayed, `inline` or `newline`:
 
@@ -128,12 +130,12 @@ This is my first attempt at a Neovim plugin, so contributions are more than welc
 A few things I'm thinking about adding as I continue trying to expand my knowledge of `lua` and plugin development:
 
 - [x] Assigning answers to variables
+- [x] Custom prefixes/suffixes for results (e.g., `=` `→` 🚀 etc).
 - [x] Yankable answers!
-  - [ ] Make all evaluations yankable (currently only last output is yankable)
-- [ ] Auto-evaluate expressions as you type
-- [ ] Ability to call numi/evaluate expressions anywhere (not just in the scratch buffer)
+  - [ ] Stretch: make possible for all evaluations (currently only last output is yankable)
+- [ ] Auto-evaluate expressions as you type without need to press `<CR>`
+- [ ] Ability to call numi/evaluate expressions on a line in _any_ buffer on demand
 - [ ] Fine-tuning dates, times, and unit formatting
-- [ ] Custom prefixes/suffixes for results (e.g., `=, →` etc).
 - [ ] Additional conversions not currently possible with numi (possibly live prices for currency etc)
 
 ## License
