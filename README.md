@@ -34,7 +34,7 @@
 
 3. Press `<CR>` (Enter) in normal mode and the buffer will attempt to evaluate all non-empty, non-commented lines at once
 
-4. Pressing <leader>y will yank the latest evaluation to the clipboard
+4. Pressing `<leader>y` will yank the latest evaluation to the clipboard
 
 ## Variable Assignment
 
