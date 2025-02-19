@@ -34,7 +34,7 @@
 
 3. The answer(s) to your expressions will render in the buffer.
 
-4. Press `<CR>` (Enter) in normal mode and the buffer will re-run all calculations/refresh. Useful if using lots of variables/complicated logic to have a clean slate.
+4. Press `<CR>` (Enter) in normal mode and the buffer will re-run all calculations/refresh. Useful if using lots of variables/complicated logic to run on a clean slate top-to-bottom.
 
 5. Pressing `<leader>y` will yank the latest evaluation to the clipboard
 
