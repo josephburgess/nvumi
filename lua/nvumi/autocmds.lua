@@ -26,7 +26,7 @@ function M.setup()
   })
 
   -- live evaluations
-  local debounced_rol = debounce(200, actions.run_on_line)
+  local debounced_rol = debounce(300, actions.run_on_line)
   vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
     pattern = "*.nvumi",
     callback = function()
