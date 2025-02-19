@@ -5,7 +5,6 @@
 ---@field run string
 ---@field reset string
 ---@field yank string
----@field open string
 
 ---@class nvumi.Options
 ---@field virtual_text string
@@ -22,7 +21,6 @@ local defaults = {
     run = "<CR>",
     reset = "R",
     yank = "<leader>y",
-    open = "<leader>on",
   },
 }
 

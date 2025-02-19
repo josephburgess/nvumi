@@ -25,17 +25,24 @@
   }
 }
 ```
+
 You will also need **[numi-cli](https://github.com/nikolaeu/numi)**. Install with:
 
-  ```bash
-  curl -sSL https://s.numi.app/cli | sh
-  ```
+```bash
+curl -sSL https://s.numi.app/cli | sh
+```
 
 or [Homebrew](https://brew.sh/) if on MacOS:
 
-  ```bash
-  brew install nikolaeu/numi/numi-cli
-  ```
+```bash
+brew install nikolaeu/numi/numi-cli
+```
+
+Nvumi does not have a default keybinding to open the buffer out of the box! To create one add something like the below to your config:
+
+```lua
+vim.keymap.set("n", "<leader>on", "<CMD>Nvumi<CR>", { desc = "[O]pen [N]vumi" })
+```
 
 ## Usage
 
@@ -115,7 +122,6 @@ Currently you can configure where you want the virtual text to be displayed, `in
     <img src="https://github.com/user-attachments/assets/f7222430-4cb4-4eb7-a155-477d70dc39ff" alt="Newline Screenshot" />
   </p>
 </details>
-
 
 ## Contributing
 
