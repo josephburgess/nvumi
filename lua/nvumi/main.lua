@@ -30,6 +30,8 @@ function M.setup()
     M.open()
   end, {})
 
+  vim.keymap.set("n", config.options.keys.open, M.open, { desc = "Open Nvumi" })
+
   require("nvim-web-devicons").set_icon({ nvumi = { icon = "" } })
 
   autocmds.setup()
