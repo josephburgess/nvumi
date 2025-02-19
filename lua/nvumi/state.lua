@@ -39,6 +39,10 @@ function M.get_last_output()
   return M.last_output
 end
 
+function M.get_output(line_index)
+  return M.outputs[line_index]
+end
+
 function M.clear_state()
   M.variables = {}
   M.outputs = {}
