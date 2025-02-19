@@ -1,64 +1,63 @@
-local api = vim.api
 local assert = require("luassert")
-local config = require("nvumi.config")
 local processor = require("nvumi.processor")
 local runner = require("nvumi.runner")
+local spy = require("luassert.spy")
 local state = require("nvumi.state")
 
 describe("nvumi.processor", function()
-  local old_run_numi
-  local test_buf
+  local ctx, mock_run_numi, real_run
 
   before_each(function()
+    ctx = { buf = 1, ns = 1, opts = { virtual_text = "newline", prefix = "= " } }
     state.clear_state()
-    config.setup()
-    test_buf = api.nvim_create_buf(false, true)
-    api.nvim_set_current_buf(test_buf)
-
-    old_run_numi = runner.run_numi
-
-    runner.run_numi = function(expr, callback)
-      local mocked_results = {
-        ["2+2"] = { "4" },
-        ["3+3"] = { "6" },
-        ["x+1"] = { "(6)+1" },
-        ["6"] = { "6" },
-        ["10"] = { "10" },
-      }
-      callback(mocked_results[expr] or { "ERROR" })
-    end
+    real_run = runner.run_numi
+    mock_run_numi = spy.new(function(_, callback)
+      callback({ "madvillainy" })
+    end)
+    runner.run_numi = mock_run_numi
   end)
 
   after_each(function()
-    runner.run_numi = old_run_numi
-    if api.nvim_buf_is_valid(test_buf) then
-      api.nvim_buf_delete(test_buf, { force = true })
-    end
+    runner.run_numi = real_run
   end)
 
-  it("recognizes expressions and sets extmarks", function()
-    api.nvim_buf_set_lines(test_buf, 0, -1, false, { "2+2", "x = 3+3" })
-    processor.run_on_buffer()
+  it("should ignore empty lines and not call run_numi", function()
+    local processed = false
+    processor.process_line(ctx, "", 1, function()
+      processed = true
+    end)
 
-    local ns = api.nvim_create_namespace("nvumi_inline")
-    local marks = api.nvim_buf_get_extmarks(test_buf, ns, 0, -1, {})
-
-    assert.is_true(#marks > 0)
-    assert.are.same("6", state.get_variable("x"))
+    assert.is_true(processed)
+    assert.spy(mock_run_numi).was_not_called()
   end)
 
-  it("recognizes variable substitution in expressions", function()
-    api.nvim_buf_set_lines(test_buf, 0, -1, false, { "x = 6", "x+1" })
-    processor.run_on_buffer()
-    assert.are.same("6", state.get_variable("x"))
-    assert.are.same("(6)+1", state.substitute_variables("x+1"))
+  it("should ignore commented lines and not call run_numi", function()
+    local processed = false
+    processor.process_line(ctx, "-- this is a comment", 1, function()
+      processed = true
+    end)
+
+    assert.is_true(processed)
+    assert.spy(mock_run_numi).was_not_called()
   end)
 
-  it("reset_buffer should clear the buffer and state", function()
-    api.nvim_buf_set_lines(test_buf, 0, -1, false, { "dummy line" })
-    processor.reset_buffer()
-    local lines = api.nvim_buf_get_lines(test_buf, 0, -1, false)
-    assert.are.same({ "" }, lines)
-    assert.are.same({}, state.variables)
+  it("should process a valid expression and call run_numi", function()
+    local output
+    processor.process_line(ctx, "6 * 7", 1, function()
+      output = state.get_last_output()
+    end)
+
+    assert.are.same("madvillainy", output)
+    assert.spy(mock_run_numi).was_called(1)
+  end)
+
+  it("should recognize and process variable assignment", function()
+    local output
+    processor.process_line(ctx, "x = 50 * 2", 1, function()
+      output = state.get_variable("x")
+    end)
+
+    assert.are.same("madvillainy", output)
+    assert.spy(mock_run_numi).was_called(1)
   end)
 end)

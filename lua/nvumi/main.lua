@@ -1,5 +1,6 @@
+local actions = require("nvumi.actions")
+local autocmds = require("nvumi.autocmds")
 local config = require("nvumi.config")
-local processor = require("nvumi.processor")
 local state = require("nvumi.state")
 local M = {}
 
@@ -14,8 +15,8 @@ function M.open()
     win_by_ft = {
       nvumi = {
         keys = {
-          ["source"] = { opts.keys.run, processor.run_on_buffer, mode = { "n", "x" }, desc = "Run Numi" },
-          ["reset"] = { opts.keys.reset, processor.reset_buffer, mode = "n", desc = "Reset Buffer" },
+          ["source"] = { opts.keys.run, actions.run_on_buffer, mode = { "n", "x" }, desc = "Run Numi" },
+          ["reset"] = { opts.keys.reset, actions.reset_buffer, mode = "n", desc = "Reset Buffer" },
           ["yank"] = { opts.keys.yank, state.yank_last_output, mode = "n", desc = "Yank Last" },
         },
       },
@@ -31,17 +32,7 @@ function M.setup()
 
   require("nvim-web-devicons").set_icon({ nvumi = { icon = "" } })
 
-  vim.api.nvim_create_autocmd("FileType", {
-    pattern = "nvumi",
-    callback = function()
-      vim.bo.commentstring = "-- %s"
-      vim.cmd("set syntax=nvumi")
-      vim.cmd([[
-        syntax clear Comment
-        syntax match Comment /^\s*--.*/
-      ]])
-    end,
-  })
+  autocmds.setup()
 end
 
 return M
