@@ -25,6 +25,17 @@
   }
 }
 ```
+You will also need **[numi-cli](https://github.com/nikolaeu/numi)**. Install with:
+
+  ```bash
+  curl -sSL https://s.numi.app/cli | sh
+  ```
+
+or [Homebrew](https://brew.sh/) if on MacOS:
+
+  ```bash
+  brew install nikolaeu/numi/numi-cli
+  ```
 
 ## Usage
 
@@ -105,23 +116,6 @@ Currently you can configure where you want the virtual text to be displayed, `in
   </p>
 </details>
 
-## Requirements
-
-- **[numi-cli](https://github.com/nikolaeu/numi):**
-  Install it using:
-
-  ```bash
-  curl -sSL https://s.numi.app/cli | sh
-  ```
-
-  Or with [Homebrew](https://brew.sh/):
-
-  ```bash
-  brew install nikolaeu/numi/numi-cli
-  ```
-
-- **[folke/snacks.nvim](https://github.com/folke/snacks.nvim):**
-  Used to create the scratch buffer
 
 ## Contributing
 
