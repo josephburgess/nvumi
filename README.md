@@ -16,7 +16,8 @@
   dependencies = { "folke/snacks.nvim" },
   opts = {
     virtual_text = "newline", -- or "inline"
-    prefix = "= ", -- prefix shown before the virtual text output
+    prefix = " 🚀 ", -- prefix shown before the output
+    date_format = "iso" -- or: "uk", "us", "long"
     keys = {
       run = "<CR>", -- run/refresh calculations
       reset = "R", -- reset buffer
@@ -123,6 +124,17 @@ Currently you can configure where you want the virtual text to be displayed, `in
   </p>
 </details>
 
+## Date formatting
+
+If you care about how your dates are formatted, that is configurable!
+
+| **`date_format`** | **Output**          |
+| ----------------- | ------------------- |
+| `"iso"`           | `2025-02-21`        |
+| `"us"`            | `02/21/2025`        |
+| `"uk"`            | `21/02/2025`        |
+| `"long"`          | `February 21, 2025` |
+
 ## Extra commands
 
 There are two extra (possibly useless) commands included with Nvumi:
@@ -152,9 +164,9 @@ A few things I'm thinking about adding as I continue trying to expand my knowled
 - [x] Custom prefixes/suffixes for results (e.g., `=` `→` 🚀 etc).
 - [x] Auto-evaluate expressions as you type without need to press `<CR>`
 - [x] Ability to call numi/evaluate expressions on a line in _any_ buffer on demand
+- [x] Fine-tuning date format
 - [x] Yankable answers!
   - [ ] Stretch: make possible for all evaluations (currently only last output is yankable)
-- [ ] Fine-tuning dates, times, and unit formatting
 - [ ] Additional conversions not currently possible with numi (possibly live prices for currency etc)
 
 ## License
