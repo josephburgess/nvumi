@@ -30,6 +30,18 @@ function M.setup()
     M.open()
   end, {})
 
+  vim.api.nvim_create_user_command("NvumiEvalLine", function()
+    require("nvumi.actions").run_on_line()
+  end, {})
+
+  vim.api.nvim_create_user_command("NvumiEvalBuf", function()
+    require("nvumi.actions").run_on_buffer()
+  end, {})
+
+  vim.api.nvim_create_user_command("NvumiClear", function()
+    require("nvumi.actions").reset_buffer()
+  end, {})
+
   require("nvim-web-devicons").set_icon({ nvumi = { icon = "" } })
 
   autocmds.setup()
