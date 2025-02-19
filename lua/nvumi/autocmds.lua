@@ -18,11 +18,10 @@ function M.setup()
   })
 
   -- evaluate whole buffer on exit insert
-  local debounced_rob = debounce(500, actions.run_on_buffer)
   vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
     pattern = "*.nvumi",
     callback = function()
-      debounced_rob()
+      actions.run_on_buffer()
     end,
   })
 
