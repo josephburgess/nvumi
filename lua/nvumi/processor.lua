@@ -1,3 +1,4 @@
+local converter = require("nvumi.converter")
 local renderer = require("nvumi.renderer")
 local runner = require("nvumi.runner")
 local state = require("nvumi.state")
@@ -16,6 +17,16 @@ function M.process_line(ctx, line, index, next_callback)
 
   local var, expr = line:match("^%s*([%a_][%w_]*)%s*=%s*(.+)$")
   local prepared_line = state.substitute_variables(var and expr or line)
+
+  local custom_result = converter.process_custom_conversion(prepared_line)
+  if custom_result then
+    if var then
+      state.set_variable(var, custom_result)
+    end
+    renderer.render_result(ctx, index - 1, custom_result, next_callback)
+    return
+  end
+
   runner.run_numi(prepared_line, function(data)
     local result = data[1]
 
