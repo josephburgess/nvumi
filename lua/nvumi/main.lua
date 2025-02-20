@@ -15,9 +15,10 @@ function M.open()
     win_by_ft = {
       nvumi = {
         keys = {
-          ["source"] = { opts.keys.run, actions.run_on_buffer, mode = { "n", "x" }, desc = "Run Numi" },
-          ["reset"] = { opts.keys.reset, actions.reset_buffer, mode = "n", desc = "Reset Buffer" },
-          ["yank"] = { opts.keys.yank, state.yank_last_output, mode = "n", desc = "Yank Last" },
+          ["source"] = { opts.keys.run, actions.run_on_buffer, mode = { "n", "x" }, desc = "Run" },
+          ["reset"] = { opts.keys.reset, actions.reset_buffer, mode = "n", desc = "Reset" },
+          ["yank"] = { opts.keys.yank, state.yank_output_on_line, mode = "n", desc = "Yank Line" },
+          ["yank_all"] = { opts.keys.yank_all, state.yank_all_outputs, mode = "n", desc = "Yank All" },
         },
       },
     },
