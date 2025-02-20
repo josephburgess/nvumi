@@ -161,7 +161,7 @@ A few things I'm thinking about adding as I continue trying to expand my knowled
 - [x] Ability to call numi/evaluate expressions on a line in _any_ buffer on demand
 - [x] Fine-tuning date format
 - [x] Yankable answers!
-  - [ ] Stretch: make possible for all evaluations (currently only last output is yankable)
+  - [x] Stretch: make possible for all evaluations - now per line or yank ALL are both possible.
 - [ ] Additional conversions not currently possible with numi (possibly live prices for currency etc)
 
 ## License
