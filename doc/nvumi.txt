@@ -70,7 +70,7 @@ This is set during the plugin setup. For example, using Lazy.nvim:
       opts = {
 	virtual_text = "inline", -- or "newline"
 	prefix = " 🚀 ", -- prefix shown before the output
-	date_format = "iso" -- or: "uk", "us", "long"
+	date_format = "iso", -- or: "uk", "us", "long"
 	keys = {
 	  run = "<CR>", -- run all calculations
 	  reset = "R", -- reset buffer
