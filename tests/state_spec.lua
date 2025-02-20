@@ -1,5 +1,6 @@
 local assert = require("luassert")
 local state = require("nvumi.state")
+local stub = require("luassert.stub")
 
 describe("nvumi.state", function()
   before_each(function()
@@ -24,57 +25,55 @@ describe("nvumi.state", function()
   end)
 
   describe("state - output and yanking", function()
-    local original_notify
+    local notify_stub, setreg_stub, getreg_stub, cursor_stub
 
     before_each(function()
-      original_notify = vim.notify
-      vim.notify = function(msg, level)
-        _G._TEST_YANK_NOTIFY_MESSAGE = msg
-        _G._TEST_YANK_NOTIFY_LEVEL = level
-      end
+      notify_stub = stub(vim, "notify")
+      setreg_stub = stub(vim.fn, "setreg")
+      getreg_stub = stub(vim.fn, "getreg").returns("")
+      cursor_stub = stub(vim.api, "nvim_win_get_cursor").returns({ 1, 0 })
     end)
 
     after_each(function()
-      vim.notify = original_notify
-      _G._TEST_YANK_NOTIFY_MESSAGE = nil
-      _G._TEST_YANK_NOTIFY_LEVEL = nil
+      notify_stub:revert()
+      setreg_stub:revert()
+      getreg_stub:revert()
+      cursor_stub:revert()
     end)
 
-    it("store update and give last output", function()
-      state.store_output(1, "Answer")
-      assert.are.same("Answer", state.get_last_output())
-      assert.are.same("Answer", state.outputs[1])
+    it("stores and retrieves last output", function()
+      state.store_output(1, "last name lannister")
+      assert.are.same("last name lannister", state.get_last_output())
+      assert.are.same("last name lannister", state.outputs[1])
     end)
 
     it("yanks last output to clipboard", function()
-      local original_getreg = vim.fn.getreg
-      local original_setreg = vim.fn.setreg
-
-      local mock_clipboard = ""
-      vim.fn.getreg = function(_)
-        return mock_clipboard
-      end
-      vim.fn.setreg = function(_, value)
-        mock_clipboard = value
-      end
-
-      state.store_output(2, "Result")
+      state.store_output(2, "call me kingslayer")
       state.yank_last_output()
-
-      assert.are.same("Result", mock_clipboard)
-      assert.are.same("Yanked: Result", _G._TEST_YANK_NOTIFY_MESSAGE)
-      assert.are.same(vim.log.levels.INFO, _G._TEST_YANK_NOTIFY_LEVEL)
-
-      vim.fn.getreg = original_getreg
-      vim.fn.setreg = original_setreg
+      assert.stub(setreg_stub).was_called_with("+", "call me kingslayer")
+      assert.stub(notify_stub).was_called_with("Yanked: call me kingslayer", vim.log.levels.INFO)
     end)
 
     it("notify error when nothing to yank", function()
       state.clear_state()
       state.yank_last_output()
+      assert.stub(notify_stub).was_called_with("No output available to yank", vim.log.levels.ERROR)
+    end)
 
-      assert.are.same("No output available to yank", _G._TEST_YANK_NOTIFY_MESSAGE)
-      assert.are.same(vim.log.levels.ERROR, _G._TEST_YANK_NOTIFY_LEVEL)
+    it("yanks all outputs to clipboard", function()
+      state.store_output(1, "none this ill")
+      state.store_output(2, "since kareem was a laker")
+      state.yank_all_outputs()
+
+      assert.stub(setreg_stub).was_called_with("+", "none this ill\nsince kareem was a laker")
+      assert.stub(notify_stub).was_called_with("Yanked all evaluations", vim.log.levels.INFO)
+    end)
+
+    it("yanks output from a specific line", function()
+      state.store_output(1, "im skating the equator")
+      state.yank_output_on_line()
+      assert.stub(setreg_stub).was_called_with("+", "im skating the equator")
+      assert.stub(notify_stub).was_called_with("Yanked: im skating the equator", vim.log.levels.INFO)
     end)
   end)
 end)
