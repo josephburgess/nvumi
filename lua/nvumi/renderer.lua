@@ -1,5 +1,7 @@
 local ns = vim.api.nvim_create_namespace("nvumi_inline")
 local state = require("nvumi.state")
+local units = require("nvumi.units")
+
 local M = {}
 
 ---@param ctx table           context
@@ -33,6 +35,7 @@ function M.render_result(ctx, line_index, result, callback)
 
   state.store_output(line_index, result)
   vim.api.nvim_buf_clear_namespace(ctx.buf, ns, line_index, line_index + 1)
+  result = units.format_date(result)
 
   if ctx.opts.virtual_text == "inline" then
     M.render_inline(ctx, line_index, result)

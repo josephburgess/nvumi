@@ -16,7 +16,8 @@
   dependencies = { "folke/snacks.nvim" },
   opts = {
     virtual_text = "newline", -- or "inline"
-    prefix = "= ", -- prefix shown before the virtual text output
+    prefix = " 🚀 ", -- prefix shown before the output
+    date_format = "iso" -- or: "uk", "us", "long"
     keys = {
       run = "<CR>", -- run/refresh calculations
       reset = "R", -- reset buffer
@@ -25,17 +26,24 @@
   }
 }
 ```
+
 You will also need **[numi-cli](https://github.com/nikolaeu/numi)**. Install with:
 
-  ```bash
-  curl -sSL https://s.numi.app/cli | sh
-  ```
+```bash
+curl -sSL https://s.numi.app/cli | sh
+```
 
 or [Homebrew](https://brew.sh/) if on MacOS:
 
-  ```bash
-  brew install nikolaeu/numi/numi-cli
-  ```
+```bash
+brew install nikolaeu/numi/numi-cli
+```
+
+Nvumi does not have a default keybinding to open the buffer out of the box! To create one add something like the below to your config:
+
+```lua
+vim.keymap.set("n", "<leader>on", "<CMD>Nvumi<CR>", { desc = "[O]pen [N]vumi" })
+```
 
 ## Usage
 
@@ -116,6 +124,33 @@ Currently you can configure where you want the virtual text to be displayed, `in
   </p>
 </details>
 
+## Date formatting
+
+If you care about how your dates are formatted, that is configurable!
+
+| **`date_format`** | **Output**          |
+| ----------------- | ------------------- |
+| `"iso"`           | `2025-02-21`        |
+| `"us"`            | `02/21/2025`        |
+| `"uk"`            | `21/02/2025`        |
+| `"long"`          | `February 21, 2025` |
+
+## Extra commands
+
+There are two extra (possibly useless) commands included with Nvumi:
+
+- `NvumiEvalLine`
+- `NvumiEvalBuf`
+
+These will - you guessed it - run Nvumi on ANY line or ANY buffer. Beware that running on a buffer will result in a lot of messy virtual_text (and lots of errors if the text cant be evaluated). But maybe you want to set the `NvumiEvalLine` command to quickly run calculations outside of the scratch buffer.
+
+You can also clear a buffer of the virtual text with `NvumiClear` (or just close it - they wont still be there when you come back).
+
+## The .nvumi filetype
+
+Nvumi was built around a made-up filetype `.nvumi`. This was so that the autocommands used by the plugin under the hood could target a specific filetype without unwanted side effects on other files. It also meant a custom filetype icon could be set for those using nerd fonts.
+
+The fun side-effect/benefit of this, however, is that you can create `.nvumi` files outside of the scratch buffer and they will function exactly the same! You can evaluate to your hearts content in full screen.
 
 ## Contributing
 
@@ -128,10 +163,10 @@ A few things I'm thinking about adding as I continue trying to expand my knowled
 - [x] Assigning answers to variables
 - [x] Custom prefixes/suffixes for results (e.g., `=` `→` 🚀 etc).
 - [x] Auto-evaluate expressions as you type without need to press `<CR>`
+- [x] Ability to call numi/evaluate expressions on a line in _any_ buffer on demand
+- [x] Fine-tuning date format
 - [x] Yankable answers!
   - [ ] Stretch: make possible for all evaluations (currently only last output is yankable)
-- [ ] Ability to call numi/evaluate expressions on a line in _any_ buffer on demand
-- [ ] Fine-tuning dates, times, and unit formatting
 - [ ] Additional conversions not currently possible with numi (possibly live prices for currency etc)
 
 ## License

@@ -9,6 +9,7 @@
 ---@class nvumi.Options
 ---@field virtual_text string
 ---@field prefix string
+---@field date_format string
 ---@field keys nvumi.Keys
 
 local M = {}
@@ -16,7 +17,8 @@ local M = {}
 ---@type nvumi.Options
 local defaults = {
   virtual_text = "newline",
-  prefix = "= ",
+  prefix = " 🚀 ",
+  date_format = "iso",
   keys = {
     run = "<CR>",
     reset = "R",
