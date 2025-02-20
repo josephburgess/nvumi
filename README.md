@@ -17,7 +17,7 @@
   opts = {
     virtual_text = "newline", -- or "inline"
     prefix = " 🚀 ", -- prefix shown before the output
-    date_format = "iso" -- or: "uk", "us", "long"
+    date_format = "iso", -- or: "uk", "us", "long"
     keys = {
       run = "<CR>", -- run/refresh calculations
       reset = "R", -- reset buffer
