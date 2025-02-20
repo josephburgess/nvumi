@@ -17,7 +17,8 @@ USAGE
       - Expressions are automatically evaluated as you type.
       - Press `<CR>` (Enter) in normal mode to re-evaluate/refresh all non-empty lines.
       - Press `<R>` in normal mode to reset the buffer (clear all content).
-      - Press `<leader>y` in normal mode to reset the buffer (clear all content).
+      - Press `<leader>y` in normal mode to yank the evaluation of the current line.
+      - Press `<leader>Y` in normal mode to yank all evaluations.
 
 
 VARIABLE ASSIGNMENT
@@ -50,13 +51,15 @@ CONFIGURATION
 nvumi currently supports the following configuration options:
 
     `virtual_text = "inline" | "newline"`  -- Where to display the results.
-    `prefix = "= "` -- Choose the prefix shown before the virtual text
+    `prefix = " 🚀 "` -- Choose the prefix shown before the virtual text
+    `date_format = "iso"` -- Choose the date format, other options: "uk", "us", "long"`
 
 Keybinds:
 
     `keys.run`   -- Runs the calculations. Default: `<CR>`
     `keys.reset` -- Resets (clears) the buffer. Default: `R`
-    `keys.yank`  -- Yanks the last evaluated result to the clipboard. Default: `<leader>y`
+    `keys.yank`  -- Yanks the evaluation of the line under the cursor. Default: `<leader>y`
+    `keys.yank_all`  -- Yanks all evaluations. Default: `<leader>Y`
 
 This is set during the plugin setup. For example, using Lazy.nvim:
 
@@ -66,11 +69,13 @@ This is set during the plugin setup. For example, using Lazy.nvim:
     dependencies = { "folke/snacks.nvim" },
       opts = {
 	virtual_text = "inline", -- or "newline"
-	prefix = "= ", -- prefix shown before the virtual text output
+	prefix = " 🚀 ", -- prefix shown before the output
+	date_format = "iso" -- or: "uk", "us", "long"
 	keys = {
 	  run = "<CR>", -- run all calculations
 	  reset = "R", -- reset buffer
-	  yank = "<leader>y", -- yank last output
+	  yank = "<leader>y", -- yank output of current line
+	  yank_all = "<leader>Y", -- yank all outputs
 	}
       }
   }

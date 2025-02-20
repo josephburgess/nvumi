@@ -59,4 +59,25 @@ function M.yank_last_output()
   end
 end
 
+function M.yank_all_outputs()
+  local outputs = vim.tbl_values(M.outputs)
+  if #outputs > 0 then
+    local result = table.concat(outputs, "\n")
+    vim.fn.setreg("+", result)
+    vim.notify("Yanked all evaluations", vim.log.levels.INFO)
+  else
+    vim.notify("No outputs available to yank", vim.log.levels.ERROR)
+  end
+end
+
+function M.yank_output_on_line()
+  local row, _ = unpack(vim.api.nvim_win_get_cursor(0))
+  local output = M.outputs[row]
+  if output then
+    vim.fn.setreg("+", output)
+    vim.notify(("Yanked: %s"):format(output), vim.log.levels.INFO)
+  else
+    vim.notify("No evaluation found on this line", vim.log.levels.ERROR)
+  end
+end
 return M

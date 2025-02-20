@@ -21,7 +21,8 @@
     keys = {
       run = "<CR>", -- run/refresh calculations
       reset = "R", -- reset buffer
-      yank = "<leader>y", -- yank last output
+      yank = "<leader>y", -- yank output of current line
+      yank_all = "<leader>Y", -- yank all outputs
     },
   }
 }
@@ -55,7 +56,7 @@ vim.keymap.set("n", "<leader>on", "<CMD>Nvumi<CR>", { desc = "[O]pen [N]vumi" })
 
 4. Press `<CR>` (Enter) in normal mode and the buffer will re-run all calculations/refresh. Useful if using lots of variables/complicated logic to run on a clean slate top-to-bottom.
 
-5. Pressing `<leader>y` will yank the latest evaluation to the clipboard
+5. Pressing `<leader>y` will yank the evaluation of the current line to clipboard (`<leader>Y` to yank all evaluations)
 
 ## Variable Assignment
 
@@ -96,15 +97,9 @@ nvumi now supports variable assignment, allowing you to store specific numbers, 
   nvumi will substitute the variable with its stored value before evaluation.
 
 - **Resetting Variables:**
-  Using the `<reset>` command clears both the buffer and all stored variables.
+  Using the `<reset>` command (default "<R>") clears both the buffer AND all stored variables.
 
 💡 _Tip:_ Variable names must start with a letter or underscore, followed by letters, numbers, or underscores.
-
-### **Yank output**
-
-More features! You can yank the last evaluated result to your system clipboard using:
-
-- Default keybind: **`<leader>y`**
 
 ## Virtual Text Locations
 
