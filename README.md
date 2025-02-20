@@ -1,6 +1,6 @@
 # nvumi
 
-**nvumi** is a Neovim plugin that integrates the [numi](https://github.com/nikolaeu/numi) natural language calculator with [Snacks.nvim's](https://github.com/folke/snacks.nvim/blob/main/docs/scratch.md) scratch buffer. It lets you type out natural language expressions and see the results inline.
+**nvumi** is a Neovim plugin that integrates the [numi](https://github.com/nikolaeu/numi) natural language calculator with [Snacks.nvim's](https://github.com/folke/snacks.nvim/blob/main/docs/scratch.md) scratch buffer. It lets you construct natural language expressions and see the results evaluated inline as you type.
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/c0d0fd19-7acf-49db-96d2-0da9eda3b088" alt="Gif" />
@@ -17,7 +17,7 @@
   opts = {
     virtual_text = "newline", -- or "inline"
     prefix = " 🚀 ", -- prefix shown before the output
-    date_format = "iso" -- or: "uk", "us", "long"
+    date_format = "iso", -- or: "uk", "us", "long"
     keys = {
       run = "<CR>", -- run/refresh calculations
       reset = "R", -- reset buffer
@@ -162,7 +162,9 @@ A few things I'm thinking about adding as I continue trying to expand my knowled
 - [x] Fine-tuning date format
 - [x] Yankable answers!
   - [x] Stretch: make possible for all evaluations - now per line or yank ALL are both possible.
-- [ ] Additional conversions not currently possible with numi (possibly live prices for currency etc)
+- [ ] Additional conversions not currently possible with numi
+- [ ] User defined/custom conversions
+- [ ] Full syntax highlighting
 
 ## License
 
