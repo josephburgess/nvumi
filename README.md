@@ -24,6 +24,7 @@
       yank = "<leader>y", -- yank output of current line
       yank_all = "<leader>Y", -- yank all outputs
     },
+    -- see below for more on custom conversions/functions
     custom_conversions = {},
     custom_functions = {}
   }
@@ -78,7 +79,7 @@ y meters in kilometers
 
 - `x` stores the result of `20 inches in cm`
 - `y` holds `5000`
-- You can use them in expressions like `x * y`
+- You can use them in expressions like `x * y` (which equals `254000.00 cm`, btw)
 
 ### **Resetting Variables**
 
@@ -128,11 +129,11 @@ nvumi allows you to define **custom unit conversions** beyond what `numi-cli` pr
 
 ## **🧮 Custom Functions**
 
-nvumi now supports **user-defined mathematical functions**! As with the custom conversions, this was inspired by the community plugins available on the Numi GitHub, such as [this one](https://github.com/nikolaeu/numi/blob/master/plugins/CommunityExtensions/StandardDeviation/StandardDeviation.js) for calculating Standard Deviation.
+nvumi also supports **user-defined mathematical functions**! As with the custom conversions, this was inspired by the community plugins available on the Numi GitHub, such as [this one](https://github.com/nikolaeu/numi/blob/master/plugins/CommunityExtensions/StandardDeviation/StandardDeviation.js) for calculating Standard Deviation.
 
 **How It Works:**
 
-- Define **custom functions** in your configuration.
+- Define **custom functions** in `lua` in your configuration.
 - Functions accept **arguments** (numbers) and return computed results.
 - You can use **aliases** (phrases) to call functions.
 
