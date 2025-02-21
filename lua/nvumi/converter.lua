@@ -2,61 +2,51 @@ local M = {}
 local config = require("nvumi.config")
 
 -- trim whitespc
-local function trim(s)
-  return s:match("^%s*(.-)%s*$")
+local function normalize_unit(unit_str)
+  return unit_str:match("^%s*(.-)%s*$"):lower()
 end
 
 -- given a unit str, find  a matching conversion def
-local function lookup_unit(unit_str)
-  local unit_lower = trim(unit_str):lower()
-  for _, conv in ipairs(config.custom_conversions or {}) do
-    for phrase in conv.phrases:gmatch("[^,]+") do
-      local phrase_lower = trim(phrase):lower()
-      if unit_lower == phrase_lower then
-        return conv
+local function find_conversion(unit_str)
+  local normalized_unit = normalize_unit(unit_str)
+
+  for _, conversion in ipairs(config.custom_conversions or {}) do
+    for phrase in conversion.phrases:gmatch("[^,]+") do
+      if normalize_unit(phrase) == normalized_unit then
+        return conversion
       end
     end
   end
+
   return nil
 end
 
 -- append the unit's identifier/formatstr to the result
-local function format_result(value, conv)
-  local result = tostring(value)
-  if conv and conv.format then
-    result = result .. " " .. conv.format
-  end
-  return result
+local function format_result(value, conversion)
+  return conversion and conversion.format and string.format("%s %s", value, conversion.format) or tostring(value)
 end
 
--- process (in form: "value src_unit in target_unit")
-local function process_conversion(expr)
-  local val_str, src_unit, target_unit = expr:match("^(%d+%.?%d*)%s+(.+)%s+in%s+(.+)$")
-
-  if not val_str then
+local function convert_units(expression)
+  local value_str, source_unit, target_unit = expression:match("^(%d+%.?%d*)%s+(.+)%s+in%s+(.+)$")
+  if not value_str then
     return nil
   end
 
-  local value = tonumber(val_str)
-  local src_conv = lookup_unit(src_unit)
-  local target_conv = lookup_unit(target_unit)
+  local value = tonumber(value_str)
+  local source_conv = find_conversion(source_unit)
+  local target_conv = find_conversion(target_unit)
 
   -- ensure both units exist w/ same base unit
-  if src_conv and target_conv and src_conv.base_unit and target_conv.base_unit then
-    if src_conv.base_unit == target_conv.base_unit then
-      local result_value = value * (src_conv.ratio / target_conv.ratio)
-      return format_result(result_value, target_conv)
-    end
+  if not (source_conv and target_conv) or source_conv.base_unit ~= target_conv.base_unit then
+    return nil
   end
-  return nil
+
+  local result = value * (source_conv.ratio / target_conv.ratio)
+  return format_result(result, target_conv)
 end
 
-function M.process_custom_conversion(expr)
-  local result = process_conversion(expr)
-  if result then
-    return result
-  end
-  return nil
+function M.process_custom_conversion(expression)
+  return convert_units(expression)
 end
 
 return M
