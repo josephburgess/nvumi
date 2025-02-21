@@ -20,7 +20,7 @@ end
 local function find_conversion(unit_str)
   local normalized_unit = normalize_unit(unit_str)
 
-  for _, conversion in ipairs(config.custom_conversions or {}) do
+  for _, conversion in ipairs(config.options.custom_conversions or {}) do
     for phrase in conversion.phrases:gmatch("[^,]+") do
       if normalize_unit(phrase) == normalized_unit then
         return conversion
