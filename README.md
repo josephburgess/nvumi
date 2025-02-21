@@ -63,11 +63,6 @@ vim.keymap.set("n", "<leader>on", "<CMD>Nvumi<CR>", { desc = "[O]pen [N]vumi" })
 4. Press `<CR>` to **refresh** calculations.
 5. Use `<leader>y` to **yank the current result** (or `<leader>Y` for all results).
 
-## 📚 Wiki
-The README has a good outline of current features and examples, however there is also a [Wiki](https://github.com/josephburgess/nvumi/wiki) being expanded with more in-depth info. 
-
-In particular it includes a [Recipes](https://github.com/josephburgess/nvumi/wiki/Recipes) page with some example custom conversions/functions.
-
 ## 📌 Variable Assignment
 
 nvumi supports **variables**, allowing you to store values and reuse them later. Variable names must start with a letter or underscore, followed by letters, numbers, or underscores.
@@ -226,6 +221,11 @@ There are three extra (possibly useless) commands included with nvumi:
 nvumi was built around a made-up filetype `.nvumi`. This was so that the autocommands used by the plugin under the hood would not start trying to evaluate random files.
 
 The fun side-effect of this, however, is that you can create/save `.nvumi` files outside of the scratch buffer and they will function exactly the same!
+
+## 📚 Wiki
+This README hopefully had a good enough outline of current features and examples to get you started, however there is also a [Wiki](https://github.com/josephburgess/nvumi/wiki) being expanded with more in-depth info. 
+
+In particular it includes a [Recipes](https://github.com/josephburgess/nvumi/wiki/Recipes) page with some example custom conversions/functions.
 
 ## Contributing
 
