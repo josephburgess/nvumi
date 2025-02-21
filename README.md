@@ -44,9 +44,9 @@ brew install nikolaeu/numi/numi-cli
 curl -sSL https://s.numi.app/cli | sh
 ```
 
-### Keybinding to Open `nvumi`
+### Keybinding to open `nvumi`
 
-Nvumi does not have a default keybinding to open the scratch buffer. You can set one:
+nvumi does not have a default keybinding to open the scratch buffer. You can set one:
 
 ```lua
 vim.keymap.set("n", "<leader>on", "<CMD>Nvumi<CR>", { desc = "[O]pen [N]vumi" })
@@ -60,9 +60,9 @@ vim.keymap.set("n", "<leader>on", "<CMD>Nvumi<CR>", { desc = "[O]pen [N]vumi" })
 4. Press `<CR>` to **refresh** calculations.
 5. Use `<leader>y` to **yank the current result** (or `<leader>Y` for all results).
 
-## 🛠 Custom Conversions
+## 🛠️ Custom conversions
 
-nvumi allows you to define **custom unit conversions** beyond what `numi-cli` provides. This feature was inspired by the [plugins](https://github.com/nikolaeu/numi/tree/master/plugins) that exist for the numi desktop app.
+nvumi allows you to define **custom unit conversions** beyond what `numi-cli` provides. This feature was inspired by the [plugins](https://github.com/nikolaeu/numi/tree/master/plugins) that exist for the numi desktop app. These should be compatible with the below format.
 
 💡 **How It Works:**
 
@@ -73,35 +73,28 @@ nvumi allows you to define **custom unit conversions** beyond what `numi-cli` pr
 ### **Example Configuration**
 
 ```lua
-custom_conversions = {
-  {
-    id = "liters",
-    phrases = "l, liter, liters",
-    base_unit = "volume",
-    format = "L",
-    ratio = 1, -- base unit should be 1
-  },
-  {
-    id = "gallons",
-    phrases = "gal, gallon, gallons",
-    base_unit = "volume",
-    format = "gal",
-    ratio = 3.78541, -- 1 gallon = 3.78541 liters
-  },
-  {
-    id = "kmh",
-    phrases = "kmh, kmph, klicks, kilometers per hour",
-    base_unit = "speed",
-    format = "km/h",
-    ratio = 1,
-  },
-  {
-    id = "mph",
-    phrases = "mph, miles per hour",
-    base_unit = "speed",
-    format = "mph",
-    ratio = 1.609344, -- 1 mph = 1.609344 km/h
-  },
+{
+  opts = {
+    --
+    -- other opts
+    --
+    custom_conversions = {
+      {
+        id = "kmh",
+        phrases = "kmh, kmph, klicks, kilometers per hour",
+        base_unit = "speed",
+        format = "km/h",
+        ratio = 1,
+      },
+      {
+        id = "mph",
+        phrases = "mph, miles per hour",
+        base_unit = "speed",
+        format = "mph",
+        ratio = 1.609344, -- 1 mph = 1.609344 km/h
+      },
+    },
+  }
 }
 ```
 
@@ -114,7 +107,7 @@ custom_conversions = {
 
 ## 📌 Variable Assignment
 
-Nvumi supports **variables**, allowing you to store values and reuse them later. Variable names must start with a letter or underscore, followed by letters, numbers, or underscores.
+nvumi supports **variables**, allowing you to store values and reuse them later. Variable names must start with a letter or underscore, followed by letters, numbers, or underscores.
 
 ### **Example**
 
@@ -136,7 +129,7 @@ Pressing `<R>` to reset the buffer will also **clear all stored variables**.
 
 ## 🎨 Virtual Text Locations
 
-Nvumi supports two virtual text modes:
+nvumi supports two virtual text modes:
 
 - **Inline** (default)
 - **Newline**
@@ -172,19 +165,19 @@ opts = {
 }
 ```
 
-## 🔥 Extra Commands
+## Extra commands
 
 There are three extra (possibly useless) commands included with nvumi:
 
-| Command         | Description                                          |
-| --------------- | ---------------------------------------------------- |
-| `NvumiEvalLine` | Run nvumi on **any line** in any buffer.             |
-| `NvumiEvalBuf`  | Run nvumi on the **entire buffer**. ⚠️ Can be messy! |
-| `NvumiClear`    | **Clears** the buffer's virtual text.                |
+| Command         | Description                                                   |
+| --------------- | ------------------------------------------------------------- |
+| `NvumiEvalLine` | Run nvumi on **any line** in any buffer.                      |
+| `NvumiEvalBuf`  | Run nvumi on the **entire buffer** anywhere. ⚠️ Can be messy! |
+| `NvumiClear`    | **Clears** the buffer's virtual text.                         |
 
-## 📁 The `.nvumi` Filetype
+## 📁 `.nvumi` filetype
 
-Nvumi was built around a made-up filetype `.nvumi`. This was so that the autocommands used by the plugin under the hood would not start trying to evaluate random files.
+nvumi was built around a made-up filetype `.nvumi`. This was so that the autocommands used by the plugin under the hood would not start trying to evaluate random files.
 
 The fun side-effect of this, however, is that you can create/save `.nvumi` files outside of the scratch buffer and they will function exactly the same!
 
