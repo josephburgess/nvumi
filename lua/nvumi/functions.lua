@@ -2,12 +2,10 @@ local config = require("nvumi.config")
 
 local M = {}
 
----@alias Result { double: number }
-
 --- eval expression if its a custom func call
 --- should be in the form: `funcName(arg1, arg2, ...)`
 --- @param expression string
---- @return Result|nil
+--- @return string|nil
 function M.evaluate_function_call(expression)
   local fn_name, args_str = expression:match("^%s*(%a+)%s*%((.-)%)%s*$")
   if not fn_name then
@@ -44,7 +42,8 @@ function M.evaluate_function_call(expression)
     table.insert(args, { double = num })
   end
 
-  return target_fn(args)
+  local result = target_fn(args)
+  return result and tostring(result.double) or nil
 end
 
 return M
