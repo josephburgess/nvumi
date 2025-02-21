@@ -41,7 +41,7 @@ function M.process_line(ctx, line, index, next_callback)
     return assign_and_render(ctx, index, var, result, next_callback)
   end
 
-  result = functions.evaluate_function_call(prepared_line)
+  result = functions.evaluate_function(prepared_line)
   if result then
     return assign_and_render(ctx, index, var, result, next_callback)
   end
