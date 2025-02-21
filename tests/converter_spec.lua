@@ -2,7 +2,7 @@ local assert = require("luassert")
 local config = require("nvumi.config")
 local converter = require("nvumi.converter")
 
-describe("nvumi.converter - Custom Conversions", function()
+describe("nvumi.converter", function()
   before_each(function()
     config.custom_conversions = {
       {
