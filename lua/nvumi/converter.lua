@@ -1,16 +1,22 @@
 local M = {}
 local config = require("nvumi.config")
 
+---@alias Conversion { phrases: string, base_unit: string, ratio: number, format: string? }
+
+---@param s string
+---@return string
 local function trim(s)
   return s:match("^%s*(.-)%s*$")
 end
 
--- trim whitespc
+--- @param unit_str string
+--- @return string
 local function normalize_unit(unit_str)
   return trim(unit_str):lower()
 end
 
--- given a unit str, find  a matching conversion def
+--- @param unit_str string
+---@return Conversion|nil
 local function find_conversion(unit_str)
   local normalized_unit = normalize_unit(unit_str)
 
@@ -25,11 +31,15 @@ local function find_conversion(unit_str)
   return nil
 end
 
--- append the unit's identifier/formatstr to the result
+--- @param value number
+--- @param conversion Conversion
+--- @return string
 local function format_result(value, conversion)
   return conversion and conversion.format and string.format("%s %s", value, conversion.format) or tostring(value)
 end
 
+--- @param expression string
+--- @return string | nil
 local function convert_units(expression)
   expression = trim(expression)
 
@@ -51,6 +61,8 @@ local function convert_units(expression)
   return format_result(result, target_conv)
 end
 
+---@param expression any
+---@return string|nil
 function M.process_custom_conversion(expression)
   return convert_units(expression)
 end
