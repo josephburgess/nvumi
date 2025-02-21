@@ -24,6 +24,9 @@
       yank = "<leader>y", -- yank output of current line
       yank_all = "<leader>Y", -- yank all outputs
     },
+    custom_conversions = {
+      -- see section below
+    }
   }
 }
 ```
