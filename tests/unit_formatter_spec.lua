@@ -1,7 +1,7 @@
 local assert = require("luassert")
-local units = require("nvumi.units")
+local units = require("nvumi.unit_formatter")
 
-describe("nvumi.units.format_date", function()
+describe("nvumi.unit_formatter", function()
   before_each(function()
     require("nvumi.config").options.date_format = "iso"
   end)

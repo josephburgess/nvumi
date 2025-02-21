@@ -1,6 +1,6 @@
 local ns = vim.api.nvim_create_namespace("nvumi_inline")
 local state = require("nvumi.state")
-local units = require("nvumi.units")
+local units = require("nvumi.unit_formatter")
 
 local M = {}
 

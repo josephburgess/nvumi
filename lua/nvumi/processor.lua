@@ -1,5 +1,5 @@
 local converter = require("nvumi.converter")
-local functions = require("nvumi.functions")
+local evaluator = require("nvumi.evaluator")
 local renderer = require("nvumi.renderer")
 local runner = require("nvumi.runner")
 local state = require("nvumi.state")
@@ -41,7 +41,7 @@ function M.process_line(ctx, line, index, next_callback)
     return assign_and_render(ctx, index, var, result, next_callback)
   end
 
-  result = functions.evaluate_function(prepared_line)
+  result = evaluator.evaluate_function(prepared_line)
   if result then
     return assign_and_render(ctx, index, var, result, next_callback)
   end
