@@ -65,7 +65,7 @@ vim.keymap.set("n", "<leader>on", "<CMD>Nvumi<CR>", { desc = "[O]pen [N]vumi" })
 
 ## 🛠️ Custom conversions
 
-nvumi allows you to define **custom unit conversions** beyond what `numi-cli` provides. This feature was inspired by the [plugins](https://github.com/nikolaeu/numi/tree/master/plugins) that exist for the numi desktop app. These should be compatible with the below format.
+nvumi allows you to define **custom unit conversions** beyond what `numi-cli` provides. This feature was inspired by the [plugins](https://github.com/nikolaeu/numi/tree/master/plugins) that exist for the numi desktop app. These should be compatible with `nvumi`.
 
 💡 **How It Works:**
 
@@ -199,7 +199,7 @@ A few things I'm thinking about adding as I continue trying to expand my knowled
 - [x] Fine-tune date format
 - [x] Yankable answers (per line/all at once)
 - [x] **User-defined unit conversions** ✅ _(latest)_
-- [ ] Full syntax highlighting
+- [ ] User-defined maths functions
 
 ## 📜 License
 
