@@ -1,4 +1,5 @@
 local converter = require("nvumi.converter")
+local functions = require("nvumi.functions")
 local renderer = require("nvumi.renderer")
 local runner = require("nvumi.runner")
 local state = require("nvumi.state")
@@ -27,13 +28,21 @@ function M.process_line(ctx, line, index, next_callback)
     return
   end
 
-  runner.run_numi(prepared_line, function(data)
-    local result = data[1]
-
-    if var then -- is a variable assignment
+  local custom_fn_result = functions.evaluate_function_call(prepared_line)
+  if custom_fn_result then
+    local result = tostring(custom_fn_result.double)
+    if var then
       state.set_variable(var, result)
     end
+    renderer.render_result(ctx, index - 1, result, next_callback)
+    return
+  end
 
+  runner.run_numi(prepared_line, function(data)
+    local result = data[1]
+    if var then -- variable assignment
+      state.set_variable(var, result)
+    end
     renderer.render_result(ctx, index - 1, result, next_callback)
   end)
 end
