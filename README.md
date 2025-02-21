@@ -63,6 +63,9 @@ vim.keymap.set("n", "<leader>on", "<CMD>Nvumi<CR>", { desc = "[O]pen [N]vumi" })
 4. Press `<CR>` to **refresh** calculations.
 5. Use `<leader>y` to **yank the current result** (or `<leader>Y` for all results).
 
+## Features
+Below is an outline of current features. There is also a [Wiki](https://github.com/josephburgess/nvumi/wiki) which covers these topics in a bit more detail, including a [Recipes](https://github.com/josephburgess/nvumi/wiki/Recipes) page with some example custom conversions/functions.
+
 ## 📌 Variable Assignment
 
 nvumi supports **variables**, allowing you to store values and reuse them later. Variable names must start with a letter or underscore, followed by letters, numbers, or underscores.
