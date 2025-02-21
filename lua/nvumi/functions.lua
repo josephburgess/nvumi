@@ -42,6 +42,9 @@ function M.evaluate_function_call(expression)
     table.insert(args, { double = num })
   end
 
+  if #args == 0 then
+    return nil
+  end
   local result = target_fn(args)
   return result and tostring(result.double) or nil
 end
