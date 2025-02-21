@@ -99,6 +99,45 @@ Example configuration:
 
 ---
 
+CUSTOM FUNCTIONS
+----------------
+
+nvumi supports **user-defined mathematical functions**, allowing you to extend its capabilities.
+
+*nvumi-custom-functions*
+
+💡 *How It Works*:
+- Define **custom functions** with **aliases** and an associated **function**.
+- Functions receive **arguments** (numbers) and return computed results.
+- You can use **multiple aliases** for the same function.
+
+Example configuration:
+
+>lua
+  custom_functions = {
+    {
+      def = { phrases = "square, sqr" },
+      fn = function(args)
+        return { double = args[1].double * args[1].double }
+      end,
+    },
+    {
+      def = { phrases = "add" },
+      fn = function(args)
+        return { double = args[1].double + args[2].double }
+      end,
+    },
+  }
+<
+
+**Usage Examples:**
+>lua
+  square(4)  →  16
+  add(2, 3)  →  5
+<
+
+---
+
 CONFIGURATION
 -------------
 
@@ -149,6 +188,21 @@ nvumi supports the following **configuration options**:
           ratio = 1.609344,
         },
       },
+      custom_functions = {
+	{
+	  def = { phrases = "square, sqr, sqrt" },
+	  fn = function(args)
+	    return { double = args[1].double * args[1].double }
+	  end,
+	},
+	{
+	  def = { id = "vat", phrases = "vat" }, -- e.g. for calculating vat sales tax
+	  fn = function(values)
+	    local vat = values[2] and values[2].double or 20 -- default 20% or use second arg as p/c amount
+	    return { double = (values[1].double / (vat + 100)) * 100 } -- apply calculation and return
+	  end,
+	}
+      }
     }
   }
 <

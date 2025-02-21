@@ -24,9 +24,8 @@
       yank = "<leader>y", -- yank output of current line
       yank_all = "<leader>Y", -- yank all outputs
     },
-    custom_conversions = {
-      -- see section below
-    }
+    custom_conversions = {},
+    custom_functions = {}
   }
 }
 ```
@@ -150,9 +149,10 @@ nvumi now supports **user-defined mathematical functions**! As with the custom c
         end,
       },
       {
-        def = { phrases = "add" },
+        def = { id = "vat", phrases = "vat" }, -- for calculating vat sales tax
         fn = function(args)
-          return { double = args[1].double + args[2].double }
+          local vat = args[2] and args[2].double or 20 -- default 20% if no args[2] provided
+          return { double = (args[1].double / (vat + 100)) * 100 } -- apply calculation and return
         end,
       },
     },
@@ -162,10 +162,10 @@ nvumi now supports **user-defined mathematical functions**! As with the custom c
 
 ### **Examples**
 
-| Input       | Output |
-| ----------- | ------ |
-| `square(5)` | `25`   |
-| `add(3, 7)` | `10`   |
+| Input            | Output |
+| ---------------- | ------ |
+| `square(5)`      | `25`   |
+| `vat(100, 17.5)` | `17.5` |
 
 ## 🎨 Virtual Text Locations
 
