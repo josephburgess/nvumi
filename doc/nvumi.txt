@@ -1,5 +1,5 @@
-*nvumi*:  Natural language calculations in Neovim
-===============================================
+*nvumi*    Natural language calculations in Neovim
+=================================================
 
 nvumi integrates the [numi-cli](https://github.com/nikolaeu/numi) natural language
 calculator with [snacks.nvim](https://github.com/folke/snacks.nvim). It provides a
@@ -9,101 +9,182 @@ results either inline or on a new line.
 USAGE
 -----
 
-    `:Nvumi
+    :Nvumi
 
-    This command opens a scratch buffer where you can enter your
-    calculations. In the scratch buffer:
+This command opens a scratch buffer where you can enter your
+calculations. In the scratch buffer:
 
-      - Expressions are automatically evaluated as you type.
-      - Press `<CR>` (Enter) in normal mode to re-evaluate/refresh all non-empty lines.
-      - Press `<R>` in normal mode to reset the buffer (clear all content).
-      - Press `<leader>y` in normal mode to yank the evaluation of the current line.
-      - Press `<leader>Y` in normal mode to yank all evaluations.
+  - Expressions are automatically evaluated as you type.
+  - Press `<CR>` (Enter) in normal mode to **re-evaluate/refresh** all non-empty lines.
+  - Press `<R>` in normal mode to **reset the buffer** (clear all content).
+  - Press `<leader>y` in normal mode to **yank the evaluation** of the current line.
+  - Press `<leader>Y` in normal mode to **yank all evaluations**.
 
 
 VARIABLE ASSIGNMENT
 -------------------
 
-nvumi now supports assigning evaluated expressions to variables. This lets you reuse previously computed values in your calculations.
+nvumi supports **assigning evaluated expressions to variables**. This lets you reuse previously computed values in your calculations.
 
-- To assign a variable, write a line in the form:
+- To **assign a variable**, write a line in the form:
 
       variable_name = expression
 
-  For example, typing:
+  Example:
 
       x = 2+2
 
-  will evaluate `2+2` and store the result in `x`.
+  This evaluates `2+2` and stores the result in `x`.
 
-- To use the stored value, simply reference the variable in another expression:
+- To **use the stored value**, reference the variable in another expression:
 
       x * 3
 
-  nvumi will substitute `x` with its stored result before evaluation.
+  nvumi substitutes `x` with its stored result before evaluation.
 
-- All variables are maintained for the current scratch session and are cleared when you use the `<reset>` command.
+- All variables persist **only for the current session** and are cleared when you **reset the buffer (`<R>`)**.
 
+---
+
+CUSTOM CONVERSIONS
+------------------
+
+nvumi supports **user-defined unit conversions**, allowing you to add your own units.
+
+💡 **How It Works**:
+- Define **custom units** with **aliases**, a **base unit group**, and a **conversion ratio**.
+- Custom conversions **must share the same base unit** (e.g., `"speed"`, `"volume"`).
+- When converting, **ratios are relative to the base unit**.
+
+Example configuration:
+
+>lua
+  custom_conversions = {
+    {
+      id = "liters",
+      phrases = "l, liter, liters",
+      base_unit = "volume",
+      format = "L",
+      ratio = 1, -- Base unit
+    },
+    {
+      id = "gallons",
+      phrases = "gal, gallon, gallons",
+      base_unit = "volume",
+      format = "gal",
+      ratio = 3.78541, -- 1 gallon = 3.78541 liters
+    },
+    {
+      id = "kmh",
+      phrases = "kmh, kmph, klicks, kilometers per hour",
+      base_unit = "speed",
+      format = "km/h",
+      ratio = 1,
+    },
+    {
+      id = "mph",
+      phrases = "mph, miles per hour",
+      base_unit = "speed",
+      format = "mph",
+      ratio = 1.609344, -- 1 mph = 1.609344 km/h
+    },
+  }
+<
+
+**Examples:**
+>lua
+  10 gallons in liters   →   37.8541 L
+  5 kmh in mph          →   3.10686 mph
+<
+
+---
 
 CONFIGURATION
 -------------
 
-nvumi currently supports the following configuration options:
+nvumi supports the following **configuration options**:
 
-    `virtual_text = "inline" | "newline"`  -- Where to display the results.
-    `prefix = " 🚀 "` -- Choose the prefix shown before the virtual text
-    `date_format = "iso"` -- Choose the date format, other options: "uk", "us", "long"`
+>lua
+  virtual_text = "inline" | "newline"  -- Where to display the results.
+  prefix = " 🚀 " -- Prefix before virtual text output.
+  date_format = "iso" -- Date format options: "iso", "uk", "us", "long"
+<
 
-Keybinds:
+**Keybinds:**
+>lua
+  keys.run = "<CR>"   -- Runs all calculations.
+  keys.reset = "R"    -- Resets (clears) the buffer.
+  keys.yank = "<leader>y"  -- Yanks evaluation of the current line.
+  keys.yank_all = "<leader>Y"  -- Yanks all evaluations.
+<
 
-    `keys.run`   -- Runs the calculations. Default: `<CR>`
-    `keys.reset` -- Resets (clears) the buffer. Default: `R`
-    `keys.yank`  -- Yanks the evaluation of the line under the cursor. Default: `<leader>y`
-    `keys.yank_all`  -- Yanks all evaluations. Default: `<leader>Y`
-
-This is set during the plugin setup. For example, using Lazy.nvim:
-
+### **Example Configuration in Lazy.nvim**
 >lua
   {
     "josephburgess/nvumi",
     dependencies = { "folke/snacks.nvim" },
-      opts = {
-	virtual_text = "inline", -- or "newline"
-	prefix = " 🚀 ", -- prefix shown before the output
-	date_format = "iso", -- or: "uk", "us", "long"
-	keys = {
-	  run = "<CR>", -- run all calculations
-	  reset = "R", -- reset buffer
-	  yank = "<leader>y", -- yank output of current line
-	  yank_all = "<leader>Y", -- yank all outputs
-	}
-      }
+    opts = {
+      virtual_text = "inline", -- or "newline"
+      prefix = " 🚀 ",
+      date_format = "iso",
+      keys = {
+        run = "<CR>",
+        reset = "R",
+        yank = "<leader>y",
+        yank_all = "<leader>Y",
+      },
+      custom_conversions = {
+        {
+          id = "kmh",
+          phrases = "kmh, kmph, klicks, kilometers per hour",
+          base_unit = "speed",
+          format = "km/h",
+          ratio = 1,
+        },
+        {
+          id = "mph",
+          phrases = "mph, miles per hour",
+          base_unit = "speed",
+          format = "mph",
+          ratio = 1.609344,
+        },
+      },
+    }
   }
 <
+
+---
 
 REQUIREMENTS
 ------------
 
 - **numi-cli:** A natural language calculator.
-  Install via: >bash
-      curl -sSL https://s.numi.app/cli | sh
+  Install via:
+>bash
+  curl -sSL https://s.numi.app/cli | sh
 <
-  or with Homebrew: >bash
-      brew install nikolaeu/numi/numi-cli
+  or with Homebrew:
+>bash
+  brew install nikolaeu/numi/numi-cli
 <
-
 - **snacks.nvim:** Used to create the scratch buffer.
+
+---
 
 EXAMPLES
 --------
 
 Type natural language expressions such as:
 
-    20 inches in cm
-    50 times 2
-    25 GBP to EUR
-    today + 8 weeks
+>lua
+  20 inches in cm
+  50 times 2
+  25 GBP to EUR
+  today + 8 weeks
+<
 
-See the numi-cli documentation for more about the expressions which are possible to evaluate.
+See the **numi-cli documentation** for more supported expressions.
+
+---
 
 vim:tw=78:ts=8:noet:ft=help:norl:
