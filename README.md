@@ -63,7 +63,29 @@ vim.keymap.set("n", "<leader>on", "<CMD>Nvumi<CR>", { desc = "[O]pen [N]vumi" })
 4. Press `<CR>` to **refresh** calculations.
 5. Use `<leader>y` to **yank the current result** (or `<leader>Y` for all results).
 
-## 🛠️ Custom conversions
+## 📌 Variable Assignment
+
+nvumi supports **variables**, allowing you to store values and reuse them later. Variable names must start with a letter or underscore, followed by letters, numbers, or underscores.
+
+### **Example**
+
+```text
+x = 20 inches in cm
+y = 5000
+x * y
+x + 5
+y meters in kilometers
+```
+
+- `x` stores the result of `20 inches in cm`
+- `y` holds `5000`
+- You can use them in expressions like `x * y`
+
+### **Resetting Variables**
+
+Pressing `<R>` to reset the buffer will also **clear all stored variables**.
+
+## 🔄 Custom conversions
 
 nvumi allows you to define **custom unit conversions** beyond what `numi-cli` provides. This feature was inspired by the [plugins](https://github.com/nikolaeu/numi/tree/master/plugins) that exist for the numi desktop app. These should be compatible with `nvumi`.
 
@@ -78,9 +100,6 @@ nvumi allows you to define **custom unit conversions** beyond what `numi-cli` pr
 ```lua
 {
   opts = {
-    --
-    -- other opts
-    --
     custom_conversions = {
       {
         id = "kmh",
@@ -108,27 +127,45 @@ nvumi allows you to define **custom unit conversions** beyond what `numi-cli` pr
 | `10 gallons in liters` | `37.8541 L`   |
 | `5 kmh in mph`         | `3.10686 mph` |
 
-## 📌 Variable Assignment
+## **🧮 Custom Functions**
 
-nvumi supports **variables**, allowing you to store values and reuse them later. Variable names must start with a letter or underscore, followed by letters, numbers, or underscores.
+nvumi now supports **user-defined mathematical functions**! As with the custom conversions, this was inspired by the community plugins available on the Numi GitHub, such as [this one](https://github.com/nikolaeu/numi/blob/master/plugins/CommunityExtensions/StandardDeviation/StandardDeviation.js) for calculating Standard Deviation.
 
-### **Example**
+**How It Works:**
 
-```text
-x = 20 inches in cm
-y = 5000
-x * y
-x + 5
-y meters in kilometers
+- Define **custom functions** in your configuration.
+- Functions accept **arguments** (numbers) and return computed results.
+- You can use **aliases** (phrases) to call functions.
+
+### **Example Configuration**
+
+```lua
+{
+  opts = {
+    custom_functions = {
+      {
+        def = { phrases = "square, sqr" },
+        fn = function(args)
+          return { double = args[1].double * args[1].double }
+        end,
+      },
+      {
+        def = { phrases = "add" },
+        fn = function(args)
+          return { double = args[1].double + args[2].double }
+        end,
+      },
+    },
+  }
+}
 ```
 
-- `x` stores the result of `20 inches in cm`
-- `y` holds `5000`
-- You can use them in expressions like `x * y`
+### **Examples**
 
-### **Resetting Variables**
-
-Pressing `<R>` to reset the buffer will also **clear all stored variables**.
+| Input       | Output |
+| ----------- | ------ |
+| `square(5)` | `25`   |
+| `add(3, 7)` | `10`   |
 
 ## 🎨 Virtual Text Locations
 
@@ -164,7 +201,7 @@ Set this in your config:
 
 ```lua
 opts = {
-  date_format = "long"
+  date_format = "iso", -- or: "uk", "us", "long"
 }
 ```
 
@@ -199,7 +236,8 @@ A few things I'm thinking about adding as I continue trying to expand my knowled
 - [x] Fine-tune date format
 - [x] Yankable answers (per line/all at once)
 - [x] **User-defined unit conversions** ✅ _(latest)_
-- [ ] User-defined maths functions
+- [x] User-defined maths functions
+- [ ] Inter-operability between features
 
 ## 📜 License
 
