@@ -24,9 +24,9 @@
       yank = "<leader>y", -- yank output of current line
       yank_all = "<leader>Y", -- yank all outputs
     },
-    custom_conversions = {
-      -- see section below
-    }
+    -- see below for more on custom conversions/functions
+    custom_conversions = {},
+    custom_functions = {}
   }
 }
 ```
@@ -63,7 +63,29 @@ vim.keymap.set("n", "<leader>on", "<CMD>Nvumi<CR>", { desc = "[O]pen [N]vumi" })
 4. Press `<CR>` to **refresh** calculations.
 5. Use `<leader>y` to **yank the current result** (or `<leader>Y` for all results).
 
-## 🛠️ Custom conversions
+## 📌 Variable Assignment
+
+nvumi supports **variables**, allowing you to store values and reuse them later. Variable names must start with a letter or underscore, followed by letters, numbers, or underscores.
+
+### **Example**
+
+```text
+x = 20 inches in cm
+y = 5000
+x * y
+x + 5
+y meters in kilometers
+```
+
+- `x` stores the result of `20 inches in cm`
+- `y` holds `5000`
+- You can use them in expressions like `x * y` (which equals `254000.00 cm`, btw)
+
+### **Resetting Variables**
+
+Pressing `<R>` to reset the buffer will also **clear all stored variables**.
+
+## 🔄 Custom conversions
 
 nvumi allows you to define **custom unit conversions** beyond what `numi-cli` provides. This feature was inspired by the [plugins](https://github.com/nikolaeu/numi/tree/master/plugins) that exist for the numi desktop app. These should be compatible with `nvumi`.
 
@@ -78,9 +100,6 @@ nvumi allows you to define **custom unit conversions** beyond what `numi-cli` pr
 ```lua
 {
   opts = {
-    --
-    -- other opts
-    --
     custom_conversions = {
       {
         id = "kmh",
@@ -108,27 +127,46 @@ nvumi allows you to define **custom unit conversions** beyond what `numi-cli` pr
 | `10 gallons in liters` | `37.8541 L`   |
 | `5 kmh in mph`         | `3.10686 mph` |
 
-## 📌 Variable Assignment
+## **🧮 Custom Functions**
 
-nvumi supports **variables**, allowing you to store values and reuse them later. Variable names must start with a letter or underscore, followed by letters, numbers, or underscores.
+nvumi also supports **user-defined mathematical functions**! As with the custom conversions, this was inspired by the community plugins available on the Numi GitHub, such as [this one](https://github.com/nikolaeu/numi/blob/master/plugins/CommunityExtensions/StandardDeviation/StandardDeviation.js) for calculating Standard Deviation.
 
-### **Example**
+**How It Works:**
 
-```text
-x = 20 inches in cm
-y = 5000
-x * y
-x + 5
-y meters in kilometers
+- Define **custom functions** in `lua` in your configuration.
+- Functions accept **arguments** (numbers) and return computed results.
+- You can use **aliases** (phrases) to call functions.
+
+### **Example Configuration**
+
+```lua
+{
+  opts = {
+    custom_functions = {
+      {
+        def = { phrases = "square, sqr" },
+        fn = function(args)
+          return { double = args[1].double * args[1].double }
+        end,
+      },
+      {
+        def = { id = "vat", phrases = "vat, tax, nett" }, -- for calculating vat sales tax
+        fn = function(args)
+          local vat = args[2] and args[2].double or 20 -- default 20% if no args[2] provided
+          return { double = (args[1].double / (vat + 100)) * 100 } -- apply calculation and return
+        end,
+      },
+    },
+  }
+}
 ```
 
-- `x` stores the result of `20 inches in cm`
-- `y` holds `5000`
-- You can use them in expressions like `x * y`
+### **Examples**
 
-### **Resetting Variables**
-
-Pressing `<R>` to reset the buffer will also **clear all stored variables**.
+| Input            | Output |
+| ---------------- | ------ |
+| `square(5)`      | `25`   |
+| `vat(100, 17.5)` | `17.5` |
 
 ## 🎨 Virtual Text Locations
 
@@ -164,7 +202,7 @@ Set this in your config:
 
 ```lua
 opts = {
-  date_format = "long"
+  date_format = "iso", -- or: "uk", "us", "long"
 }
 ```
 
@@ -198,8 +236,8 @@ A few things I'm thinking about adding as I continue trying to expand my knowled
 - [x] Run on **any buffer**
 - [x] Fine-tune date format
 - [x] Yankable answers (per line/all at once)
-- [x] **User-defined unit conversions** ✅ _(latest)_
-- [ ] User-defined maths functions
+- [x] **User-defined unit conversions**
+- [x] User-defined maths functions ✅ _(latest)_
 
 ## 📜 License
 
@@ -208,6 +246,6 @@ MIT License. See [LICENSE](LICENSE) for details.
 ## 🙌 Acknowledgements
 
 - **[Snacks.nvim](https://github.com/folke/snacks.nvim):**
-  Thanks @folke for the incredible plugin. The `lua` code runner built into the Scratch buffer inspired this idea in the first place. Thanks also also for your super-human contributions to the community in general!
+  Thanks @folke for the incredible plugin. The `lua` code runner built into the Scratch buffer inspired this idea in the first place! Thanks also also for your super-human contributions to the community in general.
 - **[numi](https://github.com/nikolaeu/numi):**
   Thanks for providing an amazing natural language calculator.

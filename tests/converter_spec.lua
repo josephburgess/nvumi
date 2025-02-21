@@ -4,7 +4,7 @@ local converter = require("nvumi.converter")
 
 describe("nvumi.converter", function()
   before_each(function()
-    config.custom_conversions = {
+    config.options.custom_conversions = {
       {
         id = "speed_a",
         phrases = "a, speed_a",
