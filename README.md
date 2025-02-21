@@ -235,9 +235,8 @@ A few things I'm thinking about adding as I continue trying to expand my knowled
 - [x] Run on **any buffer**
 - [x] Fine-tune date format
 - [x] Yankable answers (per line/all at once)
-- [x] **User-defined unit conversions** ✅ _(latest)_
-- [x] User-defined maths functions
-- [ ] Inter-operability between features
+- [x] **User-defined unit conversions**
+- [x] User-defined maths functions ✅ _(latest)_
 
 ## 📜 License
 
@@ -246,6 +245,6 @@ MIT License. See [LICENSE](LICENSE) for details.
 ## 🙌 Acknowledgements
 
 - **[Snacks.nvim](https://github.com/folke/snacks.nvim):**
-  Thanks @folke for the incredible plugin. The `lua` code runner built into the Scratch buffer inspired this idea in the first place. Thanks also also for your super-human contributions to the community in general!
+  Thanks @folke for the incredible plugin. The `lua` code runner built into the Scratch buffer inspired this idea in the first place! Thanks also also for your super-human contributions to the community in general.
 - **[numi](https://github.com/nikolaeu/numi):**
   Thanks for providing an amazing natural language calculator.
