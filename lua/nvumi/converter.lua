@@ -1,9 +1,13 @@
 local M = {}
 local config = require("nvumi.config")
 
+local function trim(s)
+  return s:match("^%s*(.-)%s*$")
+end
+
 -- trim whitespc
 local function normalize_unit(unit_str)
-  return unit_str:match("^%s*(.-)%s*$"):lower()
+  return trim(unit_str):lower()
 end
 
 -- given a unit str, find  a matching conversion def
@@ -27,7 +31,9 @@ local function format_result(value, conversion)
 end
 
 local function convert_units(expression)
-  local value_str, source_unit, target_unit = expression:match("^(%d+%.?%d*)%s+(.+)%s+in%s+(.+)$")
+  expression = trim(expression)
+
+  local value_str, source_unit, target_unit = expression:match("^(%d+%.?%d*)%s+(.+)%s+in%s+(.+)%s*$")
   if not value_str then
     return nil
   end
