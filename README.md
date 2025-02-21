@@ -149,7 +149,7 @@ nvumi now supports **user-defined mathematical functions**! As with the custom c
         end,
       },
       {
-        def = { id = "vat", phrases = "vat" }, -- for calculating vat sales tax
+        def = { id = "vat", phrases = "vat, tax, nett" }, -- for calculating vat sales tax
         fn = function(args)
           local vat = args[2] and args[2].double or 20 -- default 20% if no args[2] provided
           return { double = (args[1].double / (vat + 100)) * 100 } -- apply calculation and return

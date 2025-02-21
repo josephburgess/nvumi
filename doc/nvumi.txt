@@ -190,13 +190,13 @@ nvumi supports the following **configuration options**:
       },
       custom_functions = {
 	{
-	  def = { phrases = "square, sqr, sqrt" },
+	  def = { phrases = "square, sqr" },
 	  fn = function(args)
 	    return { double = args[1].double * args[1].double }
 	  end,
 	},
 	{
-	  def = { id = "vat", phrases = "vat" }, -- e.g. for calculating vat sales tax
+	  def = { id = "vat", phrases = "vat, tax, nett" }, -- e.g. for calculating sales tax
 	  fn = function(values)
 	    local vat = values[2] and values[2].double or 20 -- default 20% or use second arg as p/c amount
 	    return { double = (values[1].double / (vat + 100)) * 100 } -- apply calculation and return
