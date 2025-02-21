@@ -199,7 +199,7 @@ A few things I'm thinking about adding as I continue trying to expand my knowled
 - [x] Fine-tune date format
 - [x] Yankable answers (per line/all at once)
 - [x] **User-defined unit conversions** ✅ _(latest)_
-- [ ] Full syntax highlighting
+- [ ] User-defined maths functions
 
 ## 📜 License
 
