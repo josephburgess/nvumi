@@ -25,7 +25,6 @@ local defaults = {
     yank = "<leader>y",
     yank_all = "<leader>Y",
   },
-  -- New field for custom math functions.
   custom_conversions = {},
   custom_functions = {},
 }
