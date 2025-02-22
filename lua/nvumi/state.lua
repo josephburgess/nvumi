@@ -72,7 +72,7 @@ end
 
 function M.yank_output_on_line()
   local row, _ = unpack(vim.api.nvim_win_get_cursor(0))
-  local output = M.outputs[row]
+  local output = M.outputs[row - 1]
   if output then
     vim.fn.setreg("+", output)
     vim.notify(("Yanked: %s"):format(output), vim.log.levels.INFO)
@@ -80,4 +80,5 @@ function M.yank_output_on_line()
     vim.notify("No evaluation found on this line", vim.log.levels.ERROR)
   end
 end
+
 return M
