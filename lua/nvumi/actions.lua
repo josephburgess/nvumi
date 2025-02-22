@@ -6,9 +6,11 @@ local ns = vim.api.nvim_create_namespace("nvumi_inline")
 local M = {}
 
 local function create_ctx()
-  local buf = vim.api.nvim_get_current_buf()
-  local opts = config.options
-  return { buf = buf, ns = ns, opts = opts }
+  return {
+    buf = vim.api.nvim_get_current_buf(),
+    ns = ns,
+    opts = config.options,
+  }
 end
 
 function M.run_on_buffer()
