@@ -60,7 +60,7 @@ vim.keymap.set("n", "<leader>on", "<CMD>Nvumi<CR>", { desc = "[O]pen [N]vumi" })
 1. Run `:Nvumi` to open a scratch buffer.
 2. Type a natural language expression (`20 inches in cm`).
 3. The result appears **inline** or on a **new line**, based on your settings.
-4. Press `<CR>` to **refresh** calculations.
+4. Press `<CR>` to **refresh** calculations if you need.
 5. Use `<leader>y` to **yank the current result** (or `<leader>Y` for all results).
 
 ## 📌 Variable Assignment
@@ -144,7 +144,7 @@ nvumi also supports **user-defined mathematical functions**! As with the custom 
   opts = {
     custom_functions = {
       {
-        def = { phrases = "square, sqr" },
+        def = { id ="sqr" phrases = "square, sqr" },
         fn = function(args)
           return { double = args[1].double * args[1].double }
         end,
@@ -223,7 +223,8 @@ nvumi was built around a made-up filetype `.nvumi`. This was so that the autocom
 The fun side-effect of this, however, is that you can create/save `.nvumi` files outside of the scratch buffer and they will function exactly the same!
 
 ## 📚 Wiki
-This README hopefully had a good enough outline of current features and examples to get you started, however there is also a [Wiki](https://github.com/josephburgess/nvumi/wiki) being expanded with more in-depth info. 
+
+This README hopefully had a good enough outline of current features and examples to get you started, however there is also a [Wiki](https://github.com/josephburgess/nvumi/wiki) being expanded with more in-depth info.
 
 In particular it includes a [Recipes](https://github.com/josephburgess/nvumi/wiki/Recipes) page with some example custom conversions/functions.
 
@@ -235,11 +236,11 @@ This is my first attempt at a Neovim plugin, so contributions are more than welc
 
 A few things I'm thinking about adding as I continue trying to expand my knowledge of `lua` and plugin development:
 
-- [x] Assign variables
+- [x] Variable Assignment
 - [x] Custom prefixes/suffixes (`=`, `→`, `🚀`)
-- [x] Auto-evaluate expressions
-- [x] Run on **any buffer**
-- [x] Fine-tune date format
+- [x] Auto-evaluate expressions while typing
+- [x] Run on any buffer outside scratch
+- [x] Custom date format
 - [x] Yankable answers (per line/all at once)
 - [x] **User-defined unit conversions**
 - [x] User-defined maths functions ✅ _(latest)_
