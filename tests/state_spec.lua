@@ -70,7 +70,7 @@ describe("nvumi.state", function()
     end)
 
     it("yanks output from a specific line", function()
-      state.store_output(1, "im skating the equator")
+      state.store_output(0, "im skating the equator")
       state.yank_output_on_line()
       assert.stub(setreg_stub).was_called_with("+", "im skating the equator")
       assert.stub(notify_stub).was_called_with("Yanked: im skating the equator", vim.log.levels.INFO)
