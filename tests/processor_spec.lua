@@ -60,4 +60,24 @@ describe("nvumi.processor", function()
     assert.are.same("madvillainy", output)
     assert.spy(mock_run_numi).was_called(1)
   end)
+
+  it("evaluates {} expressions before full line processing", function()
+    local output
+    processor.process_line(ctx, "{10+20}mph in kmh", 1, function()
+      output = state.get_last_output()
+    end)
+
+    assert.are.same("madvillainy", output) -- Mocked numi output
+    assert.spy(mock_run_numi).was_called(1)
+  end)
+
+  it("handles empty {} gracefully", function()
+    local output
+    processor.process_line(ctx, "{} + 5", 1, function()
+      output = state.get_last_output()
+    end)
+
+    assert.are.same("madvillainy", output) -- Expected to not crash
+    assert.spy(mock_run_numi).was_called(1)
+  end)
 end)
