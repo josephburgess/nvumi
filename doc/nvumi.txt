@@ -23,6 +23,7 @@ calculations. In the scratch buffer:
 
 VARIABLE ASSIGNMENT
 -------------------
+*nvumi-variable-assignment*
 
 nvumi supports **assigning evaluated expressions to variables**. This lets you reuse previously computed values in your calculations.
 
@@ -48,6 +49,7 @@ nvumi supports **assigning evaluated expressions to variables**. This lets you r
 
 CUSTOM CONVERSIONS
 ------------------
+*nvumi-custom-conversions*
 
 nvumi supports **user-defined unit conversions**, allowing you to add your own units.
 
@@ -101,15 +103,14 @@ Example configuration:
 
 CUSTOM FUNCTIONS
 ----------------
-
-nvumi supports **user-defined mathematical functions**, allowing you to extend its capabilities.
-
 *nvumi-custom-functions*
 
-💡 *How It Works*:
-- Define **custom functions** with **aliases** and an associated **function**.
-- Functions receive **arguments** (numbers) and return computed results.
-- You can use **multiple aliases** for the same function.
+nvumi supports **user-defined functions**, allowing you to extend its capabilities.
+
+How It Works:
+- Define **custom functions** with **aliases**.
+- Functions can accept **numbers, strings, or no arguments**.
+- Functions can surface errors by setting an `error` key.
 
 Example configuration:
 
@@ -118,22 +119,36 @@ Example configuration:
     {
       def = { phrases = "square, sqr" },
       fn = function(args)
-        return { double = args[1].double * args[1].double }
+        if #args < 1 or type(args[1]) ~= "number" then
+          return { error = "square requires a single numeric argument" }
+        end
+        return { result = args[1] * args[1] }
       end,
     },
     {
-      def = { phrases = "add" },
+      def = { phrases = "hello, hi" },
       fn = function(args)
-        return { double = args[1].double + args[2].double }
+        local name = args[1] or "stranger"
+        return { result = "Hello, " .. name .. "!" }
+      end,
+    },
+    {
+      def = { phrases = "coinflip, flip" },
+      fn = function()
+	return { result = (math.random() > 0.5) and "Heads" or "Tails" }
       end,
     },
   }
 <
 
-**Usage Examples:**
->lua
+Example output:
+>
+lua
   square(4)  →  16
-  add(2, 3)  →  5
+  hello("Joe")  →  "Hello, Joe!"
+  hello()  →  "Hello, stranger!"
+  square("text")  →  Error: square requires a single numeric argument
+  flip()  →  "Heads" | "Tails"
 <
 
 ---
@@ -192,16 +207,12 @@ nvumi supports the following **configuration options**:
 	{
 	  def = { phrases = "square, sqr" },
 	  fn = function(args)
-	    return { double = args[1].double * args[1].double }
+	    if #args < 1 or type(args[1]) ~= "number" then
+	      return { error = "square requires a single numeric argument" }
+	    end
+	    return { result = args[1] * args[1] }
 	  end,
 	},
-	{
-	  def = { id = "vat", phrases = "vat, tax, nett" }, -- e.g. for calculating sales tax
-	  fn = function(values)
-	    local vat = values[2] and values[2].double or 20 -- default 20% or use second arg as p/c amount
-	    return { double = (values[1].double / (vat + 100)) * 100 } -- apply calculation and return
-	  end,
-	}
       }
     }
   }
