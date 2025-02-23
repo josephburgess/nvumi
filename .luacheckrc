@@ -1,24 +1,24 @@
--- vim: ft=lua tw=140
+max_line_length = 140
 
 globals = { "vim" }
 
 read_globals = {
-    "describe",
-    "it",
-    "before_each",
-    "after_each",
-    "setup",
-    "teardown",
-    "assert",
-    "spy",
-    "mock",
-    "stub"
+  "describe",
+  "it",
+  "before_each",
+  "after_each",
+  "setup",
+  "teardown",
+  "assert",
+  "spy",
+  "mock",
+  "stub",
 }
 
 ignore = {
-    "unused_args"
+  "unused_args",
 }
 
 files["tests/**/*.lua"] = {
-    std = "+busted"
+  std = "+busted",
 }

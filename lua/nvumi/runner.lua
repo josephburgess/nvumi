@@ -4,10 +4,7 @@ local M = {}
 ---@param callback fun(data: string[])  callback to receive the output
 function M.run_numi(expr, callback)
   if vim.fn.executable("numi-cli") == 0 then
-    vim.notify(
-      "Error: `numi-cli` is not installed or not in PATH.\n" .. "Type `:help Nvumi` for more.",
-      vim.log.levels.ERROR
-    )
+    vim.notify("Error: `numi-cli` is not installed or not in PATH.\n" .. "Type `:help Nvumi` for more.", vim.log.levels.ERROR)
     return
   end
 
