@@ -52,4 +52,8 @@ describe("nvumi.evaluator", function()
     local result = evaluator.evaluate_function("  square (   6   )  ")
     assert.are.same("36", result)
   end)
+
+  it("return nil for bad input", function()
+    assert.is_nil(evaluator.evaluate_function("square"))
+  end)
 end)
