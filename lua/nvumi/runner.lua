@@ -18,4 +18,16 @@ function M.run_numi(expr, callback)
   })
 end
 
+---@param expr string
+---@return string
+function M.run_numi_sync(expr)
+  if vim.fn.executable("numi-cli") == 0 then
+    vim.notify("Error: `numi-cli` is not installed or not in PATH.\n" .. "Type `:help Nvumi` for more.", vim.log.levels.ERROR)
+    return ""
+  end
+
+  local output = (vim.fn.system({ "numi-cli", expr }) or ""):gsub("\n", "")
+  return output
+end
+
 return M

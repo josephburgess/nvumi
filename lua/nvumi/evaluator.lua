@@ -35,10 +35,16 @@ end
 --- @return string|nil
 function M.evaluate_function(expression)
   local fn_name, args_str = expression:match("^%s*(%a+)%s*%((.-)%)%s*$")
-  local target_fn = fn_name and get_target_fn(fn_name)
+  if not fn_name then return nil end
+
+  local target_fn = get_target_fn(fn_name)
   if not target_fn then return nil end
 
-  local result = target_fn(parse_args(args_str))
+  local success, result = pcall(function()
+    return target_fn(parse_args(args_str or ""))
+  end)
+
+  if not success then return "??" end
   return result.error and "Error: " .. result.error or tostring(result.result)
 end
 

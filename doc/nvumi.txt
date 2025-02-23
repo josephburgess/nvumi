@@ -20,7 +20,6 @@ calculations. In the scratch buffer:
   - Press `<leader>y` in normal mode to **yank the evaluation** of the current line.
   - Press `<leader>Y` in normal mode to **yank all evaluations**.
 
-
 VARIABLE ASSIGNMENT
 -------------------
 *nvumi-variable-assignment*
@@ -152,6 +151,28 @@ lua
 <
 
 ---
+
+INLINE `{}` EVALUATIONS
+------------------------
+*nvumi-inline-evaluations*
+
+nvumi supports inline evaluations using `{}` curly braces. Any expression inside
+`{}` is evaluated first, and the result is inserted into the full line before
+processing.
+
+in a lot of instances this is not necessary, however for example if you wish
+to run a function on an expression in one line then it would be required, as
+the arg parsing of the custom functions evaluator would trip up if passsing
+the expressions in directly like `factorial(2*3).`
+
+**Example Usage:**
+
+    {10+20} mph in kmh    →   30 mph in kmh  →  48.28032 km/h
+    log({10*10}, {5+5})   →   log(100, 10)   →  2
+
+This allows for seamless integration between math calculations, functions,
+and unit conversions within a single line.
+
 
 CONFIGURATION
 -------------
