@@ -22,15 +22,27 @@ local function assign_and_render(ctx, index, var, result, next_callback)
   renderer.render_result(ctx, index - 1, result, next_callback)
 end
 
+---@param expr string
+---@return string
+local function evaluate_inline_expressions(expr)
+  local result = expr:gsub("{(.-)}", function(inner_expr)
+    local evaluated = converter.process_custom_conversion(inner_expr)
+      or evaluator.evaluate_function(inner_expr)
+      or runner.run_numi_sync(inner_expr)
+    return tostring(evaluated or inner_expr)
+  end)
+  return result
+end
+
 ---@param ctx table
 ---@param line string
 ---@param index number
 ---@param next_callback fun()
 function M.process_line(ctx, line, index, next_callback)
   if should_skip_line(line) then return next_callback() end
-
-  local var, expr = line:match("^%s*([%a_][%w_]*)%s*=%s*(.+)$")
-  local prepared_line = state.substitute_variables(var and expr or line)
+  local processed_line = evaluate_inline_expressions(line)
+  local var, expr = processed_line:match("^%s*([%a_][%w_]*)%s*=%s*(.+)$")
+  local prepared_line = state.substitute_variables(var and expr or processed_line)
 
   local result = converter.process_custom_conversion(prepared_line)
   if result then return assign_and_render(ctx, index, var, result, next_callback) end
