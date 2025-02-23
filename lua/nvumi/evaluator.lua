@@ -23,19 +23,21 @@ end
 --- @return table|nil
 local function parse_args(args_str)
   if not args_str or args_str:match("^%s*$") then
-    return nil
+    return {}
   end
 
   local args = {}
+
   for arg in args_str:gmatch("[^,]+") do
     local num = tonumber(arg:match("^%s*(.-)%s*$"))
-    if not num then
-      return nil
+    if num then
+      table.insert(args, num)
+    else
+      table.insert(args, arg)
     end
-    table.insert(args, { double = num })
   end
 
-  return #args > 0 and args or nil
+  return args
 end
 
 --- @param expression string
@@ -52,12 +54,18 @@ function M.evaluate_function(expression)
   end
 
   local args = parse_args(args_str)
-  if not args then
+
+  if args == nil then
     return nil
   end
 
   local result = target_fn(args)
-  return result and tostring(result.double) or nil
+
+  if result.error then
+    return "Error: " .. result.error
+  elseif result.result then
+    return tostring(result.result)
+  end
 end
 
 return M
