@@ -129,13 +129,13 @@ nvumi allows you to define **custom unit conversions** beyond what `numi-cli` pr
 
 ## **🧮 Custom Functions**
 
-nvumi also supports **user-defined mathematical functions**! As with the custom conversions, this was inspired by the community plugins available on the Numi GitHub, such as [this one](https://github.com/nikolaeu/numi/blob/master/plugins/CommunityExtensions/StandardDeviation/StandardDeviation.js) for calculating Standard Deviation.
+nvumi supports **user-defined functions**.
 
-**How It Works:**
+💡 **How It Works:**
 
-- Define **custom functions** in `lua` in your configuration.
-- Functions accept **arguments** (numbers) and return computed results.
-- You can use **aliases** (phrases) to call functions.
+- Define **custom functions** with **aliases**.
+- Functions receive **arguments** (numbers or strings, or nothing) and return computed results.
+- You can include error messages that will surface if something isn't quite right.
 
 ### **Example Configuration**
 
@@ -144,16 +144,25 @@ nvumi also supports **user-defined mathematical functions**! As with the custom 
   opts = {
     custom_functions = {
       {
-        def = { id ="sqr" phrases = "square, sqr" },
+        def = { phrases = "square, sqr" },
         fn = function(args)
-          return { double = args[1].double * args[1].double }
+          if #args < 1 or type(args[1]) ~= "number" then
+            return { error = "square requires a single numeric argument" }
+          end
+          return { result = args[1] * args[1] }
         end,
       },
       {
-        def = { id = "vat", phrases = "vat, tax, nett" }, -- for calculating vat sales tax
+        def = { id = "greet", phrases = "hello, hi" },
         fn = function(args)
-          local vat = args[2] and args[2].double or 20 -- default 20% if no args[2] provided
-          return { double = (args[1].double / (vat + 100)) * 100 } -- apply calculation and return
+          local name = args[1] or "stranger"
+          return { result = "Hello, " .. name .. "!" }
+        end,
+      },
+      {
+        def = { phrases = "coinflip, flip" },
+        fn = function()
+          return { result = (math.random() > 0.5) and "Heads" or "Tails" }
         end,
       },
     },
@@ -163,10 +172,12 @@ nvumi also supports **user-defined mathematical functions**! As with the custom 
 
 ### **Examples**
 
-| Input            | Output |
-| ---------------- | ------ |
-| `square(5)`      | `25`   |
-| `vat(100, 17.5)` | `17.5` |
+| Input           | Output                                               |
+| --------------- | ---------------------------------------------------- |
+| `square(5)`     | `25`                                                 |
+| `square("abc")` | `"Error: square requires a single numeric argument"` |
+| `hello("Joe")`  | `"Hello, Joe!"`                                      |
+| `flip()`        | `Heads` / `Tails`                                    |
 
 ## 🎨 Virtual Text Locations
 

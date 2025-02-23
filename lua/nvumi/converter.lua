@@ -44,7 +44,6 @@ end
 --- @return string | nil
 local function convert_units(expression)
   local value, source_unit, target_unit = extract_conversion_val_and_units(expression)
-
   if not value or not source_unit or not target_unit then return nil end
 
   local source_conv, target_conv = find_conversion(source_unit), find_conversion(target_unit)
