@@ -4,9 +4,7 @@ local M = {}
 function M.format_date(result)
   local year, month, day = result:match("(%d%d%d%d)-(%d%d)-(%d%d)")
 
-  if not year then
-    return result
-  end
+  if not year then return result end
 
   local format = config.options.date_format
 

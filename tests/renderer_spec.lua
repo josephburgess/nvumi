@@ -31,9 +31,7 @@ describe("nvumi.renderer", function()
   end)
 
   after_each(function()
-    if vim.api.nvim_buf_is_valid(ctx.buf) then
-      vim.api.nvim_buf_delete(ctx.buf, { force = true })
-    end
+    if vim.api.nvim_buf_is_valid(ctx.buf) then vim.api.nvim_buf_delete(ctx.buf, { force = true }) end
 
     vim.api = real_api
     store_output:revert()

@@ -14,9 +14,7 @@ describe("nvumi.evaluator", function()
       {
         def = { phrases = "square, sqr" },
         fn = function(args)
-          if type(args[1]) ~= "number" then
-            return { error = "should be a num bro!" }
-          end
+          if type(args[1]) ~= "number" then return { error = "should be a num bro!" } end
           return { result = args[1] * args[1] }
         end,
       },
@@ -55,5 +53,15 @@ describe("nvumi.evaluator", function()
 
   it("return nil for bad input", function()
     assert.is_nil(evaluator.evaluate_function("square"))
+  end)
+
+  it("return nil for an unregistered function", function()
+    local result = evaluator.evaluate_function("czarface(3)")
+    assert.is_nil(result)
+  end)
+
+  it("return nil without parens", function()
+    local result = evaluator.evaluate_function("someFunc")
+    assert.is_nil(result)
   end)
 end)
