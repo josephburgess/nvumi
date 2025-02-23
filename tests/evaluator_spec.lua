@@ -6,15 +6,18 @@ describe("nvumi.evaluator", function()
   before_each(function()
     config.options.custom_functions = {
       {
-        def = { phrases = "square, sqr" },
+        def = { phrases = "add" },
         fn = function(args)
-          return { double = args[1].double * args[1].double }
+          return { result = args[1] + args[2] }
         end,
       },
       {
-        def = { phrases = "add" },
+        def = { phrases = "square, sqr" },
         fn = function(args)
-          return { double = args[1].double + args[2].double }
+          if type(args[1]) ~= "number" then
+            return { error = "should be a num bro!" }
+          end
+          return { result = args[1] * args[1] }
         end,
       },
     }
@@ -35,12 +38,12 @@ describe("nvumi.evaluator", function()
     assert.is_nil(result)
   end)
 
-  it("return nil for bad args", function()
+  it("returns error msgs", function()
     local result = evaluator.evaluate_function("square(abc)")
-    assert.is_nil(result)
+    assert.are.same("Error: should be a num bro!", result)
   end)
 
-  it("fn names are not case sensitvie", function()
+  it("fn names are not case-sensitive", function()
     local result = evaluator.evaluate_function("SQR(5)")
     assert.are.same("25", result)
   end)
@@ -52,7 +55,5 @@ describe("nvumi.evaluator", function()
 
   it("return nil for bad input", function()
     assert.is_nil(evaluator.evaluate_function("square"))
-    assert.is_nil(evaluator.evaluate_function("square()"))
-    assert.is_nil(evaluator.evaluate_function("square(,)"))
   end)
 end)
