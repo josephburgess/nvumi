@@ -179,6 +179,19 @@ nvumi supports **user-defined functions**.
 | `hello("Joe")`  | `"Hello, Joe!"`                                      |
 | `flip()`        | `Heads` / `Tails`                                    |
 
+### ** 🤹 Inline `{}` Evaluations**
+
+nvumi now supports **inline evaluations** using `{}` curly braces. Expressions inside `{}` are **evaluated first**, and the result is **inserted into the full line before processing**. This in particular
+
+This isn't always necessary, for example when assigning variables or doing normal math expressions, numi should be sufficient, but for custom functions/custom conversions this allows greater interoperability between expressions and your custom setup.
+
+#### **💡 Example Usage**
+
+| Input                 | Step 1 - Evaluate `{}` | Step 2 - Final Output |
+| --------------------- | ---------------------- | --------------------- |
+| `log({10*10}, {5+5})` | `log(100, 10)`         | `2`                   |
+| `{10+20} mph in kmh`  | `30 mph in kmh`        | `48.28032 km/h`       |
+
 ## 🎨 Virtual Text Locations
 
 nvumi supports two virtual text modes:
