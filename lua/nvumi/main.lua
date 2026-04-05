@@ -43,7 +43,8 @@ function M.setup()
     require("nvumi.actions").reset_buffer()
   end, {})
 
-  require("nvim-web-devicons").set_icon({ nvumi = { icon = "" } })
+  local ok, devicons = pcall(require, "nvim-web-devicons")
+  if ok then devicons.set_icon({ nvumi = { icon = "" } }) end
 
   autocmds.setup()
 end
