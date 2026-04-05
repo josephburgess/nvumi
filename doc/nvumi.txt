@@ -52,10 +52,9 @@ CUSTOM CONVERSIONS
 
 nvumi supports **user-defined unit conversions**, allowing you to add your own units.
 
-💡 **How It Works**:
-- Define **custom units** with **aliases**, a **base unit group**, and a **conversion ratio**.
-- Custom conversions **must share the same base unit** (e.g., `"speed"`, `"volume"`).
-- When converting, **ratios are relative to the base unit**.
+- Define custom units with aliases, a base unit group, and a conversion ratio.
+- Custom conversions must share the same `base_unit` (e.g., `"speed"`, `"volume"`).
+- Ratios are relative to the base unit.
 
 Example configuration:
 
@@ -134,7 +133,7 @@ Example configuration:
     {
       def = { phrases = "coinflip, flip" },
       fn = function()
-	return { result = (math.random() > 0.5) and "Heads" or "Tails" }
+        return { result = (math.random() > 0.5) and "Heads" or "Tails" }
       end,
     },
   }
@@ -160,10 +159,9 @@ nvumi supports inline evaluations using `{}` curly braces. Any expression inside
 `{}` is evaluated first, and the result is inserted into the full line before
 processing.
 
-in a lot of instances this is not necessary, however for example if you wish
-to run a function on an expression in one line then it would be required, as
-the arg parsing of the custom functions evaluator would trip up if passsing
-the expressions in directly like `factorial(2*3).`
+This is often not necessary, but is useful when passing an expression as a
+function argument — the custom function parser would otherwise treat the raw
+expression as a string rather than evaluating it first.
 
 **Example Usage:**
 
@@ -193,7 +191,7 @@ nvumi supports the following **configuration options**:
   keys.yank_all = "<leader>Y"  -- Yanks all evaluations.
 <
 
-### **Example Configuration in Lazy.nvim**
+Example configuration (Lazy.nvim):
 >lua
   {
     "josephburgess/nvumi",
@@ -225,15 +223,15 @@ nvumi supports the following **configuration options**:
         },
       },
       custom_functions = {
-	{
-	  def = { phrases = "square, sqr" },
-	  fn = function(args)
-	    if #args < 1 or type(args[1]) ~= "number" then
-	      return { error = "square requires a single numeric argument" }
-	    end
-	    return { result = args[1] * args[1] }
-	  end,
-	},
+        {
+          def = { phrases = "square, sqr" },
+          fn = function(args)
+            if #args < 1 or type(args[1]) ~= "number" then
+              return { error = "square requires a single numeric argument" }
+            end
+            return { result = args[1] * args[1] }
+          end,
+        },
       }
     }
   }
