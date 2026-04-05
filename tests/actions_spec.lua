@@ -26,6 +26,7 @@ describe("nvumi.actions", function()
       end,
       nvim_buf_set_lines = function() end,
       nvim_err_writeln = function() end,
+      nvim_echo = function() end,
     }
 
     real_fns = {
