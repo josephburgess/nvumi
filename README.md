@@ -13,7 +13,6 @@
 ```lua
 {
   "josephburgess/nvumi",
-  dependencies = { "folke/snacks.nvim" },
   opts = {
     virtual_text = "newline", -- or "inline"
     prefix = " = ", -- prefix shown before the output
