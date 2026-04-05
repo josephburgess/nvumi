@@ -207,9 +207,9 @@ opts = {
 
 | Command         | Description                                                   |
 | --------------- | ------------------------------------------------------------- |
-| `NvumiEvalLine` | Run nvumi on **any line** in any buffer.                      |
-| `NvumiEvalBuf`  | Run nvumi on the **entire buffer** anywhere. Can be messy!    |
-| `NvumiClear`    | **Clears** the buffer's virtual text.                         |
+| `NvumiEvalLine` | Run nvumi on **any line** in any buffer |
+| `NvumiEvalBuf`  | Run nvumi on the **entire buffer** anywhere (this will probably be messy...)    |
+| `NvumiClear`    | Clears the buffer's virtual text                         |
 
 ## `.nvumi` filetype
 
