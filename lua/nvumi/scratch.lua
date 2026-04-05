@@ -7,19 +7,36 @@ local M = {}
 local bufnr = nil
 local winid = nil
 
+local icon = "󰿉"
+
 local function is_open()
   return winid ~= nil and vim.api.nvim_win_is_valid(winid)
 end
 
 local function build_footer()
   local keys = config.options.keys
-  return string.format(" %s run  %s reset  %s yank  %s yank all ", keys.run, keys.reset, keys.yank, keys.yank_all)
+  local sep = { "  ·  ", "FloatBorder" }
+  return {
+    { " ", "FloatBorder" },
+    { keys.run, "FloatTitle" },
+    { " Run", "Comment" },
+    sep,
+    { keys.reset, "FloatTitle" },
+    { " Reset", "Comment" },
+    sep,
+    { keys.yank, "FloatTitle" },
+    { " Yank", "Comment" },
+    sep,
+    { keys.yank_all, "FloatTitle" },
+    { " Yank all", "Comment" },
+    sep,
+    { "q", "FloatTitle" },
+    { " Close ", "Comment" },
+  }
 end
 
 local function get_or_create_buf()
-  if bufnr and vim.api.nvim_buf_is_valid(bufnr) then
-    return bufnr
-  end
+  if bufnr and vim.api.nvim_buf_is_valid(bufnr) then return bufnr end
 
   bufnr = vim.api.nvim_create_buf(false, true)
 
@@ -30,15 +47,15 @@ local function get_or_create_buf()
   vim.keymap.set("n", keys.yank_all, state.yank_all_outputs, { buffer = bufnr, desc = "nvumi: yank all" })
   vim.keymap.set("n", "q", M.close, { buffer = bufnr, desc = "nvumi: close" })
 
-  -- set filetype last so the FileType autocmd sees a fully configured buffer
+  -- set filetype last
   vim.bo[bufnr].filetype = "nvumi"
 
   return bufnr
 end
 
 local function open_win(buf)
-  local width = math.floor(vim.o.columns * 0.65)
-  local height = math.floor(vim.o.lines * 0.65)
+  local width = math.floor(vim.o.columns * 0.4)
+  local height = math.floor(vim.o.lines * 0.4)
   local row = math.floor((vim.o.lines - height) / 2)
   local col = math.floor((vim.o.columns - width) / 2)
 
@@ -50,11 +67,14 @@ local function open_win(buf)
     col = col,
     style = "minimal",
     border = "rounded",
-    title = " nvumi ",
+    title = { { " " .. icon .. " nvumi ", "FloatTitle" } },
     title_pos = "center",
     footer = build_footer(),
     footer_pos = "center",
   })
+
+  vim.wo[win].scrolloff = 2
+  vim.wo[win].statuscolumn = "  "
 
   vim.api.nvim_create_autocmd("WinClosed", {
     pattern = tostring(win),
@@ -78,9 +98,7 @@ function M.open()
 end
 
 function M.close()
-  if winid and vim.api.nvim_win_is_valid(winid) then
-    vim.api.nvim_win_close(winid, false)
-  end
+  if winid and vim.api.nvim_win_is_valid(winid) then vim.api.nvim_win_close(winid, false) end
   winid = nil
 end
 
