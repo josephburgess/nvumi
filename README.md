@@ -6,7 +6,7 @@
   <img src="https://github.com/user-attachments/assets/c0d0fd19-7acf-49db-96d2-0da9eda3b088" alt="Gif" />
 </p>
 
-## 🔧 Installation
+## Installation
 
 ### Using Lazy.nvim
 
@@ -16,7 +16,7 @@
   dependencies = { "folke/snacks.nvim" },
   opts = {
     virtual_text = "newline", -- or "inline"
-    prefix = " 🚀 ", -- prefix shown before the output
+    prefix = " = ", -- prefix shown before the output
     date_format = "iso", -- or: "uk", "us", "long"
     keys = {
       run = "<CR>", -- run/refresh calculations
@@ -35,39 +35,37 @@
 
 You will also need **[numi-cli](https://github.com/nikolaeu/numi)**.
 
-#### 🖥 MacOS
+**MacOS**
 
 ```sh
 brew install nikolaeu/numi/numi-cli
 ```
 
-#### 📦 Linux & Windows
+**Linux & Windows**
 
 ```sh
 curl -sSL https://s.numi.app/cli | sh
 ```
 
-### Keybinding to open `nvumi`
+### Keybinding to open nvumi
 
 nvumi does not have a default keybinding to open the scratch buffer. You can set one:
 
 ```lua
-vim.keymap.set("n", "<leader>on", "<CMD>Nvumi<CR>", { desc = "[O]pen [N]vumi" })
+vim.keymap.set("n", "<leader>on", "<CMD>Nvumi<CR>", { desc = "Open nvumi" })
 ```
 
-## 🚀 Usage
+## Usage
 
 1. Run `:Nvumi` to open a scratch buffer.
 2. Type a natural language expression (`20 inches in cm`).
 3. The result appears **inline** or on a **new line**, based on your settings.
-4. Press `<CR>` to **refresh** calculations if you need.
-5. Use `<leader>y` to **yank the current result** (or `<leader>Y` for all results).
+4. Press `<CR>` to refresh calculations.
+5. Use `<leader>y` to yank the current result (or `<leader>Y` for all results).
 
-## 📌 Variable Assignment
+## Variable Assignment
 
-nvumi supports **variables**, allowing you to store values and reuse them later. Variable names must start with a letter or underscore, followed by letters, numbers, or underscores.
-
-### **Example**
+nvumi supports variables — store values and reuse them in subsequent expressions. Variable names must start with a letter or underscore, followed by letters, numbers, or underscores.
 
 ```text
 x = 20 inches in cm
@@ -79,23 +77,17 @@ y meters in kilometers
 
 - `x` stores the result of `20 inches in cm`
 - `y` holds `5000`
-- You can use them in expressions like `x * y` (which equals `254000.00 cm`, btw)
+- Expressions like `x * y` use the stored values
 
-### **Resetting Variables**
+Pressing `R` to reset the buffer also clears all stored variables.
 
-Pressing `<R>` to reset the buffer will also **clear all stored variables**.
+## Custom Conversions
 
-## 🔄 Custom conversions
+nvumi supports user-defined unit conversions beyond what `numi-cli` provides. This was inspired by the [plugins](https://github.com/nikolaeu/numi/tree/master/plugins) that exist for the numi desktop app — those should be compatible with nvumi.
 
-nvumi allows you to define **custom unit conversions** beyond what `numi-cli` provides. This feature was inspired by the [plugins](https://github.com/nikolaeu/numi/tree/master/plugins) that exist for the numi desktop app. These should be compatible with `nvumi`.
-
-💡 **How It Works:**
-
-- You can define **custom units** with **aliases**, a **base unit group**, and a **conversion ratio**.
-- Custom conversions **must share the same `base_unit`** (e.g., `"speed"`, `"volume"`).
-- When converting, **ratios are relative to the base unit**.
-
-### **Example Configuration**
+- Define custom units with **aliases**, a **base unit group**, and a **conversion ratio**.
+- Custom conversions must share the same `base_unit` (e.g., `"speed"`, `"volume"`).
+- Ratios are relative to the base unit.
 
 ```lua
 {
@@ -120,24 +112,14 @@ nvumi allows you to define **custom unit conversions** beyond what `numi-cli` pr
 }
 ```
 
-### **Examples**
-
 | Input                  | Output        |
 | ---------------------- | ------------- |
 | `10 gallons in liters` | `37.8541 L`   |
 | `5 kmh in mph`         | `3.10686 mph` |
 
-## **🧮 Custom Functions**
+## Custom Functions
 
-nvumi supports **user-defined functions**.
-
-💡 **How It Works:**
-
-- Define **custom functions** with **aliases**.
-- Functions receive **arguments** (numbers or strings, or nothing) and return computed results.
-- You can include error messages that will surface if something isn't quite right.
-
-### **Example Configuration**
+nvumi supports user-defined functions with aliases. Functions receive arguments (numbers or strings, or nothing) and return computed results. You can include error messages that will surface if something goes wrong.
 
 ```lua
 {
@@ -170,8 +152,6 @@ nvumi supports **user-defined functions**.
 }
 ```
 
-### **Examples**
-
 | Input           | Output                                               |
 | --------------- | ---------------------------------------------------- |
 | `square(5)`     | `25`                                                 |
@@ -179,20 +159,16 @@ nvumi supports **user-defined functions**.
 | `hello("Joe")`  | `"Hello, Joe!"`                                      |
 | `flip()`        | `Heads` / `Tails`                                    |
 
-### ** 🤹 Inline `{}` Evaluations**
+## Inline `{}` Evaluations
 
-nvumi now supports **inline evaluations** using `{}` curly braces. Expressions inside `{}` are **evaluated first**, and the result is **inserted into the full line before processing**. This in particular
-
-This isn't always necessary, for example when assigning variables or doing normal math expressions, numi should be sufficient, but for custom functions/custom conversions this allows greater interoperability between expressions and your custom setup.
-
-#### **💡 Example Usage**
+Expressions inside `{}` are evaluated first and the result is substituted into the full line before processing. This is particularly useful with custom functions or conversions, where passing a raw expression as an argument would confuse the parser.
 
 | Input                 | Step 1 - Evaluate `{}` | Step 2 - Final Output |
 | --------------------- | ---------------------- | --------------------- |
 | `log({10*10}, {5+5})` | `log(100, 10)`         | `2`                   |
 | `{10+20} mph in kmh`  | `30 mph in kmh`        | `48.28032 km/h`       |
 
-## 🎨 Virtual Text Locations
+## Virtual Text Modes
 
 nvumi supports two virtual text modes:
 
@@ -213,7 +189,7 @@ nvumi supports two virtual text modes:
   </p>
 </details>
 
-## 📅 Date Formatting
+## Date Formatting
 
 | **Format** | **Example Output**  |
 | ---------- | ------------------- |
@@ -222,60 +198,37 @@ nvumi supports two virtual text modes:
 | `"uk"`     | `21/02/2025`        |
 | `"long"`   | `February 21, 2025` |
 
-Set this in your config:
-
 ```lua
 opts = {
   date_format = "iso", -- or: "uk", "us", "long"
 }
 ```
 
-## Extra commands
-
-There are three extra (possibly useless) commands included with nvumi:
+## Extra Commands
 
 | Command         | Description                                                   |
 | --------------- | ------------------------------------------------------------- |
 | `NvumiEvalLine` | Run nvumi on **any line** in any buffer.                      |
-| `NvumiEvalBuf`  | Run nvumi on the **entire buffer** anywhere. ⚠️ Can be messy! |
+| `NvumiEvalBuf`  | Run nvumi on the **entire buffer** anywhere. Can be messy!    |
 | `NvumiClear`    | **Clears** the buffer's virtual text.                         |
 
-## 📁 `.nvumi` filetype
+## `.nvumi` filetype
 
-nvumi was built around a made-up filetype `.nvumi`. This was so that the autocommands used by the plugin under the hood would not start trying to evaluate random files.
+nvumi uses a custom filetype `.nvumi` so that the autocommands don't trigger on arbitrary buffers. As a side effect, you can create and save `.nvumi` files outside of the scratch buffer and they work exactly the same.
 
-The fun side-effect of this, however, is that you can create/save `.nvumi` files outside of the scratch buffer and they will function exactly the same!
+## Wiki
 
-## 📚 Wiki
-
-This README hopefully had a good enough outline of current features and examples to get you started, however there is also a [Wiki](https://github.com/josephburgess/nvumi/wiki) being expanded with more in-depth info.
-
-In particular it includes a [Recipes](https://github.com/josephburgess/nvumi/wiki/Recipes) page with some example custom conversions/functions.
+There is a [Wiki](https://github.com/josephburgess/nvumi/wiki) with more detail, including a [Recipes](https://github.com/josephburgess/nvumi/wiki/Recipes) page with example custom conversions and functions.
 
 ## Contributing
 
-This is my first attempt at a Neovim plugin, so contributions are more than welcome! If you encounter issues or have ideas for improvements, please open an issue or submit a pull request on GitHub.
+This is my first attempt at a Neovim plugin, so contributions are more than welcome. If you encounter issues or have ideas for improvements, please open an issue or submit a pull request on GitHub.
 
-## 💡 Roadmap & Planned Features
-
-A few things I'm thinking about adding as I continue trying to expand my knowledge of `lua` and plugin development:
-
-- [x] Variable Assignment
-- [x] Custom prefixes/suffixes (`=`, `→`, `🚀`)
-- [x] Auto-evaluate expressions while typing
-- [x] Run on any buffer outside scratch
-- [x] Custom date format
-- [x] Yankable answers (per line/all at once)
-- [x] **User-defined unit conversions**
-- [x] User-defined maths functions ✅ _(latest)_
-
-## 📜 License
+## License
 
 MIT License. See [LICENSE](LICENSE) for details.
 
-## 🙌 Acknowledgements
+## Acknowledgements
 
-- **[Snacks.nvim](https://github.com/folke/snacks.nvim):**
-  Thanks @folke for the incredible plugin. The `lua` code runner built into the Scratch buffer inspired this idea in the first place! Thanks also also for your super-human contributions to the community in general.
-- **[numi](https://github.com/nikolaeu/numi):**
-  Thanks for providing an amazing natural language calculator.
+- **[Snacks.nvim](https://github.com/folke/snacks.nvim):** The Lua code runner built into the Scratch buffer inspired this idea. Thanks @folke.
+- **[numi](https://github.com/nikolaeu/numi):** The natural language calculator this plugin wraps.
