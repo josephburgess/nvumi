@@ -1,6 +1,6 @@
 # nvumi
 
-**nvumi** is a Neovim plugin that integrates the [numi](https://github.com/nikolaeu/numi) natural language calculator with [Snacks.nvim's](https://github.com/folke/snacks.nvim/blob/main/docs/scratch.md) scratch buffer. It lets you construct natural language expressions and see the results evaluated inline as you type.
+**nvumi** is a Neovim plugin that integrates the [numi](https://github.com/nikolaeu/numi) natural language calculator with a scratch buffer. It lets you construct natural language expressions and see the results evaluated inline as you type.
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/c0d0fd19-7acf-49db-96d2-0da9eda3b088" alt="Gif" />
@@ -64,7 +64,7 @@ vim.keymap.set("n", "<leader>on", "<CMD>Nvumi<CR>", { desc = "Open nvumi" })
 
 ## Variable Assignment
 
-nvumi supports variables — store values and reuse them in subsequent expressions. Variable names must start with a letter or underscore, followed by letters, numbers, or underscores.
+nvumi supports variables for storing values and reusing them in subsequent expressions. Variable names must start with a letter or underscore, followed by letters, numbers, or underscores.
 
 ```text
 x = 20 inches in cm
@@ -82,11 +82,11 @@ Pressing `R` to reset the buffer also clears all stored variables.
 
 ## Custom Conversions
 
-nvumi supports user-defined unit conversions beyond what `numi-cli` provides. This was inspired by the [plugins](https://github.com/nikolaeu/numi/tree/master/plugins) that exist for the numi desktop app — those should be compatible with nvumi.
+nvumi supports user-defined unit conversions beyond what `numi-cli` provides. This was inspired by the [plugins](https://github.com/nikolaeu/numi/tree/master/plugins) that exist for the numi desktop app (those should be compatible with nvumi too).
 
-- Define custom units with **aliases**, a **base unit group**, and a **conversion ratio**.
-- Custom conversions must share the same `base_unit` (e.g., `"speed"`, `"volume"`).
-- Ratios are relative to the base unit.
+- Define custom units with **aliases**, a **base unit group**, and a **conversion ratio**
+- Custom conversions must share the same `base_unit` (e.g., `"speed"`, `"volume"`)
+- Ratios are relative to the base unit
 
 ```lua
 {
@@ -229,5 +229,5 @@ MIT License. See [LICENSE](LICENSE) for details.
 
 ## Acknowledgements
 
-- **[Snacks.nvim](https://github.com/folke/snacks.nvim):** The Lua code runner built into the Scratch buffer inspired this idea. Thanks @folke.
 - **[numi](https://github.com/nikolaeu/numi):** The natural language calculator this plugin wraps.
+- **[Snacks.nvim](https://github.com/folke/snacks.nvim):** The Lua runner built into snacks.Scratch inspired this idea. Snacks is no longer a dependency but still worth a shout out. Thanks @folke.
