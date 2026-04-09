@@ -171,20 +171,20 @@ Expressions inside `{}` are evaluated first and the result is substituted into t
 
 nvumi supports two virtual text modes:
 
-- **Inline** (default)
-- **Newline**
-
-<details>
-  <summary>Inline</summary>
-  <p>
-    <img src="https://github.com/user-attachments/assets/dae054cc-bddb-49c2-802a-68bfc9108d49" alt="Inline Screenshot" />
-  </p>
-</details>
+- **Newline** (default)
+- **Inline**
 
 <details>
   <summary>Newline</summary>
   <p>
     <img src="https://github.com/user-attachments/assets/f7222430-4cb4-4eb7-a155-477d70dc39ff" alt="Newline Screenshot" />
+  </p>
+</details>
+
+<details>
+  <summary>Inline</summary>
+  <p>
+    <img src="https://github.com/user-attachments/assets/dae054cc-bddb-49c2-802a-68bfc9108d49" alt="Inline Screenshot" />
   </p>
 </details>
 
