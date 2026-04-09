@@ -6,6 +6,7 @@ local M = {}
 
 local bufnr = nil
 local winid = nil
+local backdrop_winid = nil
 
 local icon = "󰿉"
 local PERSIST_FILE = vim.fn.stdpath("data") .. "/nvumi.scratch"
@@ -84,6 +85,24 @@ local function resolve_dim(value, total)
   return math.floor(value <= 1 and total * value or value)
 end
 
+local function open_backdrop()
+  vim.api.nvim_set_hl(0, "NvumiBackdrop", { bg = "#000000", default = true })
+  local buf = vim.api.nvim_create_buf(false, true)
+  local win = vim.api.nvim_open_win(buf, false, {
+    relative = "editor",
+    row = 0,
+    col = 0,
+    width = vim.o.columns,
+    height = vim.o.lines,
+    style = "minimal",
+    focusable = false,
+    zindex = 49,
+  })
+  vim.wo[win].winhighlight = "Normal:NvumiBackdrop"
+  vim.wo[win].winblend = 50
+  return win
+end
+
 local function open_win(buf)
   local opts = config.options
   local width = resolve_dim(opts.width, vim.o.columns)
@@ -103,6 +122,7 @@ local function open_win(buf)
     title_pos = "center",
     footer = build_footer(),
     footer_pos = "center",
+    zindex = 50,
   })
 
   vim.wo[win].scrolloff = 2
@@ -113,6 +133,10 @@ local function open_win(buf)
     once = true,
     callback = function()
       save_buf(bufnr)
+      if backdrop_winid and vim.api.nvim_win_is_valid(backdrop_winid) then
+        vim.api.nvim_win_close(backdrop_winid, true)
+      end
+      backdrop_winid = nil
       winid = nil
     end,
   })
@@ -126,13 +150,18 @@ function M.open()
     return
   end
 
+  backdrop_winid = open_backdrop()
   local buf = get_or_create_buf()
   winid = open_win(buf)
 end
 
 function M.close()
   if winid and vim.api.nvim_win_is_valid(winid) then vim.api.nvim_win_close(winid, false) end
+  if backdrop_winid and vim.api.nvim_win_is_valid(backdrop_winid) then
+    vim.api.nvim_win_close(backdrop_winid, true)
+  end
   winid = nil
+  backdrop_winid = nil
 end
 
 return M
