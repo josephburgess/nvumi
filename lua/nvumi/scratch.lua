@@ -26,9 +26,7 @@ local function load_buf(buf)
   if not f then return end
   local content = f:read("*a")
   f:close()
-  if content and content ~= "" then
-    vim.api.nvim_buf_set_lines(buf, 0, -1, false, vim.split(content, "\n", { plain = true }))
-  end
+  if content and content ~= "" then vim.api.nvim_buf_set_lines(buf, 0, -1, false, vim.split(content, "\n", { plain = true })) end
 end
 
 local function is_open()
@@ -133,9 +131,7 @@ local function open_win(buf)
     once = true,
     callback = function()
       save_buf(bufnr)
-      if backdrop_winid and vim.api.nvim_win_is_valid(backdrop_winid) then
-        vim.api.nvim_win_close(backdrop_winid, true)
-      end
+      if backdrop_winid and vim.api.nvim_win_is_valid(backdrop_winid) then vim.api.nvim_win_close(backdrop_winid, true) end
       backdrop_winid = nil
       winid = nil
     end,
@@ -157,9 +153,7 @@ end
 
 function M.close()
   if winid and vim.api.nvim_win_is_valid(winid) then vim.api.nvim_win_close(winid, false) end
-  if backdrop_winid and vim.api.nvim_win_is_valid(backdrop_winid) then
-    vim.api.nvim_win_close(backdrop_winid, true)
-  end
+  if backdrop_winid and vim.api.nvim_win_is_valid(backdrop_winid) then vim.api.nvim_win_close(backdrop_winid, true) end
   winid = nil
   backdrop_winid = nil
 end
