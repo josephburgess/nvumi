@@ -38,7 +38,8 @@ end
 ---@param line string
 ---@param index number
 ---@param next_callback fun()
-function M.process_line(ctx, line, index, next_callback)
+---@param gen number|nil
+function M.process_line(ctx, line, index, next_callback, gen)
   if should_skip_line(line) then return next_callback() end
   local processed_line = evaluate_inline_expressions(line)
   local var, expr = processed_line:match("^%s*([%a_][%w_]*)%s*=%s*(.+)$")
@@ -51,6 +52,7 @@ function M.process_line(ctx, line, index, next_callback)
   if result then return assign_and_render(ctx, index, var, result, next_callback) end
 
   runner.run_numi(prepared_line, function(data)
+    if gen and not state.is_current_gen(gen) then return end
     assign_and_render(ctx, index, var, data[1], next_callback)
   end)
 end
@@ -58,12 +60,13 @@ end
 ---@param ctx table
 ---@param lines string[]
 ---@param index number
-function M.process_lines(ctx, lines, index)
+---@param gen number|nil
+function M.process_lines(ctx, lines, index, gen)
   if index > #lines then return end
 
   M.process_line(ctx, lines[index], index, function()
-    M.process_lines(ctx, lines, index + 1)
-  end)
+    M.process_lines(ctx, lines, index + 1, gen)
+  end, gen)
 end
 
 return M
