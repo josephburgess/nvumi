@@ -63,7 +63,7 @@ end
 function M.clear_state()
   M.variables = {}
   M.outputs = {}
-  M.eval_gen = M.eval_gen
+  M.eval_gen = M.eval_gen + 1
   M.last_output = nil
 end
 
