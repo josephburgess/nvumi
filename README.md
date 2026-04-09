@@ -3,7 +3,7 @@
 **nvumi** is a Neovim plugin that integrates the [numi](https://github.com/nikolaeu/numi) natural language calculator with a scratch buffer. It lets you construct natural language expressions and see the results evaluated inline as you type.
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/c0d0fd19-7acf-49db-96d2-0da9eda3b088" alt="Gif" />
+  <img src="https://github.com/user-attachments/assets/9649e76e-fade-4057-8df4-d6be11066a3b" alt="Gif" />
 </p>
 
 ## Installation
@@ -17,6 +17,8 @@
     virtual_text = "newline", -- or "inline"
     prefix = " = ", -- prefix shown before the output
     date_format = "iso", -- or: "uk", "us", "long"
+    width = 0.4,  -- 0–1 = fraction of terminal width, >1 = absolute columns
+    height = 0.4, -- 0–1 = fraction of terminal height, >1 = absolute lines
     keys = {
       run = "<CR>", -- run/refresh calculations
       reset = "R", -- reset buffer
@@ -171,20 +173,20 @@ Expressions inside `{}` are evaluated first and the result is substituted into t
 
 nvumi supports two virtual text modes:
 
-- **Inline** (default)
-- **Newline**
-
-<details>
-  <summary>Inline</summary>
-  <p>
-    <img src="https://github.com/user-attachments/assets/dae054cc-bddb-49c2-802a-68bfc9108d49" alt="Inline Screenshot" />
-  </p>
-</details>
+- **Newline** (default)
+- **Inline**
 
 <details>
   <summary>Newline</summary>
   <p>
     <img src="https://github.com/user-attachments/assets/f7222430-4cb4-4eb7-a155-477d70dc39ff" alt="Newline Screenshot" />
+  </p>
+</details>
+
+<details>
+  <summary>Inline</summary>
+  <p>
+    <img src="https://github.com/user-attachments/assets/dae054cc-bddb-49c2-802a-68bfc9108d49" alt="Inline Screenshot" />
   </p>
 </details>
 

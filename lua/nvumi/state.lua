@@ -6,6 +6,19 @@ M.variables = {} -- store for key/val pairs of variables
 ---@type table<string, string>
 M.outputs = {} -- store for key/val pairs of answers
 
+M.eval_gen = 0 -- incremented on each buffer run to bail on stale callbacks
+
+function M.next_gen()
+  M.eval_gen = M.eval_gen + 1
+  return M.eval_gen
+end
+
+---@param g number
+---@return boolean
+function M.is_current_gen(g)
+  return g == M.eval_gen
+end
+
 ---@param name string
 ---@param value string
 function M.set_variable(name, value)
@@ -43,9 +56,14 @@ function M.get_output(line_index)
   return M.outputs[line_index]
 end
 
+function M.clear_variables()
+  M.variables = {}
+end
+
 function M.clear_state()
   M.variables = {}
   M.outputs = {}
+  M.eval_gen = M.eval_gen + 1
   M.last_output = nil
 end
 
@@ -60,14 +78,18 @@ function M.yank_last_output()
 end
 
 function M.yank_all_outputs()
-  local outputs = vim.tbl_values(M.outputs)
-  if #outputs > 0 then
-    local result = table.concat(outputs, "\n")
-    vim.fn.setreg("+", result)
-    vim.notify("Yanked all evaluations", vim.log.levels.INFO)
-  else
+  local keys = vim.tbl_keys(M.outputs)
+  if #keys == 0 then
     vim.notify("No outputs available to yank", vim.log.levels.ERROR)
+    return
   end
+  table.sort(keys)
+  local lines = {}
+  for _, k in ipairs(keys) do
+    table.insert(lines, M.outputs[k])
+  end
+  vim.fn.setreg("+", table.concat(lines, "\n"))
+  vim.notify("Yanked all evaluations", vim.log.levels.INFO)
 end
 
 function M.yank_output_on_line()
