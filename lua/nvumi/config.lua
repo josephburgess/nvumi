@@ -8,6 +8,8 @@
 ---@field virtual_text string
 ---@field prefix string
 ---@field date_format string
+---@field width number   window width: 0–1 = fraction of terminal, >1 = absolute columns
+---@field height number  window height: 0–1 = fraction of terminal, >1 = absolute lines
 ---@field keys nvumi.Keys
 ---@field custom_conversions table
 ---@field custom_functions table
@@ -19,6 +21,8 @@ local defaults = {
   virtual_text = "newline",
   prefix = " = ",
   date_format = "iso",
+  width = 0.4,
+  height = 0.4,
   keys = {
     run = "<CR>",
     reset = "R",

@@ -80,9 +80,14 @@ local function get_or_create_buf()
   return bufnr
 end
 
+local function resolve_dim(value, total)
+  return math.floor(value <= 1 and total * value or value)
+end
+
 local function open_win(buf)
-  local width = math.floor(vim.o.columns * 0.4)
-  local height = math.floor(vim.o.lines * 0.4)
+  local opts = config.options
+  local width = resolve_dim(opts.width, vim.o.columns)
+  local height = resolve_dim(opts.height, vim.o.lines)
   local row = math.floor((vim.o.lines - height) / 2)
   local col = math.floor((vim.o.columns - width) / 2)
 
