@@ -3,7 +3,7 @@
 **nvumi** is a Neovim plugin that integrates the [numi](https://github.com/nikolaeu/numi) natural language calculator with a scratch buffer. It lets you construct natural language expressions and see the results evaluated inline as you type.
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/c0d0fd19-7acf-49db-96d2-0da9eda3b088" alt="Gif" />
+  <img src="https://github.com/user-attachments/assets/72016017-1fc6-41c7-aa6e-76a305abb9ca" alt="Gif" />
 </p>
 
 ## Installation
