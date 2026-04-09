@@ -2,47 +2,41 @@
 =================================================
 
 nvumi integrates the [numi-cli](https://github.com/nikolaeu/numi) natural language
-calculator with [snacks.nvim](https://github.com/folke/snacks.nvim). It provides a
-scratch buffer where you can type natural language expressions and see the evaluated
-results either inline or on a new line.
+calculator with a scratch buffer. Type natural language expressions and see the
+evaluated results either inline or on a new line as you type.
 
 USAGE
 -----
 
     :Nvumi
 
-This command opens a scratch buffer where you can enter your
-calculations. In the scratch buffer:
+This command opens a scratch buffer where you can enter your calculations.
 
   - Expressions are automatically evaluated as you type.
-  - Press `<CR>` (Enter) in normal mode to **re-evaluate/refresh** all non-empty lines.
-  - Press `<R>` in normal mode to **reset the buffer** (clear all content).
-  - Press `<leader>y` in normal mode to **yank the evaluation** of the current line.
-  - Press `<leader>Y` in normal mode to **yank all evaluations**.
+  - Press `<CR>` in normal mode to re-evaluate/refresh all non-empty lines.
+  - Press `R` in normal mode to reset the buffer (clears all content and variables).
+  - Press `<leader>y` in normal mode to yank the evaluation of the current line.
+  - Press `<leader>Y` in normal mode to yank all evaluations.
+  - Press `q` to close the buffer (content is persisted across sessions).
 
 VARIABLE ASSIGNMENT
 -------------------
 *nvumi-variable-assignment*
 
-nvumi supports **assigning evaluated expressions to variables**. This lets you reuse previously computed values in your calculations.
+nvumi supports assigning evaluated expressions to variables, letting you reuse
+previously computed values in your calculations.
 
-- To **assign a variable**, write a line in the form:
+To assign a variable, write a line in the form:
 
-      variable_name = expression
+    variable_name = expression
 
-  Example:
+Example:
 
-      x = 2+2
+    x = 2+2
+    x * 3
 
-  This evaluates `2+2` and stores the result in `x`.
-
-- To **use the stored value**, reference the variable in another expression:
-
-      x * 3
-
-  nvumi substitutes `x` with its stored result before evaluation.
-
-- All variables persist **only for the current session** and are cleared when you **reset the buffer (`<R>`)**.
+nvumi substitutes `x` with its stored result before evaluation. Variables are
+cleared when you reset the buffer (`R`).
 
 ---
 
@@ -50,7 +44,7 @@ CUSTOM CONVERSIONS
 ------------------
 *nvumi-custom-conversions*
 
-nvumi supports **user-defined unit conversions**, allowing you to add your own units.
+nvumi supports user-defined unit conversions, allowing you to add your own units.
 
 - Define custom units with aliases, a base unit group, and a conversion ratio.
 - Custom conversions must share the same `base_unit` (e.g., `"speed"`, `"volume"`).
@@ -65,7 +59,7 @@ Example configuration:
       phrases = "l, liter, liters",
       base_unit = "volume",
       format = "L",
-      ratio = 1, -- Base unit
+      ratio = 1,
     },
     {
       id = "gallons",
@@ -91,11 +85,10 @@ Example configuration:
   }
 <
 
-**Examples:**
->lua
-  10 gallons in liters   →   37.8541 L
-  5 kmh in mph          →   3.10686 mph
-<
+Examples:
+
+    10 gallons in liters   →   37.8541 L
+    5 kmh in mph           →   3.10686 mph
 
 ---
 
@@ -103,12 +96,8 @@ CUSTOM FUNCTIONS
 ----------------
 *nvumi-custom-functions*
 
-nvumi supports **user-defined functions**, allowing you to extend its capabilities.
-
-How It Works:
-- Define **custom functions** with **aliases**.
-- Functions can accept **numbers, strings, or no arguments**.
-- Functions can surface errors by setting an `error` key.
+nvumi supports user-defined functions with aliases. Functions can accept numbers,
+strings, or no arguments, and can surface errors via an `error` key in the return.
 
 Example configuration:
 
@@ -140,14 +129,15 @@ Example configuration:
 <
 
 Example output:
->
-lua
-  square(4)  →  16
-  hello("Joe")  →  "Hello, Joe!"
-  hello()  →  "Hello, stranger!"
-  square("text")  →  Error: square requires a single numeric argument
-  flip()  →  "Heads" | "Tails"
-<
+
+    square(4)              →  16
+    hello("Joe")           →  Hello, Joe!
+    hello()                →  Hello, stranger!
+    square("text")         →  Error: square requires a single numeric argument
+    flip()                 →  Heads | Tails
+
+Note: functions using randomness (like `flip`) will re-evaluate each time the
+buffer is refreshed. This is expected behaviour.
 
 ---
 
@@ -155,84 +145,38 @@ INLINE `{}` EVALUATIONS
 ------------------------
 *nvumi-inline-evaluations*
 
-nvumi supports inline evaluations using `{}` curly braces. Any expression inside
-`{}` is evaluated first, and the result is inserted into the full line before
-processing.
-
-This is often not necessary, but is useful when passing an expression as a
-function argument — the custom function parser would otherwise treat the raw
-expression as a string rather than evaluating it first.
-
-**Example Usage:**
+Any expression inside `{}` is evaluated first and the result is substituted into
+the full line before processing. This is useful when passing computed values as
+function arguments.
 
     {10+20} mph in kmh    →   30 mph in kmh  →  48.28032 km/h
     log({10*10}, {5+5})   →   log(100, 10)   →  2
 
-This allows for seamless integration between math calculations, functions,
-and unit conversions within a single line.
-
+---
 
 CONFIGURATION
 -------------
+*nvumi-configuration*
 
-nvumi supports the following **configuration options**:
+nvumi supports the following configuration options:
 
->lua
-  virtual_text = "inline" | "newline"  -- Where to display the results.
-  prefix = " 🚀 " -- Prefix before virtual text output.
-  date_format = "iso" -- Date format options: "iso", "uk", "us", "long"
-<
-
-**Keybinds:**
->lua
-  keys.run = "<CR>"   -- Runs all calculations.
-  keys.reset = "R"    -- Resets (clears) the buffer.
-  keys.yank = "<leader>y"  -- Yanks evaluation of the current line.
-  keys.yank_all = "<leader>Y"  -- Yanks all evaluations.
-<
-
-Example configuration (Lazy.nvim):
 >lua
   {
     "josephburgess/nvumi",
-    dependencies = { "folke/snacks.nvim" },
     opts = {
-      virtual_text = "inline", -- or "newline"
-      prefix = " 🚀 ",
-      date_format = "iso",
+      virtual_text = "newline", -- or "inline"
+      prefix = " = ",           -- prefix shown before output
+      date_format = "iso",      -- or: "uk", "us", "long"
+      width = 0.4,              -- 0–1 = fraction of terminal width, >1 = absolute columns
+      height = 0.4,             -- 0–1 = fraction of terminal height, >1 = absolute lines
       keys = {
-        run = "<CR>",
-        reset = "R",
-        yank = "<leader>y",
-        yank_all = "<leader>Y",
+        run = "<CR>",           -- run/refresh calculations
+        reset = "R",            -- reset buffer and clear variables
+        yank = "<leader>y",     -- yank output of current line
+        yank_all = "<leader>Y", -- yank all outputs
       },
-      custom_conversions = {
-        {
-          id = "kmh",
-          phrases = "kmh, kmph, klicks, kilometers per hour",
-          base_unit = "speed",
-          format = "km/h",
-          ratio = 1,
-        },
-        {
-          id = "mph",
-          phrases = "mph, miles per hour",
-          base_unit = "speed",
-          format = "mph",
-          ratio = 1.609344,
-        },
-      },
-      custom_functions = {
-        {
-          def = { phrases = "square, sqr" },
-          fn = function(args)
-            if #args < 1 or type(args[1]) ~= "number" then
-              return { error = "square requires a single numeric argument" }
-            end
-            return { result = args[1] * args[1] }
-          end,
-        },
-      }
+      custom_conversions = {},
+      custom_functions = {},
     }
   }
 <
@@ -242,15 +186,18 @@ Example configuration (Lazy.nvim):
 REQUIREMENTS
 ------------
 
-- **numi-cli:** A natural language calculator.
-  Install via:
->bash
-  curl -sSL https://s.numi.app/cli | sh
-<
-  or with Homebrew:
+numi-cli must be installed and available in PATH.
+
+MacOS:
 >bash
   brew install nikolaeu/numi/numi-cli
 <
+
+Linux / Windows:
+>bash
+  curl -sSL https://s.numi.app/cli | sh
+<
+
 ---
 
 EXAMPLES
@@ -258,14 +205,13 @@ EXAMPLES
 
 Type natural language expressions such as:
 
->lua
-  20 inches in cm
-  50 times 2
-  25 GBP to EUR
-  today + 8 weeks
-<
+    20 inches in cm
+    50 times 2
+    25% of 340
+    55 USD in GBP
+    today + 8 weeks
 
-See the **numi-cli documentation** for more supported expressions.
+See the numi-cli documentation for the full list of supported expressions.
 
 ---
 
