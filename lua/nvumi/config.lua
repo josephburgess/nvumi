@@ -17,7 +17,7 @@ local M = {}
 ---@type nvumi.Options
 local defaults = {
   virtual_text = "newline",
-  prefix = " 🚀 ",
+  prefix = " = ",
   date_format = "iso",
   keys = {
     run = "<CR>",
