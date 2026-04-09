@@ -10,6 +10,7 @@ describe("nvumi.actions", function()
 
   before_each(function()
     real_vim_api = vim.api
+    vim.bo = { [1] = { filetype = "nvumi" } }
     vim.api = {
       nvim_get_current_buf = function()
         return 1
